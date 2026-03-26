@@ -11,6 +11,41 @@
 
   --font-sans: var(--font-space-grotesk);
   --font-mono: var(--font-geist-mono);
+
+  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-breathe: breathe 4s ease-in-out infinite alternate;
+  --animate-move-grid: move-grid 20s linear infinite;
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes breathe {
+    from {
+      opacity: 0.05;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 0.15;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes move-grid {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(60px);
+    }
+  }
 }
 
 * {

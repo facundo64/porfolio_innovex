@@ -20,11 +20,11 @@ export default function Contact() {
 
           {/* Texto */}
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <span className="block w-8 h-[1px] bg-[#0088ff]" />
+            <div className="flex items-center gap-4 mb-4">
+              <span className="block w-12 h-[1px] bg-gradient-to-r from-[#0088ff] to-transparent" />
               <span className="text-[#0088ff] text-[10px] font-mono tracking-[0.3em] uppercase">05 / Contacto</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Hablemos</h2>
+            <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight mb-6">Hablemos.</h2>
             <p className="text-[#555] leading-relaxed max-w-sm">
               ¿Tenés un proyecto en mente o querés trabajar juntos?
               Escribime y lo charlamos.

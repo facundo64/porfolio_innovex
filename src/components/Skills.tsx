@@ -21,11 +21,11 @@ export default function Skills() {
       <div className="max-w-6xl mx-auto">
 
         {/* Encabezado */}
-        <div className="flex items-center gap-3 mb-3">
-          <span className="block w-8 h-[1px] bg-[#0088ff]" />
+        <div className="flex items-center gap-4 mb-4">
+          <span className="block w-12 h-[1px] bg-gradient-to-r from-[#0088ff] to-transparent" />
           <span className="text-[#0088ff] text-[10px] font-mono tracking-[0.3em] uppercase">03 / Skills</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-16">Habilidades</h2>
+        <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight mb-16">Habilidades.</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {categories.map((cat) => (
