@@ -1,95 +1,196 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { projects } from "@/data/projects";
-import type { Project } from "@/types";
-import SectionLabel from "./SectionLabel";
+import type { Project, ProjectCategory } from "@/types";
 
-const categoryLabel: Record<Project["category"], string> = {
+const categoryLabel: Record<ProjectCategory, string> = {
+  saas: "SaaS",
+  corporate: "Corporate",
+  institutional: "Institucional",
   web: "Web",
   software: "Software",
+  infra: "Infrastructure",
   academic: "Académico",
 };
 
-function CaseCard({ project, index }: { project: Project; index: number }) {
-  const isLarge = index === 0 || index === 3;
+function AsymmetricProject({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+
+  let layoutClasses = "col-span-12";
+  let aspectClasses = "aspect-video md:aspect-[21/9]";
+
+  if (index % 3 === 1) {
+    layoutClasses = "col-span-12 md:col-span-6 md:col-start-7";
+    aspectClasses = "aspect-[4/5]";
+  } else if (index % 3 === 2) {
+    layoutClasses = "col-span-12 md:col-span-8";
+    aspectClasses = "aspect-square md:aspect-video";
+  }
+
+  const href = project.demo ?? project.github ?? "#";
+  const external = href.startsWith("http");
 
   return (
-    <motion.a
-      href={project.demo ?? project.github}
-      target="_blank"
-      rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.9, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative rounded-3xl border border-[#E8E6DF] bg-white/70 backdrop-blur-md overflow-hidden hover:shadow-[0_30px_80px_-30px_rgba(74,107,62,0.25)] hover:-translate-y-1 transition-all duration-500 ${
-        isLarge ? "md:col-span-2" : ""
-      }`}
+    <div
+      ref={containerRef}
+      className={`${layoutClasses} flex flex-col gap-6 md:gap-8`}
     >
-      {/* Preview visual */}
-      <div
-        className={`relative overflow-hidden ${
-          isLarge ? "h-[280px] md:h-[360px]" : "h-[220px]"
-        } bg-gradient-to-br from-[#F5F3EE] via-[#FAFAF7] to-[#E8E6DF]`}
+      {/* Hero visual con parallax */}
+      <Link
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className={`relative w-full overflow-hidden rounded-2xl block ${aspectClasses} group`}
+        style={{ backgroundColor: project.bgColor ?? "#1A1A1A" }}
       >
-        {/* Pattern sutil */}
+        <motion.div
+          style={{ y }}
+          className="absolute inset-[-12%] w-[124%] h-[124%] origin-center"
+        >
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            sizes="(min-width: 768px) 75vw, 100vw"
+            className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+          />
+        </motion.div>
+
+        {/* Gradiente de legibilidad */}
         <div
-          className="absolute inset-0 opacity-[0.4]"
-          style={{
-            backgroundImage:
-              "radial-gradient(#1E2A47 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none"
         />
-        {/* "Screenshot" mockup */}
-        <div className="absolute inset-6 md:inset-10 rounded-2xl bg-white border border-[#E8E6DF] shadow-xl overflow-hidden group-hover:scale-[1.02] transition-transform duration-700">
-          <div className="flex items-center gap-1.5 px-3 py-2 bg-[#FAFAF7] border-b border-[#E8E6DF]">
-            <span className="w-2 h-2 rounded-full bg-[#E8E6DF]" />
-            <span className="w-2 h-2 rounded-full bg-[#E8E6DF]" />
-            <span className="w-2 h-2 rounded-full bg-[#E8E6DF]" />
-          </div>
-          <div className="p-4 md:p-6 flex flex-col gap-2">
-            <div className="h-2.5 rounded-full bg-[#0A0A0A]/80 w-1/3" />
-            <div className="h-1.5 rounded-full bg-[#E8E6DF] w-full" />
-            <div className="h-1.5 rounded-full bg-[#E8E6DF] w-5/6" />
-            <div className="grid grid-cols-3 gap-2 mt-3">
-              <div className="h-14 rounded-lg bg-gradient-to-br from-[#2D3E66] to-[#1E2A47]/60" />
-              <div className="h-14 rounded-lg bg-[#F5F3EE] border border-[#E8E6DF]" />
-              <div className="h-14 rounded-lg bg-[#F5F3EE] border border-[#E8E6DF]" />
-            </div>
-          </div>
-        </div>
 
-        {/* Tag categoría */}
-        <span className="absolute top-4 left-4 text-[10px] font-mono tracking-[0.2em] uppercase text-[#1E2A47] bg-white/80 backdrop-blur-sm border border-[#E8E6DF] rounded-full px-3 py-1">
-          {categoryLabel[project.category]}
-        </span>
-      </div>
-
-      {/* Info */}
-      <div className="p-6 md:p-8 flex flex-col gap-3">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-serif text-2xl md:text-3xl text-[#0A0A0A] leading-tight">
-            {project.title}
-          </h3>
-          <span className="shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#E8E6DF] text-[#1E2A47] group-hover:bg-[#0A0A0A] group-hover:text-white group-hover:border-[#0A0A0A] transition-all group-hover:rotate-[-45deg]">
-            →
+        {/* Meta superior */}
+        <div className="absolute top-5 left-5 right-5 z-10 flex items-start justify-between gap-3 text-[10px] font-mono tracking-[0.22em] uppercase">
+          <span className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white px-3 py-1">
+            {categoryLabel[project.category]}
+          </span>
+          <span className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/85 px-3 py-1">
+            {project.year}
           </span>
         </div>
-        <p className="text-[#3A3A3A] text-sm leading-relaxed">{project.description}</p>
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {project.stack.map((tech) => (
-            <span
-              key={tech}
-              className="text-[10px] font-mono text-[#3A3A3A] bg-[#F5F3EE] border border-[#E8E6DF] px-2 py-1 rounded-full"
-            >
-              {tech}
+
+        {/* Logo flotante + tag "Featured" */}
+        <div className="absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
+          {project.logoNegative || project.logo ? (
+            <div className="relative h-10 md:h-12 w-28 md:w-36 shrink-0">
+              <Image
+                src={project.logoNegative ?? project.logo!}
+                alt={`${project.title} logo`}
+                fill
+                sizes="160px"
+                className="object-contain object-left drop-shadow-xl"
+              />
+            </div>
+          ) : (
+            <span className="font-serif text-2xl md:text-3xl text-white tracking-tight drop-shadow-xl">
+              {project.title}
             </span>
-          ))}
+          )}
+
+          {project.tags && project.tags.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5 justify-end max-w-[55%]">
+              {project.tags.slice(0, 2).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[9px] md:text-[10px] font-mono tracking-[0.18em] uppercase text-white bg-black/40 backdrop-blur-md border border-white/25 rounded-full px-2.5 py-1"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Hover CTA */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <span className="bg-[#FAFAF7] text-[#0A0A0A] font-mono text-[10px] tracking-[0.2em] uppercase px-6 py-3 rounded-full translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out shadow-2xl">
+            Explorar proyecto →
+          </span>
+        </div>
+      </Link>
+
+      {/* Bloque informativo de venta */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+        <div className="md:col-span-6 flex flex-col gap-3">
+          <h3
+            className="font-serif text-[#FAFAF7] leading-[0.95] tracking-[-0.03em]"
+            style={{ fontSize: "clamp(1.85rem, 4vw, 3.25rem)" }}
+          >
+            {project.title}
+          </h3>
+          {project.client ? (
+            <p className="text-[#FAFAF7]/55 text-xs md:text-sm font-mono tracking-[0.18em] uppercase">
+              {project.client}
+            </p>
+          ) : null}
+          <p className="text-[#FAFAF7]/90 text-base md:text-lg leading-snug font-medium max-w-lg">
+            {project.tagline}
+          </p>
+        </div>
+
+        <div className="md:col-span-6 flex flex-col gap-4 md:border-l md:border-white/10 md:pl-8">
+          {project.problem ? (
+            <div>
+              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/40">
+                Problema
+              </span>
+              <p className="mt-1.5 text-sm text-[#FAFAF7]/75 leading-relaxed">
+                {project.problem}
+              </p>
+            </div>
+          ) : null}
+          {project.solution ? (
+            <div>
+              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/90">
+                Solución
+              </span>
+              <p className="mt-1.5 text-sm text-[#FAFAF7] leading-relaxed">
+                {project.solution}
+              </p>
+            </div>
+          ) : null}
+          {project.value ? (
+            <div>
+              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#1E2A47] bg-[#FAFAF7] px-2 py-0.5 rounded-sm font-semibold">
+                Resultado
+              </span>
+              <p className="mt-1.5 text-sm text-[#FAFAF7] leading-relaxed">
+                {project.value}
+              </p>
+            </div>
+          ) : null}
+
+          <div className="flex flex-wrap gap-1.5 pt-3 mt-auto">
+            {project.stack.slice(0, 6).map((tech) => (
+              <span
+                key={tech}
+                className="text-[10px] font-mono text-[#FAFAF7]/80 border border-[#FAFAF7]/15 bg-white/5 px-2.5 py-1 rounded-full"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-    </motion.a>
+    </div>
   );
 }
 
@@ -99,33 +200,47 @@ export default function CaseStudies() {
   return (
     <section
       id="casos"
-      className="relative px-6 md:px-10 lg:px-14 py-32 bg-[#FAFAF7] border-y border-[#E8E6DF] overflow-hidden"
+      data-theme="dark"
+      className="relative px-6 md:px-14 py-24 md:py-36 bg-[#0A0A0A]"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
-          <div>
-            <SectionLabel number="02" title="Casos de éxito" />
-            <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tight text-[#0A0A0A] max-w-3xl">
-              Proyectos que
-              <br />
-              <em className="italic text-[#1E2A47]">importan</em>.
-            </h2>
+        <div className="mb-16 md:mb-24 max-w-3xl">
+          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/60 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF7]/80" />
+            Casos de éxito — 02
           </div>
-          <a
-            href="https://github.com/facundo64"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] border-b border-[#0A0A0A]/20 hover:border-[#1E2A47] pb-1 self-start"
+          <h2
+            className="font-serif text-[#FAFAF7] leading-[0.92] tracking-[-0.03em]"
+            style={{ fontSize: "clamp(2.75rem, 7vw, 5.5rem)" }}
           >
-            Ver todos los proyectos
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+            Productos que <em className="italic text-[#FAFAF7]/70">venden</em>,
+            <br />
+            marcas que <em className="italic text-[#FAFAF7]/70">crecen</em>.
+          </h2>
+          <p className="mt-6 text-[#FAFAF7]/70 text-base md:text-lg leading-relaxed">
+            Casos reales en producción — de plataformas SaaS multi-tenant a
+            portales institucionales y marcas industriales. Cada uno resuelve
+            un dolor medible de negocio.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-12 gap-y-28 md:gap-y-44 gap-x-6">
           {showcased.map((project, i) => (
-            <CaseCard key={project.id} project={project} index={i} />
+            <AsymmetricProject key={project.id} project={project} index={i} />
           ))}
+        </div>
+
+        <div className="mt-24 md:mt-32 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-white/10 pt-10">
+          <p className="font-serif text-2xl md:text-3xl text-[#FAFAF7] leading-tight max-w-xl">
+            ¿Tu empresa es el próximo caso?
+          </p>
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-3 self-start rounded-full bg-[#FAFAF7] text-[#0A0A0A] px-7 py-4 text-[11px] font-mono tracking-[0.18em] uppercase hover:bg-[#1E2A47] hover:text-[#FAFAF7] transition-colors shadow-xl"
+          >
+            Quiero un caso así
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </div>
     </section>

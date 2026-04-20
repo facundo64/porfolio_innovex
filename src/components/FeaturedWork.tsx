@@ -3,55 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { featuredProjects } from "@/data/projects";
+import type { Project } from "@/types";
 
 /**
  * Grid de proyectos featured estilo Exo Ape — imágenes grandes,
  * tipografía dramática al lado, hover con zoom sutil.
+ * Consume la data real desde `@/data/projects`.
  */
-const featured = [
-  {
-    id: "jem-si",
-    title: "JEM-SI",
-    category: "Software",
-    year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=85",
-    href: "/work",
-  },
-  {
-    id: "rifa",
-    title: "Rifa Salame y Pico",
-    category: "Web Platform",
-    year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1800&q=85",
-    href: "/work",
-  },
-  {
-    id: "cabanas",
-    title: "Cabañas Don Theo",
-    category: "Web Design",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1800&q=85",
-    href: "/work",
-  },
-  {
-    id: "bambinu",
-    title: "Bambinu Tienda",
-    category: "E-commerce",
-    year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1800&q=85",
-    href: "/work",
-  },
-];
-
 export default function FeaturedWork() {
   return (
     <section className="relative py-24 md:py-36 px-6 md:px-14 bg-[#FAFAF7]">
       <div className="max-w-7xl mx-auto">
-        {/* Encabezado */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -87,9 +50,8 @@ export default function FeaturedWork() {
           </motion.div>
         </div>
 
-        {/* Grid de proyectos */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-          {featured.map((project, i) => (
+          {featuredProjects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
         </div>
@@ -98,13 +60,7 @@ export default function FeaturedWork() {
   );
 }
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof featured)[number];
-  index: number;
-}) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isLarge = index === 0 || index === 3;
   return (
     <motion.div
@@ -118,12 +74,12 @@ function ProjectCard({
       }}
       className={isLarge ? "md:col-span-2" : ""}
     >
-      <Link href={project.href} className="group block">
-        {/* Imagen */}
+      <Link href="/work" className="group block">
         <div
-          className={`relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#E8E6DF] ${
+          className={`relative overflow-hidden rounded-2xl md:rounded-3xl ${
             isLarge ? "aspect-[16/9]" : "aspect-[4/5]"
           }`}
+          style={{ backgroundColor: project.bgColor ?? "#E8E6DF" }}
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -138,18 +94,26 @@ function ProjectCard({
               className="object-cover"
             />
           </motion.div>
-          {/* Vignette sutil */}
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/30 via-transparent to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/40 via-transparent to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           />
-          {/* Categoría flotante */}
           <div className="absolute top-5 left-5 z-10">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#FAFAF7]/85 backdrop-blur-sm text-[#1E2A47] text-[10px] font-mono tracking-[0.22em] uppercase px-3 py-1.5">
               {project.category}
             </span>
           </div>
-          {/* Arrow en hover */}
+          {project.logoNegative || project.logo ? (
+            <div className="absolute bottom-5 left-5 z-10 h-8 md:h-10 w-24 md:w-32">
+              <Image
+                src={project.logoNegative ?? project.logo!}
+                alt={`${project.title} logo`}
+                fill
+                sizes="128px"
+                className="object-contain object-left drop-shadow-lg"
+              />
+            </div>
+          ) : null}
           <div className="absolute bottom-5 right-5 z-10 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
             <div className="w-12 h-12 rounded-full bg-[#FAFAF7] text-[#1E2A47] flex items-center justify-center text-xl">
               →
@@ -157,7 +121,6 @@ function ProjectCard({
           </div>
         </div>
 
-        {/* Info */}
         <div className="flex items-start justify-between gap-4 mt-5">
           <h3 className="font-serif text-2xl md:text-3xl text-[#0A0A0A] leading-tight">
             {project.title}
