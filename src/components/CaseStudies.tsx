@@ -126,28 +126,11 @@ export default function CaseStudies() {
 
           return (
             <div key={project.id} className="relative w-full h-[100dvh] flex items-center justify-center">
-              
-              {/* Capa 1: Fondo Cinemático Oscuro (Haciendo Slow Zoom) */}
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  sizes="100vw"
-                  className="object-cover opacity-60 brightness-[0.4] saturate-[0.8] transition-transform origin-center"
-                  style={{ 
-                    transitionDuration: "4s", 
-                    transitionTimingFunction: "cubic-bezier(0.2, 1, 0.3, 1)",
-                    transform: isActive ? "scale(1.02)" : "scale(1.15)"
-                  }}
-                  priority={i === 0}
-                />
-              </div>
 
-              {/* Capa 2: Ventana Focal Central (Rebota en Parallax Inverso durante el viaje) */}
-              <div className="relative z-10 w-[85vw] md:w-[35vw] h-[65vh] overflow-hidden drop-shadow-2xl bg-black">
-                <motion.div 
-                  className="absolute inset-[-20%] w-[140%] h-[140%]"
+              {/* Capa 1: Imagen full-bleed con parallax inverso suave */}
+              <div className="absolute inset-0 z-0 overflow-hidden">
+                <motion.div
+                  className="absolute inset-[-8%] w-[116%] h-[116%]"
                   animate={{ y: centralWindowParallax }}
                   transition={{ duration: DURATION, ease: TRANSITION_EASE }}
                 >
@@ -155,22 +138,38 @@ export default function CaseStudies() {
                     src={project.image}
                     alt={project.title}
                     fill
-                    sizes="(min-width: 768px) 40vw, 90vw"
-                    className="object-cover brightness-110"
+                    sizes="100vw"
+                    className="object-cover transition-transform origin-center"
+                    style={{
+                      transitionDuration: "4s",
+                      transitionTimingFunction: "cubic-bezier(0.2, 1, 0.3, 1)",
+                      transform: isActive ? "scale(1.02)" : "scale(1.12)",
+                    }}
+                    priority={i === 0}
                   />
                 </motion.div>
-                
-                <Link 
-                  href={project.demo ?? project.github ?? "#"} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="absolute inset-0 z-20 flex items-center justify-center opacity-0 hover:opacity-100 hover:bg-black/20 hover:backdrop-blur-[2px] transition-all duration-500 group"
-                >
-                  <span className="w-20 h-20 rounded-full border border-white/40 flex items-center justify-center text-white text-[11px] font-mono tracking-widest uppercase transition-transform duration-500 scale-90 group-hover:scale-100 group-hover:bg-white group-hover:text-black">
-                    View
-                  </span>
-                </Link>
+                {/* Gradiente cinemático de legibilidad */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-black/60 pointer-events-none"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none"
+                />
               </div>
+
+              {/* CTA flotante hover invisible sobre toda la escena */}
+              <Link
+                href={project.demo ?? project.github ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 z-20 flex items-center justify-center opacity-0 hover:opacity-100 hover:bg-black/10 hover:backdrop-blur-[1.5px] transition-all duration-500 group"
+              >
+                <span className="w-24 h-24 rounded-full border border-white/50 flex items-center justify-center text-white text-[11px] font-mono tracking-widest uppercase transition-transform duration-500 scale-90 group-hover:scale-100 group-hover:bg-white group-hover:text-black">
+                  View
+                </span>
+              </Link>
 
               {/* Capa 3: Tipografía Titánica */}
               <motion.div 
@@ -178,10 +177,10 @@ export default function CaseStudies() {
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? "-50%" : "-30%" }}
                 transition={{ duration: 1, delay: isActive ? 0.3 : 0, ease: [0.33, 1, 0.68, 1] }}
               >
-                <h2 className="font-serif text-[#FAFAF7] text-6xl md:text-8xl lg:text-[8rem] leading-[0.9] tracking-[-0.03em] drop-shadow-2xl">
+                <h2 className="font-serif text-[#FAFAF7] text-4xl md:text-5xl lg:text-6xl leading-[0.9] tracking-[-0.03em] drop-shadow-2xl">
                   {project.title}
                 </h2>
-                <p className="mt-6 text-[#FAFAF7]/70 font-mono tracking-widest uppercase text-sm md:text-base bg-black/40 backdrop-blur-md inline-block px-4 py-2 border border-white/10 rounded-full">
+                <p className="mt-4 text-[#FAFAF7]/60 font-mono tracking-widest uppercase text-xs md:text-sm">
                   {project.subtitle || project.client}
                 </p>
               </motion.div>
@@ -192,10 +191,10 @@ export default function CaseStudies() {
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
                 transition={{ duration: 1, delay: isActive ? 0.3 : 0, ease: [0.33, 1, 0.68, 1] }}
               >
-                <h2 className="font-serif text-[#FAFAF7] text-5xl leading-[0.9] tracking-tight drop-shadow-lg">
+                <h2 className="font-serif text-[#FAFAF7] text-3xl leading-[0.9] tracking-tight drop-shadow-lg">
                   {project.title}
                 </h2>
-                <p className="mt-4 text-[#FAFAF7]/70 font-mono tracking-widest uppercase text-xs bg-black/40 backdrop-blur-sm inline-block px-3 py-1.5 border border-white/10 rounded-full">
+                <p className="mt-3 text-[#FAFAF7]/60 font-mono tracking-widest uppercase text-[10px]">
                   {project.subtitle || project.client}
                 </p>
               </motion.div>

@@ -27,8 +27,9 @@ export default function TopHeader() {
     };
   }, [pathname]);
 
-  // Azul navy al inicio, blanco al bajar un poco sobre la imagen oscura
-  const color = scrolled ? "#FAFAF7" : "#1E2A47";
+  // En /work el fondo siempre es oscuro (carrusel cinemático), forzar blanco
+  const isWorkPage = pathname === "/work";
+  const color = isWorkPage || onDark ? "#FAFAF7" : scrolled ? "#FAFAF7" : "#1E2A47";
 
   return (
     <motion.header
@@ -38,7 +39,14 @@ export default function TopHeader() {
       className="fixed top-0 left-0 right-0 z-40"
     >
       <div className="relative flex items-center px-6 md:px-14 py-5 md:py-6">
-        <Link href="/">
+        <Link
+          href="/"
+          className={`transition-opacity duration-500 ${
+            isWorkPage
+              ? "opacity-15 hover:opacity-60 mix-blend-difference"
+              : "opacity-100"
+          }`}
+        >
           <motion.span
             animate={{ color }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
