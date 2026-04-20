@@ -126,11 +126,28 @@ export default function CaseStudies() {
 
           return (
             <div key={project.id} className="relative w-full h-[100dvh] flex items-center justify-center">
-
-              {/* Capa 1: Imagen full-bleed con parallax inverso suave */}
+              
+              {/* Capa 1: Fondo cinemático — full bleed constante */}
               <div className="absolute inset-0 z-0 overflow-hidden">
-                <motion.div
-                  className="absolute inset-[-8%] w-[116%] h-[116%]"
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover brightness-[0.55] saturate-[0.9] scale-105"
+                  priority={i === 0}
+                />
+                {/* Viñeta radial para darle profundidad al foco central */}
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.65)_100%)]"
+                />
+              </div>
+
+              {/* Capa 2: Ventana Focal Central (Rebota en Parallax Inverso durante el viaje) */}
+              <div className="relative z-10 w-[85vw] md:w-[35vw] h-[65vh] overflow-hidden drop-shadow-2xl bg-black">
+                <motion.div 
+                  className="absolute inset-[-20%] w-[140%] h-[140%]"
                   animate={{ y: centralWindowParallax }}
                   transition={{ duration: DURATION, ease: TRANSITION_EASE }}
                 >
@@ -138,38 +155,26 @@ export default function CaseStudies() {
                     src={project.image}
                     alt={project.title}
                     fill
-                    sizes="100vw"
-                    className="object-cover transition-transform origin-center"
-                    style={{
-                      transitionDuration: "4s",
-                      transitionTimingFunction: "cubic-bezier(0.2, 1, 0.3, 1)",
-                      transform: isActive ? "scale(1.02)" : "scale(1.12)",
-                    }}
-                    priority={i === 0}
+                    sizes="(min-width: 768px) 40vw, 90vw"
+                    className="object-cover brightness-110"
                   />
                 </motion.div>
-                {/* Gradiente cinemático de legibilidad */}
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-black/60 pointer-events-none"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none"
-                />
+                
+                <Link
+                  href={project.demo ?? project.github ?? "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Ver proyecto ${project.title}`}
+                  className="absolute inset-0 z-20 group"
+                >
+                  <span className="absolute bottom-4 right-4 flex items-center gap-2 text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] opacity-70 group-hover:opacity-100 translate-x-[-4px] group-hover:translate-x-0 transition-all duration-500">
+                    View
+                    <span aria-hidden className="inline-block transition-transform duration-500 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </span>
+                </Link>
               </div>
-
-              {/* CTA flotante hover invisible sobre toda la escena */}
-              <Link
-                href={project.demo ?? project.github ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute inset-0 z-20 flex items-center justify-center opacity-0 hover:opacity-100 hover:bg-black/10 hover:backdrop-blur-[1.5px] transition-all duration-500 group"
-              >
-                <span className="w-24 h-24 rounded-full border border-white/50 flex items-center justify-center text-white text-[11px] font-mono tracking-widest uppercase transition-transform duration-500 scale-90 group-hover:scale-100 group-hover:bg-white group-hover:text-black">
-                  View
-                </span>
-              </Link>
 
               {/* Capa 3: Tipografía Titánica */}
               <motion.div 

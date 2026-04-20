@@ -39,14 +39,7 @@ export default function TopHeader() {
       className="fixed top-0 left-0 right-0 z-40"
     >
       <div className="relative flex items-center px-6 md:px-14 py-5 md:py-6">
-        <Link
-          href="/"
-          className={`transition-opacity duration-500 ${
-            isWorkPage
-              ? "opacity-15 hover:opacity-60 mix-blend-difference"
-              : "opacity-100"
-          }`}
-        >
+        <Link href="/">
           <motion.span
             animate={{ color }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
