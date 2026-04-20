@@ -2,247 +2,209 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { projects } from "@/data/projects";
-import type { Project, ProjectCategory } from "@/types";
 
-const categoryLabel: Record<ProjectCategory, string> = {
-  saas: "SaaS",
-  corporate: "Corporate",
-  institutional: "Institucional",
-  web: "Web",
-  software: "Software",
-  infra: "Infrastructure",
-  academic: "Académico",
-};
-
-function AsymmetricProject({
-  project,
-  index,
-}: {
-  project: Project;
-  index: number;
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
-
-  let layoutClasses = "col-span-12";
-  let aspectClasses = "aspect-video md:aspect-[21/9]";
-
-  if (index % 3 === 1) {
-    layoutClasses = "col-span-12 md:col-span-6 md:col-start-7";
-    aspectClasses = "aspect-[4/5]";
-  } else if (index % 3 === 2) {
-    layoutClasses = "col-span-12 md:col-span-8";
-    aspectClasses = "aspect-square md:aspect-video";
-  }
-
-  const href = project.demo ?? project.github ?? "#";
-  const external = href.startsWith("http");
-
-  return (
-    <div
-      ref={containerRef}
-      className={`${layoutClasses} flex flex-col gap-6 md:gap-8`}
-    >
-      {/* Hero visual con parallax */}
-      <Link
-        href={href}
-        target={external ? "_blank" : undefined}
-        rel={external ? "noopener noreferrer" : undefined}
-        className={`relative w-full overflow-hidden rounded-2xl block ${aspectClasses} group`}
-        style={{ backgroundColor: project.bgColor ?? "#1A1A1A" }}
-      >
-        <motion.div
-          style={{ y }}
-          className="absolute inset-[-12%] w-[124%] h-[124%] origin-center"
-        >
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            sizes="(min-width: 768px) 75vw, 100vw"
-            className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.04] transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-          />
-        </motion.div>
-
-        {/* Gradiente de legibilidad */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none"
-        />
-
-        {/* Meta superior */}
-        <div className="absolute top-5 left-5 right-5 z-10 flex items-start justify-between gap-3 text-[10px] font-mono tracking-[0.22em] uppercase">
-          <span className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white px-3 py-1">
-            {categoryLabel[project.category]}
-          </span>
-          <span className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/85 px-3 py-1">
-            {project.year}
-          </span>
-        </div>
-
-        {/* Logo flotante + tag "Featured" */}
-        <div className="absolute bottom-5 left-5 right-5 z-10 flex items-end justify-between gap-4">
-          {project.logoNegative || project.logo ? (
-            <div className="relative h-10 md:h-12 w-28 md:w-36 shrink-0">
-              <Image
-                src={project.logoNegative ?? project.logo!}
-                alt={`${project.title} logo`}
-                fill
-                sizes="160px"
-                className="object-contain object-left drop-shadow-xl"
-              />
-            </div>
-          ) : (
-            <span className="font-serif text-2xl md:text-3xl text-white tracking-tight drop-shadow-xl">
-              {project.title}
-            </span>
-          )}
-
-          {project.tags && project.tags.length > 0 ? (
-            <div className="flex flex-wrap gap-1.5 justify-end max-w-[55%]">
-              {project.tags.slice(0, 2).map((tag) => (
-                <span
-                  key={tag}
-                  className="text-[9px] md:text-[10px] font-mono tracking-[0.18em] uppercase text-white bg-black/40 backdrop-blur-md border border-white/25 rounded-full px-2.5 py-1"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {/* Hover CTA */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <span className="bg-[#FAFAF7] text-[#0A0A0A] font-mono text-[10px] tracking-[0.2em] uppercase px-6 py-3 rounded-full translate-y-4 group-hover:translate-y-0 transition-all duration-500 ease-out shadow-2xl">
-            Explorar proyecto →
-          </span>
-        </div>
-      </Link>
-
-      {/* Bloque informativo de venta */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-        <div className="md:col-span-6 flex flex-col gap-3">
-          <h3
-            className="font-serif text-[#FAFAF7] leading-[0.95] tracking-[-0.03em]"
-            style={{ fontSize: "clamp(1.85rem, 4vw, 3.25rem)" }}
-          >
-            {project.title}
-          </h3>
-          {project.client ? (
-            <p className="text-[#FAFAF7]/55 text-xs md:text-sm font-mono tracking-[0.18em] uppercase">
-              {project.client}
-            </p>
-          ) : null}
-          <p className="text-[#FAFAF7]/90 text-base md:text-lg leading-snug font-medium max-w-lg">
-            {project.tagline}
-          </p>
-        </div>
-
-        <div className="md:col-span-6 flex flex-col gap-4 md:border-l md:border-white/10 md:pl-8">
-          {project.problem ? (
-            <div>
-              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/40">
-                Problema
-              </span>
-              <p className="mt-1.5 text-sm text-[#FAFAF7]/75 leading-relaxed">
-                {project.problem}
-              </p>
-            </div>
-          ) : null}
-          {project.solution ? (
-            <div>
-              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/90">
-                Solución
-              </span>
-              <p className="mt-1.5 text-sm text-[#FAFAF7] leading-relaxed">
-                {project.solution}
-              </p>
-            </div>
-          ) : null}
-          {project.value ? (
-            <div>
-              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#1E2A47] bg-[#FAFAF7] px-2 py-0.5 rounded-sm font-semibold">
-                Resultado
-              </span>
-              <p className="mt-1.5 text-sm text-[#FAFAF7] leading-relaxed">
-                {project.value}
-              </p>
-            </div>
-          ) : null}
-
-          <div className="flex flex-wrap gap-1.5 pt-3 mt-auto">
-            {project.stack.slice(0, 6).map((tech) => (
-              <span
-                key={tech}
-                className="text-[10px] font-mono text-[#FAFAF7]/80 border border-[#FAFAF7]/15 bg-white/5 px-2.5 py-1 rounded-full"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+// Curva bézier épica (Expo/Power4 equivalente)
+const TRANSITION_EASE = [0.8, 0, 0.1, 1] as const;
+const DURATION = 1.4;
 
 export default function CaseStudies() {
   const showcased = projects.filter((p) => p.category !== "academic");
+  const total = showcased.length;
+  
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const isAnimating = useRef(false);
+
+  // Manejo Lógico de Slides
+  const handleNext = useCallback(() => {
+    if (isAnimating.current || currentIndex >= total - 1) return;
+    isAnimating.current = true;
+    setCurrentIndex((prev) => prev + 1);
+    setTimeout(() => { isAnimating.current = false; }, 1400); // Bloquear wheel por el tiempo entero
+  }, [currentIndex, total]);
+
+  const handlePrev = useCallback(() => {
+    if (isAnimating.current || currentIndex <= 0) return;
+    isAnimating.current = true;
+    setCurrentIndex((prev) => prev - 1);
+    setTimeout(() => { isAnimating.current = false; }, 1400);
+  }, [currentIndex]);
+
+  // Interceptar el Scroll Global en esta página
+  useEffect(() => {
+    // Al entrar al carrusel, matamos el scroll nativo. Eres un prisionero de la experiencia.
+    document.body.style.overflow = "hidden";
+
+    const handleWheel = (e: WheelEvent) => {
+      // Ignorar saltos milimétricos (mouses hiper-sensibles)
+      if (Math.abs(e.deltaY) < 15) return;
+      
+      if (e.deltaY > 0) handleNext();
+      else handlePrev();
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, [handleNext, handlePrev]);
+
+  // Intercepción Táctil (Mobile Swipes)
+  const touchStart = useRef(0);
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => { 
+      touchStart.current = e.touches[0].clientY; 
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const delta = touchStart.current - e.touches[0].clientY;
+      if (Math.abs(delta) < 40) return; // Umbral de swipe
+      if (delta > 0) handleNext();
+      else handlePrev();
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [handleNext, handlePrev]);
 
   return (
-    <section
-      id="casos"
-      data-theme="dark"
-      className="relative px-6 md:px-14 py-24 md:py-36 bg-[#0A0A0A]"
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16 md:mb-24 max-w-3xl">
-          <div className="flex items-center gap-3 text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/60 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF7]/80" />
-            Casos de éxito — 02
-          </div>
-          <h2
-            className="font-serif text-[#FAFAF7] leading-[0.92] tracking-[-0.03em]"
-            style={{ fontSize: "clamp(2.75rem, 7vw, 5.5rem)" }}
+    <div className="relative w-full h-[100dvh] bg-[#0A0A0A] overflow-hidden selection:bg-[#FAFAF7] selection:text-[#0A0A0A]">
+      
+      {/* Controles Flotantes Globales (Fuera de la vía del tren) */}
+      <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-14 z-50 flex flex-col gap-3 opacity-50 mix-blend-difference">
+        {showcased.map((_, i) => (
+          <button 
+            key={i} 
+            onClick={() => {
+              if (isAnimating.current) return;
+              isAnimating.current = true;
+              setCurrentIndex(i);
+              setTimeout(() => { isAnimating.current = false; }, 1400);
+            }}
+            aria-label={`Ir al proyecto ${i + 1}`}
+            className="group py-2 flex justify-end"
           >
-            Productos que <em className="italic text-[#FAFAF7]/70">venden</em>,
-            <br />
-            marcas que <em className="italic text-[#FAFAF7]/70">crecen</em>.
-          </h2>
-          <p className="mt-6 text-[#FAFAF7]/70 text-base md:text-lg leading-relaxed">
-            Casos reales en producción — de plataformas SaaS multi-tenant a
-            portales institucionales y marcas industriales. Cada uno resuelve
-            un dolor medible de negocio.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-12 gap-y-28 md:gap-y-44 gap-x-6">
-          {showcased.map((project, i) => (
-            <AsymmetricProject key={project.id} project={project} index={i} />
-          ))}
-        </div>
-
-        <div className="mt-24 md:mt-32 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-t border-white/10 pt-10">
-          <p className="font-serif text-2xl md:text-3xl text-[#FAFAF7] leading-tight max-w-xl">
-            ¿Tu empresa es el próximo caso?
-          </p>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-3 self-start rounded-full bg-[#FAFAF7] text-[#0A0A0A] px-7 py-4 text-[11px] font-mono tracking-[0.18em] uppercase hover:bg-[#1E2A47] hover:text-[#FAFAF7] transition-colors shadow-xl"
-          >
-            Quiero un caso así
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
-        </div>
+            <div className={`h-[2px] transition-all duration-700 ${i === currentIndex ? "w-8 bg-[#FAFAF7]" : "w-2 bg-[#FAFAF7]/40 group-hover:bg-[#FAFAF7]/80 group-hover:w-4"}`} />
+          </button>
+        ))}
       </div>
-    </section>
+
+      <div className="absolute bottom-8 right-6 md:right-14 z-50 text-[10px] md:text-[11px] font-mono tracking-[0.2em] text-[#FAFAF7]/50 mix-blend-difference pointer-events-none">
+        0{currentIndex + 1} / {total < 10 ? `0${total}` : total}
+      </div>
+
+      <div className="absolute bottom-8 left-6 md:left-14 z-50 text-[10px] md:text-[11px] font-mono tracking-[0.2em] uppercase text-[#FAFAF7]/50 flex items-center gap-2 mix-blend-difference pointer-events-none">
+          <span className="grid grid-cols-2 gap-[2px]">
+            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
+            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
+            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
+            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
+          </span>
+          All Projects
+      </div>
+
+      {/* "La Vía del Tren" Container que desplaza hacia arriba enteros */}
+      <motion.div 
+        className="w-full h-full"
+        animate={{ y: `-${currentIndex * 100}dvh` }}
+        transition={{ duration: DURATION, ease: TRANSITION_EASE }}
+      >
+        {showcased.map((project, i) => {
+          const isActive = i === currentIndex;
+          const isNext = i > currentIndex;
+          
+          // Parallax de la ventana de cristal (si está debajo, empieza abajo; si está activa, entra al centro)
+          const centralWindowParallax = isActive ? "0%" : isNext ? "20%" : "-20%";
+
+          return (
+            <div key={project.id} className="relative w-full h-[100dvh] flex items-center justify-center">
+              
+              {/* Capa 1: Fondo Cinemático Oscuro (Haciendo Slow Zoom) */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover opacity-60 brightness-[0.4] saturate-[0.8] transition-transform origin-center"
+                  style={{ 
+                    transitionDuration: "4s", 
+                    transitionTimingFunction: "cubic-bezier(0.2, 1, 0.3, 1)",
+                    transform: isActive ? "scale(1.02)" : "scale(1.15)"
+                  }}
+                  priority={i === 0}
+                />
+              </div>
+
+              {/* Capa 2: Ventana Focal Central (Rebota en Parallax Inverso durante el viaje) */}
+              <div className="relative z-10 w-[85vw] md:w-[35vw] h-[65vh] overflow-hidden drop-shadow-2xl bg-black">
+                <motion.div 
+                  className="absolute inset-[-20%] w-[140%] h-[140%]"
+                  animate={{ y: centralWindowParallax }}
+                  transition={{ duration: DURATION, ease: TRANSITION_EASE }}
+                >
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(min-width: 768px) 40vw, 90vw"
+                    className="object-cover brightness-110"
+                  />
+                </motion.div>
+                
+                <Link 
+                  href={project.demo ?? project.github ?? "#"} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="absolute inset-0 z-20 flex items-center justify-center opacity-0 hover:opacity-100 hover:bg-black/20 hover:backdrop-blur-[2px] transition-all duration-500 group"
+                >
+                  <span className="w-20 h-20 rounded-full border border-white/40 flex items-center justify-center text-white text-[11px] font-mono tracking-widest uppercase transition-transform duration-500 scale-90 group-hover:scale-100 group-hover:bg-white group-hover:text-black">
+                    View
+                  </span>
+                </Link>
+              </div>
+
+              {/* Capa 3: Tipografía Titánica */}
+              <motion.div 
+                className="absolute top-1/2 -translate-y-1/2 left-6 md:left-[10vw] z-20 pointer-events-none hidden md:block"
+                animate={{ opacity: isActive ? 1 : 0, y: isActive ? "-50%" : "-30%" }}
+                transition={{ duration: 1, delay: isActive ? 0.3 : 0, ease: [0.33, 1, 0.68, 1] }}
+              >
+                <h2 className="font-serif text-[#FAFAF7] text-6xl md:text-8xl lg:text-[8rem] leading-[0.9] tracking-[-0.03em] drop-shadow-2xl">
+                  {project.title}
+                </h2>
+                <p className="mt-6 text-[#FAFAF7]/70 font-mono tracking-widest uppercase text-sm md:text-base bg-black/40 backdrop-blur-md inline-block px-4 py-2 border border-white/10 rounded-full">
+                  {project.subtitle || project.client}
+                </p>
+              </motion.div>
+
+              {/* Tipografía Mobile */}
+              <motion.div 
+                className="absolute bottom-20 left-6 z-20 pointer-events-none md:hidden max-w-[80vw]"
+                animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+                transition={{ duration: 1, delay: isActive ? 0.3 : 0, ease: [0.33, 1, 0.68, 1] }}
+              >
+                <h2 className="font-serif text-[#FAFAF7] text-5xl leading-[0.9] tracking-tight drop-shadow-lg">
+                  {project.title}
+                </h2>
+                <p className="mt-4 text-[#FAFAF7]/70 font-mono tracking-widest uppercase text-xs bg-black/40 backdrop-blur-sm inline-block px-3 py-1.5 border border-white/10 rounded-full">
+                  {project.subtitle || project.client}
+                </p>
+              </motion.div>
+
+            </div>
+          );
+        })}
+      </motion.div>
+
+    </div>
   );
 }

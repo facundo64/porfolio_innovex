@@ -27,13 +27,16 @@ export default function BottomDock() {
       const y = window.scrollY;
       setCompact(y > 100 && y > lastY);
       lastY = y;
-      
+
       // Auto-close menu on scroll
       if (Math.abs(y - lastY) > 20) setMenuOpen(false);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // La página /work es un carrusel 100dvh inmersivo: sin dock flotante.
+  if (pathname === "/work") return null;
 
   return (
     <>
