@@ -84,7 +84,7 @@ export default function Hero() {
         </div>
 
         {/* Contenedor central — pl-2 lo corre apenas a la derecha para no coincidir con IEX */}
-        <div className="mt-[38vh] md:mt-[44vh] max-w-5xl flex flex-col gap-12 md:gap-16 pl-6 md:pl-10">
+        <div className="mt-[38vh] md:mt-[44vh] max-w-5xl flex flex-col gap-12 md:gap-16 pl-10 md:pl-16">
           
           {/* Intro Original (Arriba) */}
           <p
@@ -100,8 +100,7 @@ export default function Hero() {
               <span key={i} className="block overflow-hidden">
                 <motion.span
                   initial={{ y: "110%" }}
-                  whileInView={{ y: "0%" }}
-                  viewport={{ once: true, margin: "-5%" }}
+                  animate={{ y: "0%" }}
                   transition={{
                     duration: 1.2,
                     delay: 0.3 + i * 0.08,
@@ -136,11 +135,10 @@ export default function Hero() {
               >
                 <motion.span
                   initial={{ y: "110%" }}
-                  whileInView={{ y: "0%" }}
-                  viewport={{ once: true, margin: "-15%" }}
+                  animate={{ y: "0%" }}
                   transition={{
                     duration: 1.4,
-                    delay: 0.6 + i * 0.08, // Ligeramente retrasado para flow
+                    delay: 0.6 + i * 0.08,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                   className={`block ${italic ? "italic text-[#FAFAF7]/92" : ""}`}
@@ -158,10 +156,9 @@ export default function Hero() {
           </h1>
 
           {/* NUEVO BLOQUE: Texto Marketing + Detalles de Contacto */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
             className="flex flex-col md:flex-row md:items-end justify-between border-t border-[#FAFAF7]/10 pt-8 mt-4 gap-12"
           >

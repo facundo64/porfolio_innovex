@@ -235,30 +235,39 @@ function WorkMenu() {
   }, [open]);
 
   return (
-    <div className="absolute top-6 md:top-8 right-6 md:right-14 z-50">
+    <div className="fixed top-5 md:top-6 right-6 md:right-14 z-[60]">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Cerrar menú" : "Abrir menú"}
         aria-expanded={open}
-        className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-[#FAFAF7] flex items-center justify-center hover:bg-white/15 hover:border-white/35 transition-colors"
+        className="liquid-glass relative flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium text-[#1E2A47]/70 hover:text-[#1E2A47] transition-colors"
       >
-        <span className="sr-only">Menú</span>
+        <span className="relative flex flex-col items-center justify-center w-4 h-4 gap-[3px]">
+          <motion.span
+            animate={{ rotate: open ? 45 : 0, y: open ? 5 : 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="block w-4 h-[1.5px] bg-current rounded-full origin-center"
+          />
+          <motion.span
+            animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }}
+            transition={{ duration: 0.2 }}
+            className="block w-4 h-[1.5px] bg-current rounded-full"
+          />
+          <motion.span
+            animate={{ rotate: open ? -45 : 0, y: open ? -5 : 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="block w-4 h-[1.5px] bg-current rounded-full origin-center"
+          />
+        </span>
         <motion.span
-          animate={{ rotate: open ? 45 : 0, y: open ? 4 : -4 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
-        />
-        <motion.span
-          animate={{ opacity: open ? 0 : 1 }}
-          transition={{ duration: 0.2 }}
-          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
-        />
-        <motion.span
-          animate={{ rotate: open ? -45 : 0, y: open ? -4 : 4 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
-        />
+          initial={false}
+          animate={{ width: open ? 0 : "auto", opacity: open ? 0 : 1 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="overflow-hidden whitespace-nowrap"
+        >
+          Menu
+        </motion.span>
       </button>
 
       <AnimatePresence>
@@ -268,7 +277,7 @@ function WorkMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.96 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute top-[calc(100%+12px)] right-0 w-52 rounded-2xl border border-white/15 bg-[#0A0A0A]/85 backdrop-blur-xl p-2 flex flex-col gap-0.5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] origin-top-right"
+            className="liquid-glass absolute top-[calc(100%+12px)] right-0 w-48 rounded-3xl p-2 flex flex-col gap-0.5 origin-top-right"
           >
             {menuLinks.map((link) => {
               const active = pathname === link.href;
@@ -277,19 +286,19 @@ function WorkMenu() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                  className={`group flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-300 ${
                     active
-                      ? "bg-white/10 text-[#FAFAF7]"
-                      : "text-[#FAFAF7]/75 hover:bg-white/5 hover:text-[#FAFAF7]"
+                      ? "bg-[#1E2A47]/5 text-[#1E2A47]"
+                      : "text-[#0A0A0A]/70 hover:bg-black/5 hover:text-[#0A0A0A]"
                   }`}
                 >
                   <span>{link.label}</span>
                   {active ? (
-                    <span className="text-[9px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/50">
+                    <span className="text-[9px] font-mono tracking-[0.22em] uppercase text-[#1E2A47]/50">
                       ON
                     </span>
                   ) : (
-                    <span aria-hidden className="text-[#FAFAF7]/30">→</span>
+                    <span aria-hidden className="text-[#0A0A0A]/30 opacity-50 group-hover:opacity-100 transition-opacity">→</span>
                   )}
                 </Link>
               );

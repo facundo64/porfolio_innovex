@@ -4,6 +4,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+
+/*
+ * CSS filter para convertir negro (#000) al azul navy de la marca (#1E2A47):
+ * invert(14%) sepia(30%) saturate(1800%) hue-rotate(193deg) brightness(92%) contrast(90%)
+ * 
+ * Para blanco simplemente: brightness(0) invert(1)
+ */
+const FILTER_NAVY =
+  "invert(14%) sepia(30%) saturate(1800%) hue-rotate(193deg) brightness(92%) contrast(90%)";
+const FILTER_WHITE = "brightness(0) invert(1)";
 
 export default function TopHeader() {
   const pathname = usePathname();
@@ -29,25 +40,26 @@ export default function TopHeader() {
 
   // En /work el fondo siempre es oscuro (carrusel cinemático), forzar blanco
   const isWorkPage = pathname === "/work";
-  const color = isWorkPage || onDark ? "#FAFAF7" : scrolled ? "#FAFAF7" : "#1E2A47";
+  const useWhite = isWorkPage || onDark || scrolled;
 
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-40"
+      className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
     >
       <div className="relative flex items-center px-6 md:px-14 py-5 md:py-6">
-        <Link href="/">
-          <motion.span
-            animate={{ color }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif tracking-[-0.04em] leading-none"
-            style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.2rem)" }}
-          >
-            IEX
-          </motion.span>
+        <Link href="/" className="pointer-events-auto">
+          <Image
+            src="/logo-innhovex.svg"
+            alt="INNHOVEX"
+            width={120}
+            height={40}
+            priority
+            className="h-24 md:h-28 w-auto transition-[filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{ filter: useWhite ? FILTER_WHITE : FILTER_NAVY }}
+          />
         </Link>
       </div>
     </motion.header>
