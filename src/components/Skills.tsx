@@ -1,67 +1,76 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { skills } from "@/data/skills";
+import SectionLabel from "./SectionLabel";
 
 const categoryLabel: Record<string, string> = {
   lenguaje: "Lenguajes",
   frontend: "Frontend",
-  backend: "Backend & Servicios",
+  backend: "Backend",
   herramientas: "Herramientas",
 };
 
-const levelWidth: Record<string, string> = {
-  avanzado: "w-full",
-  intermedio: "w-2/3",
-  básico: "w-1/3",
-};
-
 export default function Skills() {
-  const categories = ["lenguaje", "frontend", "backend", "herramientas"] as const;
+  const grouped = skills.reduce<Record<string, typeof skills>>((acc, skill) => {
+    (acc[skill.category] ??= []).push(skill);
+    return acc;
+  }, {});
 
   return (
-    <section id="habilidades" className="px-6 md:px-16 lg:px-24 py-32 border-t border-[#1a1a1a]">
-      <div className="max-w-6xl mx-auto">
-
-        {/* Encabezado */}
-        <div className="flex items-center gap-4 mb-4">
-          <span className="block w-12 h-[1px] bg-gradient-to-r from-[#0088ff] to-transparent" />
-          <span className="text-[#0088ff] text-[10px] font-mono tracking-[0.3em] uppercase">03 / Skills</span>
+    <section className="relative px-6 md:px-10 lg:px-14 py-32 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+          <div>
+            <SectionLabel number="05" title="Stack técnico" />
+            <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tight text-[#0A0A0A] max-w-3xl">
+              Tecnología <em className="italic text-[#1E2A47]">moderna</em>,
+              <br />
+              elegida con criterio.
+            </h2>
+          </div>
+          <p className="text-[#3A3A3A] max-w-sm text-base leading-relaxed">
+            No perseguimos hype. Usamos herramientas probadas que garantizan performance,
+            mantenibilidad y escala.
+          </p>
         </div>
-        <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight mb-16">Habilidades.</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {categories.map((cat) => (
-            <div key={cat}>
-              {/* Título categoría */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-[10px] font-mono text-[#444] tracking-[0.25em] uppercase">
-                  {categoryLabel[cat]}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {Object.entries(grouped).map(([category, items], i) => (
+            <motion.div
+              key={category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{
+                duration: 0.8,
+                delay: i * 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="rounded-2xl border border-[#E8E6DF] bg-white/70 backdrop-blur-md p-6"
+            >
+              <div className="flex items-center gap-2 mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#1E2A47]" />
+                <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#1E2A47]">
+                  {categoryLabel[category] ?? category}
                 </span>
-                <span className="flex-1 h-[1px] bg-[#1a1a1a]" />
               </div>
-
-              {/* Lista de skills */}
-              <ul className="flex flex-col gap-5">
-                {skills
-                  .filter((s) => s.category === cat)
-                  .map((skill) => (
-                    <li key={skill.name} className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-[#d0d0d0]">{skill.name}</span>
-                        <span className="text-[10px] font-mono text-[#444]">{skill.level}</span>
-                      </div>
-                      {/* Barra de nivel */}
-                      <div className="h-[2px] bg-[#1a1a1a] w-full">
-                        <div
-                          className={`h-full bg-[#0088ff] ${levelWidth[skill.level]} transition-all duration-700`}
-                          style={{ boxShadow: "0 0 8px #0088ff66" }}
-                        />
-                      </div>
-                    </li>
-                  ))}
+              <ul className="flex flex-col gap-2.5">
+                {items.map((skill) => (
+                  <li
+                    key={skill.name}
+                    className="flex items-center justify-between text-sm text-[#0A0A0A]"
+                  >
+                    <span className="font-medium">{skill.name}</span>
+                    <span className="text-[10px] font-mono text-[#8A8A85] uppercase tracking-wider">
+                      {skill.level}
+                    </span>
+                  </li>
+                ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

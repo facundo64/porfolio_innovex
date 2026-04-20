@@ -1,0 +1,4 @@
+Contact: mailto:facundoarielaramayo@gmail.com
+Preferred-Languages: es, en
+Canonical: https://innhovex.com/.well-known/security.txt
+Expires: 2027-01-01T00:00:00.000Z

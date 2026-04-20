@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import BottomDock from "@/components/BottomDock";
+import PageTransition from "@/components/PageTransition";
+import TopHeader from "@/components/TopHeader";
+import SmoothScroll from "@/components/SmoothScroll";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const geistSans = Geist({
+  variable: "--font-sans-geist",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,16 +16,23 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif-display",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
-  title: "INNHOVEX — Desarrollo Web & Software",
+  title: "INNHOVEX — Desarrollo Web & Software a medida",
   description:
-    "Portfolio de Facundo, desarrollador web y de software. Proyectos reales, tecnología moderna y soluciones a medida bajo la marca INNHOVEX.",
-  keywords: ["desarrollador web", "software", "INNHOVEX", "portfolio", "TypeScript", "Next.js"],
-  authors: [{ name: "Facundo — INNHOVEX" }],
+    "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
+  keywords: ["desarrollo web", "software", "INNHOVEX", "agencia", "TypeScript", "Next.js"],
+  authors: [{ name: "INNHOVEX" }],
   robots: "index, follow",
   openGraph: {
     title: "INNHOVEX — Desarrollo Web & Software",
-    description: "Portfolio de Facundo, desarrollador web y de software.",
+    description: "Estudio de desarrollo web y software a medida.",
     type: "website",
     locale: "es_AR",
   },
@@ -36,10 +46,13 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${spaceGrotesk.variable} ${geistMono.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-[#f0f0f0] antialiased">
-        {children}
+      <body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#0A0A0A] antialiased pb-24">
+        <SmoothScroll />
+        <TopHeader />
+        <PageTransition>{children}</PageTransition>
+        <BottomDock />
       </body>
     </html>
   );

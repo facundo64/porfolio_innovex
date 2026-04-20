@@ -1,21 +1,17 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Projects from "@/components/Projects";
-import Skills from "@/components/Skills";
-import About from "@/components/About";
-import Contact from "@/components/Contact";
+import HeroIntro from "@/components/HeroIntro";
+import ProjectShowcase from "@/components/ProjectShowcase";
+import StudioCta from "@/components/StudioCta";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main>
-      <Navbar />
+    <>
       <Hero />
-      <Projects />
-      <Skills />
-      <About />
-      <Contact />
+      <HeroIntro />
+      <ProjectShowcase />
+      <StudioCta />
       <Footer />
-    </main>
+    </>
   );
 }

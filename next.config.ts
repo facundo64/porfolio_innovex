@@ -1,42 +1,68 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
+/**
+ * CSP restrictivo. En dev permitimos 'unsafe-eval' porque Next/Turbopack lo
+ * necesita para HMR; en prod lo quitamos.
+ */
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self' data:",
+  "img-src 'self' data: blob: https:",
+  "connect-src 'self'",
+  "frame-src 'none'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "manifest-src 'self'",
+  "worker-src 'self' blob:",
+  ...(isProd ? ["upgrade-insecure-requests"] : []),
+].join("; ");
+
 const nextConfig: NextConfig = {
-  // Seguridad: headers HTTP en todas las rutas
   async headers() {
     return [
       {
         source: "/(.*)",
         headers: [
-          // Evita que el sitio sea embebido en iframes (clickjacking)
           { key: "X-Frame-Options", value: "DENY" },
-          // Evita que el navegador adivine el tipo de contenido
           { key: "X-Content-Type-Options", value: "nosniff" },
-          // Controla qué info se envía al hacer referencia a otra página
+          { key: "X-DNS-Prefetch-Control", value: "on" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // Fuerza HTTPS en el navegador
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-          // Permisos de APIs del navegador (cámara, micrófono, etc.)
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-          // Content Security Policy: solo carga recursos de orígenes confiables
           {
-            key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: https://avatars.githubusercontent.com https://opengraph.githubassets.com",
-              "connect-src 'self'",
-              "frame-ancestors 'none'",
-            ].join("; "),
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()",
+          },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+          { key: "Origin-Agent-Cluster", value: "?1" },
+          { key: "Content-Security-Policy", value: csp },
+        ],
+      },
+      {
+        source: "/:path*\\.(svg|jpg|jpeg|png|webp|avif|ico|woff|woff2)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
     ];
   },
 
-  // Seguridad: deshabilita el header que revela que usás Next.js
   poweredByHeader: false,
+  reactStrictMode: true,
+  compress: true,
 
   images: {
     remotePatterns: [
@@ -44,7 +70,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
+    formats: ["image/avif", "image/webp"],
   },
 };
 
