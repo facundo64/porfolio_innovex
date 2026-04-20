@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { projects } from "@/data/projects";
+import { usePathname } from "next/navigation";
 
 // Curva bézier épica (Expo/Power4 equivalente)
 const TRANSITION_EASE = [0.8, 0, 0.1, 1] as const;
@@ -17,20 +18,20 @@ export default function CaseStudies() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isAnimating = useRef(false);
 
-  // Manejo Lógico de Slides
+  // Manejo Lógico de Slides con loop infinito (módulo)
   const handleNext = useCallback(() => {
-    if (isAnimating.current || currentIndex >= total - 1) return;
+    if (isAnimating.current) return;
     isAnimating.current = true;
-    setCurrentIndex((prev) => prev + 1);
-    setTimeout(() => { isAnimating.current = false; }, 1400); // Bloquear wheel por el tiempo entero
-  }, [currentIndex, total]);
+    setCurrentIndex((prev) => (prev + 1) % total);
+    setTimeout(() => { isAnimating.current = false; }, 1400);
+  }, [total]);
 
   const handlePrev = useCallback(() => {
-    if (isAnimating.current || currentIndex <= 0) return;
+    if (isAnimating.current) return;
     isAnimating.current = true;
-    setCurrentIndex((prev) => prev - 1);
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
     setTimeout(() => { isAnimating.current = false; }, 1400);
-  }, [currentIndex]);
+  }, [total]);
 
   // Interceptar el Scroll Global en esta página
   useEffect(() => {
@@ -101,15 +102,9 @@ export default function CaseStudies() {
         0{currentIndex + 1} / {total < 10 ? `0${total}` : total}
       </div>
 
-      <div className="absolute bottom-8 left-6 md:left-14 z-50 text-[10px] md:text-[11px] font-mono tracking-[0.2em] uppercase text-[#FAFAF7]/50 flex items-center gap-2 mix-blend-difference pointer-events-none">
-          <span className="grid grid-cols-2 gap-[2px]">
-            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
-            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
-            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
-            <span className="w-[3px] h-[3px] bg-[#FAFAF7]/50 rounded-full" />
-          </span>
-          All Projects
-      </div>
+      {/* Menú hamburguesa flotante (arriba derecha) */}
+      <WorkMenu />
+
 
       {/* "La Vía del Tren" Container que desplaza hacia arriba enteros */}
       <motion.div 
@@ -212,3 +207,97 @@ export default function CaseStudies() {
     </div>
   );
 }
+
+/**
+ * Menú flotante arriba-derecha para /work: círculo con hamburguesa que
+ * despliega el resto de las páginas del sitio (reemplaza al BottomDock
+ * que está oculto en esta ruta).
+ */
+const menuLinks = [
+  { href: "/", label: "Home" },
+  { href: "/work", label: "Work" },
+  { href: "/services", label: "Services" },
+  { href: "/process", label: "Process" },
+  { href: "/contact", label: "Contact" },
+];
+
+function WorkMenu() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [open]);
+
+  return (
+    <div className="absolute top-6 md:top-8 right-6 md:right-14 z-50">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={open ? "Cerrar menú" : "Abrir menú"}
+        aria-expanded={open}
+        className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-[#FAFAF7] flex items-center justify-center hover:bg-white/15 hover:border-white/35 transition-colors"
+      >
+        <span className="sr-only">Menú</span>
+        <motion.span
+          animate={{ rotate: open ? 45 : 0, y: open ? 4 : -4 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
+        />
+        <motion.span
+          animate={{ opacity: open ? 0 : 1 }}
+          transition={{ duration: 0.2 }}
+          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
+        />
+        <motion.span
+          animate={{ rotate: open ? -45 : 0, y: open ? -4 : 4 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-1/2 -translate-x-1/2 w-4 h-[1.5px] bg-current rounded-full"
+        />
+      </button>
+
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute top-[calc(100%+12px)] right-0 w-52 rounded-2xl border border-white/15 bg-[#0A0A0A]/85 backdrop-blur-xl p-2 flex flex-col gap-0.5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] origin-top-right"
+          >
+            {menuLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-white/10 text-[#FAFAF7]"
+                      : "text-[#FAFAF7]/75 hover:bg-white/5 hover:text-[#FAFAF7]"
+                  }`}
+                >
+                  <span>{link.label}</span>
+                  {active ? (
+                    <span className="text-[9px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/50">
+                      ON
+                    </span>
+                  ) : (
+                    <span aria-hidden className="text-[#FAFAF7]/30">→</span>
+                  )}
+                </Link>
+              );
+            })}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+}
+
