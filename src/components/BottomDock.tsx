@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import TransitionLink from "./TransitionLink";
 
 const primaryItems = [
   { href: "/", label: "Home", icon: HomeIcon },
@@ -60,7 +60,7 @@ export default function BottomDock() {
             const Icon = item.icon;
             return (
               <li key={item.href} className="relative">
-                <Link
+                <TransitionLink
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
                   className={`relative flex items-center gap-2 rounded-full px-3 py-2.5 text-sm font-medium transition-colors ${
@@ -91,7 +91,7 @@ export default function BottomDock() {
                   >
                     {item.label}
                   </motion.span>
-                </Link>
+                </TransitionLink>
               </li>
             );
           })}
@@ -142,7 +142,7 @@ export default function BottomDock() {
                   {secondaryItems.map((sub) => {
                     const active = pathname === sub.href;
                     return (
-                      <Link
+                      <TransitionLink
                         key={sub.href}
                         href={sub.href}
                         onClick={() => setMenuOpen(false)}
@@ -154,7 +154,7 @@ export default function BottomDock() {
                           <sub.icon />
                         </span>
                         <span className="text-sm font-medium tracking-tight">{sub.label}</span>
-                      </Link>
+                      </TransitionLink>
                     )
                   })}
                 </motion.div>

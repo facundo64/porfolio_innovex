@@ -1,20 +1,58 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createContext, useContext, useMemo } from "react";
 
-export default function PageTransition({ children }: { children: React.ReactNode }) {
+type TransitionCtx = {
+  navigate: (href: string) => void;
+};
+
+const Ctx = createContext<TransitionCtx>({ navigate: () => {} });
+
+export function useTransitionRouter() {
+  return useContext(Ctx);
+}
+
+export function TransitionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const value = useMemo<TransitionCtx>(
+    () => ({
+      navigate: (href: string) => {
+        if (href !== pathname) router.push(href);
+      },
+    }),
+    [router, pathname]
+  );
+
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+}
+
+const EASE = [0.76, 0, 0.24, 1] as const;
+const DURATION = 0.85;
+
+export default function PageTransition({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <AnimatePresence mode="popLayout" initial={false}>
       <motion.div
         key={pathname}
-        initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -12, filter: "blur(8px)" }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="flex-1 flex flex-col"
+        initial={{ x: "100%", y: "100%" }}
+        animate={{ x: 0, y: 0 }}
+        exit={{ x: "-100%", y: "-100%" }}
+        transition={{ duration: DURATION, ease: EASE }}
+        className="flex-1 flex flex-col will-change-transform"
       >
         {children}
       </motion.div>

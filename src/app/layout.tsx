@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import BottomDock from "@/components/BottomDock";
-import PageTransition from "@/components/PageTransition";
+import PageTransition, { TransitionProvider } from "@/components/PageTransition";
 import TopHeader from "@/components/TopHeader";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
@@ -50,13 +50,15 @@ export default function RootLayout({
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#0A0A0A] antialiased">
-        <Preloader />
-        <SmoothScroll />
-        <TopHeader />
-        <PageTransition>{children}</PageTransition>
-        <ConditionalDockSpacer />
-        <BottomDock />
+      <body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#0A0A0A] antialiased overflow-x-hidden">
+        <TransitionProvider>
+          <Preloader />
+          <SmoothScroll />
+          <TopHeader />
+          <PageTransition>{children}</PageTransition>
+          <ConditionalDockSpacer />
+          <BottomDock />
+        </TransitionProvider>
       </body>
     </html>
   );

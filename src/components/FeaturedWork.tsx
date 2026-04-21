@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import Link from "./TransitionLink";
 import { motion } from "framer-motion";
 import { featuredProjects } from "@/data/projects";
 import type { Project } from "@/types";

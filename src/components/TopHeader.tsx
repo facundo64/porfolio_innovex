@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import TransitionLink from "./TransitionLink";
 
 /*
  * CSS filter para convertir negro (#000) al azul navy de la marca (#1E2A47):
@@ -50,17 +50,17 @@ export default function TopHeader() {
       className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
     >
       <div className="relative flex items-center px-6 md:px-14 py-5 md:py-6">
-        <Link href="/" className="pointer-events-auto">
+        <TransitionLink href="/" className="pointer-events-auto">
           <Image
             src="/logo-innhovex.svg"
             alt="INNHOVEX"
             width={120}
             height={40}
             priority
-            className="h-24 md:h-28 w-auto transition-[filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            className="h-10 md:h-12 w-auto transition-[filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{ filter: useWhite ? FILTER_WHITE : FILTER_NAVY }}
           />
-        </Link>
+        </TransitionLink>
       </div>
     </motion.header>
   );
