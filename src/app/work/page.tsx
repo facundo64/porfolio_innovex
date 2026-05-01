@@ -1,4 +1,4 @@
-import CaseStudies from "@/components/CaseStudies";
+import WorkGallery from "@/components/WorkGallery";
 
 export const metadata = {
   title: "Work — INNHOVEX",
@@ -6,5 +6,5 @@ export const metadata = {
 };
 
 export default function WorkPage() {
-  return <CaseStudies />;
+  return <WorkGallery />;
 }

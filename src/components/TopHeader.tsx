@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import TransitionLink from "./TransitionLink";
+import LocaleToggle from "./LocaleToggle";
 
 /*
  * CSS filter para convertir negro (#000) al azul navy de la marca (#1E2A47):
@@ -38,9 +39,10 @@ export default function TopHeader() {
     };
   }, [pathname]);
 
-  // En /work el fondo siempre es oscuro (carrusel cinemático), forzar blanco
-  const isWorkPage = pathname === "/work";
-  const useWhite = isWorkPage || onDark || scrolled;
+  // En /work, /services, /process y /contact el fondo es oscuro (gradient atmosférico) — logo blanco siempre
+  const darkRoutes = ["/work", "/services", "/process", "/contact"];
+  const isDarkRoute = darkRoutes.includes(pathname);
+  const useWhite = isDarkRoute || onDark || scrolled;
 
   return (
     <motion.header
@@ -49,7 +51,7 @@ export default function TopHeader() {
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
       className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
     >
-      <div className="relative flex items-center px-6 md:px-14 py-5 md:py-6">
+      <div className="relative flex items-center justify-between px-6 md:px-14 py-5 md:py-6">
         <TransitionLink href="/" className="pointer-events-auto">
           <Image
             src="/logo-innhovex.svg"
@@ -61,6 +63,10 @@ export default function TopHeader() {
             style={{ filter: useWhite ? FILTER_WHITE : FILTER_NAVY }}
           />
         </TransitionLink>
+
+        <div className="pointer-events-auto">
+          <LocaleToggle />
+        </div>
       </div>
     </motion.header>
   );

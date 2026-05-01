@@ -7,6 +7,7 @@ import TopHeader from "@/components/TopHeader";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
 import ConditionalDockSpacer from "@/components/ConditionalDockSpacer";
+import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 
 const geistSans = Geist({
   variable: "--font-sans-geist",
@@ -51,14 +52,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#0A0A0A] antialiased overflow-x-hidden">
-        <TransitionProvider>
-          <Preloader />
-          <SmoothScroll />
-          <TopHeader />
-          <PageTransition>{children}</PageTransition>
-          <ConditionalDockSpacer />
-          <BottomDock />
-        </TransitionProvider>
+        <LocaleProvider>
+          <TransitionProvider>
+            <Preloader />
+            <SmoothScroll />
+            <TopHeader />
+            <PageTransition>{children}</PageTransition>
+            <ConditionalDockSpacer />
+            <BottomDock />
+          </TransitionProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

@@ -1,4 +1,9 @@
+"use client";
+
+import { useT } from "@/lib/i18n/LocaleProvider";
+
 export default function Footer() {
+  const t = useT();
   const year = new Date().getFullYear();
 
   return (
@@ -9,23 +14,8 @@ export default function Footer() {
           <span className="tracking-tight">INNHOVEX</span>
         </div>
 
-        <nav className="flex flex-wrap gap-6 text-sm text-[#3A3A3A]">
-          <a href="#servicios" className="hover:text-[#1E2A47] transition-colors">
-            Servicios
-          </a>
-          <a href="#casos" className="hover:text-[#1E2A47] transition-colors">
-            Casos
-          </a>
-          <a href="#proceso" className="hover:text-[#1E2A47] transition-colors">
-            Proceso
-          </a>
-          <a href="#contacto" className="hover:text-[#1E2A47] transition-colors">
-            Contacto
-          </a>
-        </nav>
-
         <div className="text-xs font-mono text-[#8A8A85] tracking-wider">
-          © {year} INNHOVEX · Hecho en Argentina
+          © {year} INNHOVEX · {t.footer.madeIn}
         </div>
       </div>
     </footer>

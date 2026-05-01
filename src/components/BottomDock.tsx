@@ -4,20 +4,23 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import TransitionLink from "./TransitionLink";
-
-const primaryItems = [
-  { href: "/", label: "Home", icon: HomeIcon },
-  { href: "/work", label: "Work", icon: WorkIcon },
-];
-
-const secondaryItems = [
-  { href: "/services", label: "Services", icon: ServicesIcon },
-  { href: "/process", label: "Process", icon: ProcessIcon },
-  { href: "/contact", label: "Contact", icon: ContactIcon },
-];
+import { useT } from "@/lib/i18n/LocaleProvider";
 
 export default function BottomDock() {
   const pathname = usePathname();
+  const t = useT();
+
+  const primaryItems = [
+    { href: "/", label: t.nav.home, icon: HomeIcon },
+    { href: "/work", label: t.nav.work, icon: WorkIcon },
+  ];
+
+  const secondaryItems = [
+    { href: "/services", label: t.nav.services, icon: ServicesIcon },
+    { href: "/process", label: t.nav.process, icon: ProcessIcon },
+    { href: "/contact", label: t.nav.contact, icon: ContactIcon },
+  ];
+
   const [compact, setCompact] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -34,9 +37,6 @@ export default function BottomDock() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // La página /work es un carrusel 100dvh inmersivo: sin dock flotante.
-  if (pathname === "/work") return null;
 
   return (
     <>

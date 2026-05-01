@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useT } from "@/lib/i18n/LocaleProvider";
 
 const HERO_IMAGE =
   "https://images.pexels.com/photos/32895774/pexels-photo-32895774.jpeg";
@@ -12,6 +13,7 @@ const HERO_IMAGE =
  * "bajando lentamente" ganando un efecto de escala masivo sin cansar al usuario.
  */
 export default function Hero() {
+  const t = useT();
   const { scrollY } = useScroll();
   // El fondo se desplazará hacia abajo sutilmente para crear un efecto parallax real
   // y que se "despegue" visualmente de las letras.
@@ -71,7 +73,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Estudio digital · Est. 2024
+            {t.hero.metaLeft}
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -79,7 +81,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1, ease: [0.22, 1, 0.36, 1] }}
             className="hidden md:block"
           >
-            Buenos Aires — Argentina
+            {t.hero.metaRight}
           </motion.div>
         </div>
 
@@ -91,12 +93,7 @@ export default function Hero() {
             className="font-serif text-[#FAFAF7] leading-[1.15] tracking-[-0.02em] max-w-2xl"
             style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.5rem)" }}
           >
-            {[
-              "Estudio digital partnering con marcas",
-              "y negocios que crean experiencias",
-              "excepcionales donde las personas",
-              "viven, trabajan y se conectan.",
-            ].map((line, i) => (
+            {t.hero.intro.map((line, i) => (
               <span key={i} className="block overflow-hidden">
                 <motion.span
                   initial={{ y: "110%" }}
@@ -124,9 +121,9 @@ export default function Hero() {
             }}
           >
             {[
-              { word: "Digital", italic: false },
-              { word: "Studio", italic: true },
-              { word: "Innhovex.", italic: false, accent: true },
+              { word: t.hero.titleLine1, italic: false },
+              { word: t.hero.titleLine2, italic: true },
+              { word: t.hero.titleLine3, italic: false, accent: true },
             ].map(({ word, italic, accent }, i) => (
               <span
                 key={word}
@@ -145,7 +142,7 @@ export default function Hero() {
                 >
                   {accent ? (
                     <>
-                      Innhovex<span className="text-[#1E2A47]">.</span>
+                      {word.replace(".", "")}<span className="text-[#1E2A47]">.</span>
                     </>
                   ) : (
                     word
@@ -164,12 +161,12 @@ export default function Hero() {
           >
             {/* Texto de cierre / posicionamiento (Marketing Opción 2) */}
             <p className="font-serif text-[#FAFAF7]/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl">
-              No solo hacemos páginas web. Construimos el activo digital más valioso de tu empresa mediante diseño de vanguardia y tecnología inmersiva.
+              {t.hero.closingText}
             </p>
 
             {/* Datos de contacto (Margen derecho) */}
             <div className="flex flex-col gap-2 text-xs md:text-sm font-mono tracking-[0.1em] uppercase text-[#FAFAF7]/60 md:text-right shrink-0">
-              <span className="text-[#FAFAF7] font-bold tracking-[0.2em] mb-2">Comienza un proyecto</span>
+              <span className="text-[#FAFAF7] font-bold tracking-[0.2em] mb-2">{t.hero.ctaTitle}</span>
               <a href="mailto:hello@innhovex.com" className="hover:text-[#FAFAF7] transition-colors duration-300">
                 hello@innhovex.com
               </a>
@@ -198,9 +195,9 @@ export default function Hero() {
             >
               ↓
             </motion.span>
-            Scroll
+            {t.hero.scroll}
           </span>
-          <span className="hidden md:inline">Reel · 2026</span>
+          <span className="hidden md:inline">{t.hero.reel}</span>
         </motion.div>
       </div>
     </section>
