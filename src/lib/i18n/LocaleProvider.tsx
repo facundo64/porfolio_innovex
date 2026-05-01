@@ -4,13 +4,12 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
 } from "react";
 import { dictionaries, type Dictionary, type Locale } from "./dictionaries";
 
-const STORAGE_KEY = "innhovex:locale";
+export const LOCALE_STORAGE_KEY = "innhovex:locale";
 const DEFAULT_LOCALE: Locale = "es";
 
 type Ctx = {
@@ -21,24 +20,44 @@ type Ctx = {
 
 const LocaleCtx = createContext<Ctx | null>(null);
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+/**
+ * Lee el locale guardado en localStorage de forma SSR-safe.
+ * Server: devuelve siempre el default. Client: lee localStorage.
+ */
+function getStoredLocale(): Locale {
+  if (typeof window === "undefined") return DEFAULT_LOCALE;
+  const saved = window.localStorage.getItem(LOCALE_STORAGE_KEY);
+  return saved === "es" || saved === "en" ? saved : DEFAULT_LOCALE;
+}
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "es" || saved === "en") {
-      setLocaleState(saved);
-      document.documentElement.lang = saved;
-    }
-  }, []);
+const subscribers = new Set<() => void>();
+function subscribe(callback: () => void) {
+  subscribers.add(callback);
+  return () => {
+    subscribers.delete(callback);
+  };
+}
+function emit() {
+  subscribers.forEach((cb) => cb());
+}
+
+export function LocaleProvider({ children }: { children: React.ReactNode }) {
+  /**
+   * useSyncExternalStore garantiza que el primer render del cliente lea
+   * directamente de localStorage (sin pasar por un re-render que rompa animaciones).
+   * El server render siempre devuelve DEFAULT_LOCALE para no causar hydration mismatch.
+   */
+  const locale = useSyncExternalStore(
+    subscribe,
+    getStoredLocale,
+    () => DEFAULT_LOCALE
+  );
 
   const setLocale = useCallback((l: Locale) => {
-    setLocaleState(l);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, l);
-      document.documentElement.lang = l;
-    }
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, l);
+    document.documentElement.lang = l;
+    emit();
   }, []);
 
   const value = useMemo<Ctx>(

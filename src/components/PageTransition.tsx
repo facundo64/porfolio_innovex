@@ -40,6 +40,8 @@ export function TransitionProvider({
   useEffect(() => {
     if (pendingHref.current && pathname === pendingHref.current) {
       pendingHref.current = null;
+      // Sincronización con cambio de ruta de Next: necesario activar uncover acá
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPhase("uncovering");
       const t = window.setTimeout(
         () => setPhase("idle"),

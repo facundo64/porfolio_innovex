@@ -114,7 +114,7 @@ export default function ProcessGallery() {
               key={step.n}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.9, delay: i * 0.06, ease: EASE }}
               className="group relative grid grid-cols-12 gap-4 md:gap-8 py-10 md:py-14 border-b border-[#FAFAF7]/15 hover:bg-[#FAFAF7]/[0.03] transition-colors duration-500"
             >

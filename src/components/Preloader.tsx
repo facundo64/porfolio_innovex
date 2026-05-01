@@ -33,6 +33,9 @@ export default function Preloader() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    // Mount + check sessionStorage es intencional: queremos renderizar nada
+    // hasta saber si la sesión ya vio el preloader, sin causar hydration mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
     setMounted(true);
     if (typeof window === "undefined") return;
     const seen = window.sessionStorage.getItem(SESSION_KEY);
@@ -40,6 +43,7 @@ export default function Preloader() {
       setVisible(true);
       document.documentElement.style.overflow = "hidden";
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   useEffect(() => {
@@ -48,20 +52,20 @@ export default function Preloader() {
     const linePhase = reduceMotion ? 200 : 1400;
     const hold = reduceMotion ? 200 : 500;
 
+    const dismiss = () => {
+      setVisible(false);
+      window.sessionStorage.setItem(SESSION_KEY, "1");
+      document.documentElement.style.overflow = "";
+    };
+
     const t1 = window.setTimeout(() => setPhase("done"), linePhase);
-    const t2 = window.setTimeout(() => dismiss(), linePhase + hold);
+    const t2 = window.setTimeout(dismiss, linePhase + hold);
 
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
   }, [visible, reduceMotion]);
-
-  function dismiss() {
-    setVisible(false);
-    window.sessionStorage.setItem(SESSION_KEY, "1");
-    document.documentElement.style.overflow = "";
-  }
 
   if (!mounted) return null;
 
