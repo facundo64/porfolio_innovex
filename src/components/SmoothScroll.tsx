@@ -3,14 +3,19 @@
 import Lenis from "lenis";
 import { useEffect } from "react";
 
+/**
+ * Smooth scroll configurado para sentirse premium pero responsivo.
+ * Evitamos `duration` + `easing` custom porque generan demasiada inercia
+ * en bordes (footer, top) y trabón al revertir dirección.
+ */
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 0.9,
-      lerp: 0.12,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.1,
       smoothWheel: true,
-      touchMultiplier: 1.2,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      syncTouch: false,
     });
 
     let rafId = 0;

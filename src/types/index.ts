@@ -22,6 +22,19 @@ export interface Project {
   solution?: string;           // cómo se resolvió
   value?: string;              // outcome tangible
 
+  // Traducción opcional al inglés (campos de texto que valen traducir)
+  i18n?: {
+    en?: {
+      subtitle?: string;
+      tagline?: string;
+      role?: string;
+      problem?: string;
+      solution?: string;
+      value?: string;
+      highlights?: string[];
+    };
+  };
+
   // Assets visuales
   logo?: string;               // ruta pública al logo dark-on-light
   logoNegative?: string;       // versión sobre fondo oscuro

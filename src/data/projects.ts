@@ -59,6 +59,25 @@ export const projects: Project[] = [
       "Landing hub con hero animado frame-by-frame en canvas, páginas dedicadas por empresa, bilingüe ES/EN y formulario transaccional con Resend.",
     value:
       "Identidad industrial consolidada en la región petrolera. Un solo dominio que proyecta tres empresas como ecosistema coordinado.",
+    i18n: {
+      en: {
+        subtitle: "Industrial Group — Metallurgy, Pack Rack and Fire Safety.",
+        tagline: "Premium corporate site for an industrial group in Neuquén.",
+        role: "Design · Full stack · Motion",
+        problem:
+          "A group with three business units (metallurgy, packaging racks and fire networks) with no unified digital presence or serious lead channel.",
+        solution:
+          "Landing hub with frame-by-frame canvas hero, dedicated pages per company, ES/EN bilingual and transactional form with Resend.",
+        value:
+          "Industrial identity consolidated in the oil region. A single domain projecting three companies as a coordinated ecosystem.",
+        highlights: [
+          "Canvas hero with 384 frames + LQ fallback",
+          "Three microsites under a shared layout",
+          "Lenis smooth scrolling + premium motion",
+          "ES/EN i18n with custom context",
+        ],
+      },
+    },
     logo: "/projects/jem-si/logo.svg",
     logoNegative: "/projects/jem-si/logo-negative.svg",
     image: "/projects/jem-si/hero.png",
@@ -98,6 +117,25 @@ export const projects: Project[] = [
       "Plataforma dual: cara pública con propuesta de valor y SEO forense + portal privado de clientes con auth Supabase, seguimiento de casos y documentos descargables. Panel admin interno para blog y turnos.",
     value:
       "Canal profesional que comunica autoridad técnica y cumple Ley 25.326 de Protección de Datos Personales. Abre la puerta a clientes B2B (estudios jurídicos, empresas) sin exponer expedientes sensibles.",
+    i18n: {
+      en: {
+        subtitle: "Institutional platform + private portal for forensic studio.",
+        tagline: "Scientific authority and secure client portal for an expert studio.",
+        role: "Design · Full stack · Secure auth",
+        problem:
+          "A forensic studio with highly specialized services (IT, ballistics, document analysis, crypto-assets) lacked digital authority and a secure channel to deliver expert reports to clients.",
+        solution:
+          "Dual platform: public-facing with value proposition and forensic SEO + private client portal with Supabase auth, case tracking and downloadable documents. Internal admin panel for blog and appointments.",
+        value:
+          "Professional channel projecting technical authority and complying with Law 25.326 (Personal Data Protection). Opens the door to B2B clients (law firms, companies) without exposing sensitive cases.",
+        highlights: [
+          "Private portal with secure login and case tracking",
+          "Admin panel for blog, appointments and clients",
+          "Landing with 9 detailed forensic services",
+          "Compliance with Law 25.326 (data protection)",
+        ],
+      },
+    },
     logo: "/projects/citep/logo.svg",
     logoNegative: "/projects/citep/logo.svg",
     image: "/projects/citep/hero.png",
@@ -136,6 +174,25 @@ export const projects: Project[] = [
       "Sitio oficial con branding triple (Ministerio + GNA + DINACRIMIN), agenda dinámica, base de disertantes en Supabase y flujo de inscripción segmentado.",
     value:
       "Congreso con cobertura nacional e internacional, inscripciones administradas digitalmente y un activo institucional reutilizable año tras año.",
+    i18n: {
+      en: {
+        subtitle: "Regional Criminalistics Congress — National Gendarmerie.",
+        tagline: "Official portal for an international federal forces congress.",
+        role: "Full stack · Supabase integration",
+        problem:
+          "The National Gendarmerie needed a serious institutional portal for an international congress with speakers, agenda, registrations and streaming.",
+        solution:
+          "Official site with triple branding (Ministry + GNA + DINACRIMIN), dynamic agenda, speakers database in Supabase and segmented registration flow.",
+        value:
+          "Congress with national and international coverage, digitally managed registrations and an institutional asset reusable year after year.",
+        highlights: [
+          "Triple institutional branding (Ministry, GNA, DINACRIMIN)",
+          "Speakers, agenda and sponsors management",
+          "National / International / Streaming registration",
+          "SEO optimized + OG images",
+        ],
+      },
+    },
     logo: "/projects/cripnar/logo-dinacrimin.svg",
     image: "/projects/cripnar/hero.jpg",
     bgColor: "#0D1B2A",
@@ -172,6 +229,25 @@ export const projects: Project[] = [
       "Landing conversion-first con hero emocional, galería de obras, CTA de WhatsApp y formulario de contacto embebido.",
     value:
       "Canal digital propio para captar consultas de diseño, construcción y mantenimiento sin depender de redes de terceros.",
+    i18n: {
+      en: {
+        subtitle: "Pool design, construction and maintenance.",
+        tagline: "Web presence for a service company with 10+ years of experience.",
+        role: "Design · Frontend",
+        problem:
+          "An established company without a professional website: leads depended on word-of-mouth and the owner's personal WhatsApp.",
+        solution:
+          "Conversion-first landing with emotional hero, project gallery, WhatsApp CTA and embedded contact form.",
+        value:
+          "Own digital channel to capture design, construction and maintenance inquiries without depending on third-party networks.",
+        highlights: [
+          "Mobile-first design with corporate palette",
+          "Project gallery with lazy loading",
+          "Direct integration with WhatsApp Business",
+          "Performance 95+ on Lighthouse",
+        ],
+      },
+    },
     image: "/projects/jem-si/warehouse.png",
     bgColor: "#1E2A47",
     accentColor: "#2B4257",

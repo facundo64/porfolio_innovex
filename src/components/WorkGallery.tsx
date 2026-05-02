@@ -5,6 +5,8 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { projects } from "@/data/projects";
 import type { Project } from "@/types";
+import { useT } from "@/lib/i18n/LocaleProvider";
+import { useLocalizedProject } from "@/lib/i18n/useLocalizedProject";
 
 const SHOWCASE_IDS = ["citep", "jem-si", "obra-azul", "cripnar"] as const;
 const showcase: Project[] = SHOWCASE_IDS.map(
@@ -21,6 +23,7 @@ type OverlayCfg = {
 };
 
 export default function WorkGallery() {
+  const t = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [cfg, setCfg] = useState<OverlayCfg | null>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -78,8 +81,8 @@ export default function WorkGallery() {
       />
       {/* Header — salón visual (corrido a la derecha para no chocar con el logo IEX y el toggle ES/EN del TopHeader) */}
       <div className="absolute top-6 md:top-10 left-44 md:left-60 right-32 md:right-44 z-20 flex items-start justify-between gap-6 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75">
-        <span>Selected Work / 2025—2026</span>
-        <span className="hidden md:inline">Salón Visual</span>
+        <span>{t.common.selectedWork} / 2025—2026</span>
+        <span className="hidden md:inline">{t.common.salonVisual}</span>
       </div>
 
       {/* Salón visual — grid de 4 cards alineados */}
@@ -131,6 +134,7 @@ function GridCard({
   setRef: (el: HTMLDivElement | null) => void;
   onOpen: () => void;
 }) {
+  const localized = useLocalizedProject(project);
   return (
     <figure className="flex flex-col gap-5 md:gap-6">
       {/* Título — serif gigante estilo Hero, slide up reveal */}
@@ -191,7 +195,7 @@ function GridCard({
 
       {/* Caption */}
       <figcaption className="text-[11px] md:text-xs text-[#FAFAF7]/55 leading-relaxed normal-case">
-        {project.tagline}
+        {localized.tagline}
       </figcaption>
     </figure>
   );
@@ -249,6 +253,8 @@ function Preview({
   project: Project;
   onClose: () => void;
 }) {
+  const t = useT();
+  const localized = useLocalizedProject(project);
   // Cuando el preview entra, los textos aparecen después de la franja (~1.1s)
   const TEXT_DELAY = 1.05;
 
@@ -271,11 +277,11 @@ function Preview({
       >
         <button
           onClick={onClose}
-          aria-label="Volver al salón"
+          aria-label={t.common.back}
           className="inline-flex items-center gap-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-4 py-2 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] hover:bg-white/20 transition-colors"
         >
           <span aria-hidden>←</span>
-          <span>Volver</span>
+          <span>{t.common.back}</span>
         </button>
 
         <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75 truncate max-w-[55%] text-right">
@@ -297,10 +303,10 @@ function Preview({
           className="md:col-span-3 max-w-xs space-y-3"
         >
           <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 border-[#FAFAF7]/50 pl-3">
-            Problema
+            {t.common.problem}
           </h4>
           <p className="text-[13px] md:text-sm leading-relaxed text-[#FAFAF7]/90 pl-3">
-            {project.problem}
+            {localized.problem}
           </p>
         </motion.div>
 
@@ -357,10 +363,10 @@ function Preview({
           className="md:col-span-3 max-w-xs space-y-3 md:justify-self-end md:text-right"
         >
           <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 md:border-l-0 md:border-r-2 border-[#FAFAF7]/50 pl-3 md:pl-0 md:pr-3">
-            Solución
+            {t.common.solution}
           </h4>
           <p className="text-[13px] md:text-sm leading-relaxed text-[#FAFAF7]/90 pl-3 md:pl-0 md:pr-3">
-            {project.solution}
+            {localized.solution}
           </p>
         </motion.div>
       </div>
@@ -377,10 +383,10 @@ function Preview({
         className="relative z-50 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-8 px-6 md:px-14 py-5 md:py-6 border-t border-white/12"
       >
         <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70 shrink-0">
-          {project.role}
+          {localized.role}
         </span>
         <p className="font-serif text-base md:text-lg lg:text-xl tracking-[-0.01em] text-[#FAFAF7]/95 max-w-2xl md:text-center leading-snug">
-          {project.tagline}
+          {localized.tagline}
         </p>
         <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70 shrink-0">
           {project.year}

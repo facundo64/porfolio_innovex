@@ -167,7 +167,7 @@ export default function ServicesGallery() {
           {/* Deliverables */}
           <div className="border-t border-[#FAFAF7]/12 pt-6">
             <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55 mb-5">
-              Entregables
+              {t.common.deliverables}
             </h4>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
               {active.deliverables.map((d) => (

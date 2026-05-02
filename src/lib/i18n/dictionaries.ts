@@ -23,6 +23,7 @@ export type Dictionary = {
     salonVisual: string;
     problem: string;
     solution: string;
+    deliverables: string;
   };
   services: {
     eyebrow: string;
@@ -127,6 +128,7 @@ const es: Dictionary = {
     salonVisual: "Salón Visual",
     problem: "Problema",
     solution: "Solución",
+    deliverables: "Entregables",
   },
   services: {
     eyebrow: "Servicios / 2025—2026",
@@ -319,6 +321,7 @@ const en: Dictionary = {
     salonVisual: "Visual Hall",
     problem: "Problem",
     solution: "Solution",
+    deliverables: "Deliverables",
   },
   services: {
     eyebrow: "Services / 2025—2026",
