@@ -156,7 +156,7 @@ function GridCard({
         layoutId={`work-img-${project.id}`}
         onClick={onOpen}
         whileHover={isAnyOpen ? undefined : "hover"}
-        style={{ zIndex: isOpen ? 50 : 1 }}
+        style={{ zIndex: isOpen ? 100 : 1 }}
         className="relative w-full aspect-[3/4] cursor-pointer overflow-hidden bg-black"
       >
         <motion.div
@@ -207,7 +207,7 @@ function FrangaOverlay({ cfg }: { cfg: OverlayCfg }) {
   return (
     <motion.div
       aria-hidden
-      className="fixed top-0 left-0 w-screen h-screen z-30 pointer-events-none"
+      className="fixed top-0 left-0 w-screen h-screen z-[90] pointer-events-none"
       style={{
         background: cfg.color,
         transformOrigin: cfg.originY === "top" ? "0% 0%" : "0% 100%",
@@ -261,7 +261,7 @@ function Preview({
   return (
     <motion.div
       key={project.id}
-      className="fixed inset-0 z-40 flex flex-col"
+      className="fixed inset-0 z-[95] flex flex-col"
       initial={{ pointerEvents: "auto" }}
       exit={{ opacity: 0 }}
     >
@@ -273,7 +273,7 @@ function Preview({
           transition: { duration: 0.5, delay: TEXT_DELAY, ease: EASE },
         }}
         exit={{ opacity: 0, transition: { duration: 0.25 } }}
-        className="relative z-50 flex items-center justify-between gap-4 px-6 md:px-14 pt-24 md:pt-28 pb-2"
+        className="relative z-[110] flex items-center justify-between gap-4 px-6 md:px-14 pt-24 md:pt-28 pb-2"
       >
         <button
           onClick={onClose}
@@ -317,7 +317,7 @@ function Preview({
             transition={{
               layout: { duration: 0.6, delay: 0.5, ease: EASE },
             }}
-            style={{ zIndex: 50 }}
+            style={{ zIndex: 100 }}
             className="relative w-full max-w-md aspect-[3/4] overflow-hidden bg-black shadow-2xl"
           >
             <Image
@@ -330,7 +330,7 @@ function Preview({
           </motion.div>
 
           {/* Título gigante superpuesto */}
-          <div className="absolute inset-0 z-[55] flex items-center justify-center pointer-events-none">
+          <div className="absolute inset-0 z-[105] flex items-center justify-center pointer-events-none">
             <div className="overflow-hidden w-full">
               <motion.h2
                 initial={{ y: "110%" }}
@@ -380,7 +380,7 @@ function Preview({
           transition: { duration: 0.7, delay: TEXT_DELAY + 0.1, ease: EASE },
         }}
         exit={{ opacity: 0, transition: { duration: 0.25 } }}
-        className="relative z-50 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-8 px-6 md:px-14 py-5 md:py-6 border-t border-white/12"
+        className="relative z-[110] flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-8 px-6 md:px-14 py-5 md:py-6 border-t border-white/12"
       >
         <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70 shrink-0">
           {localized.role}
