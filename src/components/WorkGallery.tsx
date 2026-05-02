@@ -79,8 +79,8 @@ export default function WorkGallery() {
           backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
         }}
       />
-      {/* Header — salón visual (corrido a la derecha para no chocar con el logo IEX y el toggle ES/EN del TopHeader) */}
-      <div className="absolute top-6 md:top-10 left-44 md:left-60 right-32 md:right-44 z-20 flex items-start justify-between gap-6 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75">
+      {/* Header — salón visual. En mobile va abajo del TopHeader (top-20). En desktop al costado del logo. */}
+      <div className="absolute top-20 md:top-10 left-6 md:left-60 right-6 md:right-44 z-20 flex items-start justify-between gap-6 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75">
         <span>{t.common.selectedWork} / 2025—2026</span>
         <span className="hidden md:inline">{t.common.salonVisual}</span>
       </div>
@@ -284,7 +284,7 @@ function Preview({
           <span>{t.common.back}</span>
         </button>
 
-        <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75 truncate max-w-[55%] text-right">
+        <span className="hidden md:inline text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75 truncate max-w-[55%] text-right">
           {project.client}
         </span>
       </motion.header>

@@ -45,7 +45,7 @@ export default function BottomDock() {
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-        className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50"
+        className="hidden md:block fixed bottom-5 left-1/2 -translate-x-1/2 z-50"
         aria-label="Navegación principal"
       >
         <motion.ul

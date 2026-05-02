@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import TransitionLink from "./TransitionLink";
 import LocaleToggle from "./LocaleToggle";
+import MobileMenu from "./MobileMenu";
 
 /*
  * CSS filter para convertir negro (#000) al azul navy de la marca (#1E2A47):
@@ -64,8 +65,12 @@ export default function TopHeader() {
           />
         </TransitionLink>
 
-        <div className="pointer-events-auto">
-          <LocaleToggle />
+        <div className="pointer-events-auto" style={{ color: useWhite ? "#FAFAF7" : "#1E2A47" }}>
+          {/* Desktop: toggle ES/EN. Mobile: hamburguesa que abre panel con nav + toggle adentro. */}
+          <div className="hidden md:block">
+            <LocaleToggle />
+          </div>
+          <MobileMenu />
         </div>
       </div>
     </motion.header>

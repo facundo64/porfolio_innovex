@@ -86,7 +86,7 @@ export default function Hero() {
         </div>
 
         {/* Contenedor central — pl-2 lo corre apenas a la derecha para no coincidir con IEX */}
-        <div className="mt-[38vh] md:mt-[44vh] max-w-5xl flex flex-col gap-12 md:gap-16 pl-10 md:pl-16">
+        <div className="mt-[38vh] md:mt-[44vh] max-w-5xl flex flex-col gap-10 md:gap-16 pl-2 md:pl-16">
           
           {/* Intro Original (Arriba) */}
           <p
