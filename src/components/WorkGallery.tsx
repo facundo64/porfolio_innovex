@@ -261,7 +261,7 @@ function Preview({
   return (
     <motion.div
       key={project.id}
-      className="fixed inset-0 z-[95] flex flex-col"
+      className="fixed inset-0 z-[95] flex flex-col overflow-y-auto overscroll-contain"
       initial={{ pointerEvents: "auto" }}
       exit={{ opacity: 0 }}
     >
@@ -290,7 +290,7 @@ function Preview({
       </motion.header>
 
       {/* BODY — imagen central + boxes laterales */}
-      <div className="relative flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center px-6 md:px-14 py-6">
+      <div className="relative flex-1 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-start md:items-center px-6 md:px-14 py-6">
         {/* Box izquierda — Problema */}
         <motion.div
           initial={{ opacity: 0, x: 8 }}
@@ -311,7 +311,7 @@ function Preview({
         </motion.div>
 
         {/* Centro — imagen (con su logo embebido) + título superpuesto */}
-        <div className="md:col-span-6 relative w-full h-full flex items-center justify-center min-h-[55vh]">
+        <div className="md:col-span-6 relative w-full h-full flex items-center justify-center md:min-h-[55vh]">
           <motion.div
             layoutId={`work-img-${project.id}`}
             transition={{
