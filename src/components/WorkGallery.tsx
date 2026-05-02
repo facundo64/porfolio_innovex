@@ -144,7 +144,7 @@ function GridCard({
           animate={{ y: "0%" }}
           transition={{ duration: 1.1, delay: 0.25 + index * 0.08, ease: EASE }}
           className="font-serif tracking-[-0.03em] leading-[0.92] text-[#FAFAF7]"
-          style={{ fontSize: "clamp(2.25rem, 4.4vw, 4.5rem)" }}
+          style={{ fontSize: "clamp(1.5rem, 4.4vw, 4.5rem)" }}
         >
           {project.title}
         </motion.h3>

@@ -116,10 +116,31 @@ export default function ProcessGallery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.9, delay: i * 0.06, ease: EASE }}
-              className="group relative grid grid-cols-12 gap-4 md:gap-8 py-10 md:py-14 border-b border-[#FAFAF7]/15 hover:bg-[#FAFAF7]/[0.03] transition-colors duration-500"
+              className="group relative grid grid-cols-12 gap-4 md:gap-8 py-8 md:py-14 border-b border-[#FAFAF7]/15 hover:bg-[#FAFAF7]/[0.03] transition-colors duration-500"
             >
-              {/* Número gigante */}
-              <div className="col-span-12 md:col-span-2">
+              {/* Mobile: número + título lado a lado en una sola fila */}
+              <div className="col-span-12 md:hidden flex items-baseline gap-4">
+                <span
+                  className="font-serif text-[#FAFAF7]/40 group-hover:text-[#FAFAF7]/70 transition-colors duration-500 leading-none shrink-0"
+                  style={{ fontSize: "clamp(2.5rem, 12vw, 4rem)" }}
+                >
+                  {step.n}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <h3
+                    className="font-serif text-[#FAFAF7] tracking-[-0.03em] leading-[0.95]"
+                    style={{ fontSize: "clamp(1.5rem, 7vw, 2.25rem)" }}
+                  >
+                    {step.title}
+                  </h3>
+                  <span className="mt-2 inline-block text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
+                    {step.duration}
+                  </span>
+                </div>
+              </div>
+
+              {/* Desktop: número en col-span-2 */}
+              <div className="hidden md:block md:col-span-2">
                 <span
                   className="font-serif text-[#FAFAF7]/40 group-hover:text-[#FAFAF7]/70 transition-colors duration-500 leading-none"
                   style={{ fontSize: "clamp(3rem, 7vw, 6.5rem)" }}
@@ -128,8 +149,8 @@ export default function ProcessGallery() {
                 </span>
               </div>
 
-              {/* Título del paso */}
-              <div className="col-span-12 md:col-span-4">
+              {/* Desktop: título del paso en col-span-4 */}
+              <div className="hidden md:block md:col-span-4">
                 <h3
                   className="font-serif text-[#FAFAF7] tracking-[-0.03em] leading-[0.95]"
                   style={{ fontSize: "clamp(1.75rem, 3.6vw, 3.25rem)" }}
@@ -143,7 +164,7 @@ export default function ProcessGallery() {
 
               {/* Descripción */}
               <div className="col-span-12 md:col-span-6 md:pl-8 flex items-center">
-                <p className="text-base md:text-lg text-[#FAFAF7]/85 leading-relaxed max-w-xl">
+                <p className="text-sm md:text-lg text-[#FAFAF7]/85 leading-relaxed max-w-xl">
                   {step.description}
                 </p>
               </div>

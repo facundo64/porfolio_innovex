@@ -183,7 +183,7 @@ export default function ContactGallery() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.15, ease: EASE }}
-          className="lg:col-span-5 space-y-12 border-t border-[#FAFAF7]/12 pt-12 lg:pl-8"
+          className="lg:col-span-5 space-y-12 lg:border-t border-[#FAFAF7]/12 lg:pt-12 lg:pl-8"
         >
           <InfoBlock label={t.contact.info.emailLabel}>
             <a

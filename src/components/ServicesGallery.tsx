@@ -151,10 +151,23 @@ export default function ServicesGallery() {
           transition={{ duration: 0.6, ease: EASE }}
           className="lg:col-span-7 lg:sticky lg:top-32 space-y-8"
         >
+          {/* Header del servicio activo — solo visible en mobile/tablet (en desktop la lista de la izquierda ya da contexto) */}
+          <div className="lg:hidden flex items-baseline gap-3 border-t border-[#FAFAF7]/12 pt-6">
+            <span className="text-[10px] font-mono tracking-[0.22em] text-[#FAFAF7]/40 shrink-0">
+              {active.number}
+            </span>
+            <h3
+              className="font-serif text-[#FAFAF7] tracking-[-0.03em] leading-[0.95]"
+              style={{ fontSize: "clamp(1.75rem, 6vw, 2.75rem)" }}
+            >
+              {active.title}
+            </h3>
+          </div>
+
           {/* Tagline */}
           <p
             className="font-serif text-[#FAFAF7] leading-[1.05] tracking-[-0.02em]"
-            style={{ fontSize: "clamp(1.75rem, 3.4vw, 3rem)" }}
+            style={{ fontSize: "clamp(1.5rem, 3.4vw, 3rem)" }}
           >
             {active.tagline}
           </p>

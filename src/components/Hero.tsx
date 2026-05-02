@@ -22,8 +22,7 @@ export default function Hero() {
   return (
     <section
       data-theme="dark"
-      className="relative w-full bg-[#0A0A0A] overflow-hidden"
-      style={{ height: "200vh" }}
+      className="relative w-full bg-[#0A0A0A] overflow-hidden h-[140vh] md:h-[200vh]"
     >
       {/* Imagen: ocupa MÁS del 100% (-top y h-[120%]) para tener "sobra" de imagen para el parallax */}
       <div className="absolute inset-0 overflow-hidden">
