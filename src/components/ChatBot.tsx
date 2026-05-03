@@ -108,17 +108,36 @@ export default function ChatBot() {
             </motion.svg>
           ) : (
             <motion.svg
-              key="chat"
+              key="robot"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.5, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              width="22"
-              height="22"
+              width="26"
+              height="26"
               viewBox="0 0 24 24"
-              fill="currentColor"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <path d="M12 2C6.48 2 2 6.05 2 11c0 2.5 1.16 4.78 3.04 6.42L4 22l4.84-1.6c1.04.27 2.13.42 3.16.42 5.52 0 10-4.05 10-9S17.52 2 12 2z" />
+              {/* Antena */}
+              <path d="M12 2v3" />
+              <circle cx="12" cy="2" r="0.6" fill="currentColor" />
+              {/* Cabeza del robot */}
+              <rect x="4" y="6" width="16" height="12" rx="3" />
+              {/* Ojos */}
+              <circle cx="9" cy="12" r="1.2" fill="currentColor" />
+              <circle cx="15" cy="12" r="1.2" fill="currentColor" />
+              {/* Boca */}
+              <path d="M9.5 15.5h5" />
+              {/* Orejas / receptores */}
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              {/* Base / cuello */}
+              <path d="M10 18v3" />
+              <path d="M14 18v3" />
             </motion.svg>
           )}
         </AnimatePresence>
@@ -170,9 +189,11 @@ export default function ChatBot() {
               </div>
             </div>
 
-            {/* Mensajes */}
+            {/* Mensajes — data-lenis-prevent excluye este div del smooth scroll global
+                para que el wheel/trackpad scrollee dentro del chat sin que Lenis lo intercepte */}
             <div
               ref={scrollRef}
+              data-lenis-prevent
               className="flex-1 overflow-y-auto px-5 py-5 space-y-4 overscroll-contain"
             >
               {/* Welcome message */}
