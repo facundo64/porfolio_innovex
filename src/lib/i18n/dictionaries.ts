@@ -225,7 +225,7 @@ const es: Dictionary = {
     },
     info: {
       emailLabel: "Escribinos",
-      emailValue: "hello@innhovex.com",
+      emailValue: "innhovex@gmail.com",
       phoneLabel: "Teléfono",
       phoneValue: "+54 9 11 70588887",
       locationLabel: "Estudio",
@@ -426,7 +426,7 @@ const en: Dictionary = {
     },
     info: {
       emailLabel: "Write to us",
-      emailValue: "hello@innhovex.com",
+      emailValue: "innhovex@gmail.com",
       phoneLabel: "Phone",
       phoneValue: "+54 9 11 70588887",
       locationLabel: "Studio",
