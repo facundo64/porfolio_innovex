@@ -5,7 +5,7 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL =
   process.env.CONTACT_FROM_EMAIL ?? "Innhovex Portfolio <noreply@mail.citep-forense.com>";
 const TO_EMAIL =
-  process.env.CONTACT_TO_EMAIL ?? "facundoarielaramayo@gmail.com";
+  process.env.CONTACT_TO_EMAIL ?? "innhovex@gmail.com";
 
 type Payload = {
   name?: string;
