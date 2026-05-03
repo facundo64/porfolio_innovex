@@ -7,6 +7,7 @@ import TopHeader from "@/components/TopHeader";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
 import ConditionalDockSpacer from "@/components/ConditionalDockSpacer";
+import ChatBot from "@/components/ChatBot";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 
 const geistSans = Geist({
@@ -69,6 +70,7 @@ export default function RootLayout({
             <PageTransition>{children}</PageTransition>
             <ConditionalDockSpacer />
             <BottomDock />
+            <ChatBot />
           </TransitionProvider>
         </LocaleProvider>
       </body>
