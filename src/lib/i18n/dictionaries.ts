@@ -70,6 +70,11 @@ export type Dictionary = {
     };
     socialTitle: string;
     note: string;
+    whatsappCta: string;
+    whatsappPrefill: string;
+    successMessage: string;
+    errorMessage: string;
+    orDivider: string;
   };
   footer: {
     tagline: string;
@@ -229,7 +234,15 @@ const es: Dictionary = {
       hoursValue: "Lun–Vie · 09:00 a 19:00 (GMT-3)",
     },
     socialTitle: "Seguinos",
-    note: "También podés escribirnos directamente a hello@innhovex.com",
+    note: "Tu mensaje llega directo a nuestro estudio.",
+    whatsappCta: "Hablemos por WhatsApp",
+    whatsappPrefill:
+      "Hola Innhovex, me gustaría conversar sobre un proyecto.",
+    successMessage:
+      "Mensaje enviado. Te respondemos en menos de 24 horas.",
+    errorMessage:
+      "Algo falló al enviar. Probá de nuevo o escribinos por WhatsApp.",
+    orDivider: "o",
   },
   footer: {
     tagline: "Estudio digital · Buenos Aires",
@@ -422,7 +435,15 @@ const en: Dictionary = {
       hoursValue: "Mon–Fri · 09:00 to 19:00 (GMT-3)",
     },
     socialTitle: "Follow us",
-    note: "You can also write us directly at hello@innhovex.com",
+    note: "Your message goes straight to our studio.",
+    whatsappCta: "Let's chat on WhatsApp",
+    whatsappPrefill:
+      "Hi Innhovex, I'd like to discuss a project.",
+    successMessage:
+      "Message sent. We'll reply within 24 hours.",
+    errorMessage:
+      "Something went wrong. Try again or message us on WhatsApp.",
+    orDivider: "or",
   },
   footer: {
     tagline: "Digital studio · Buenos Aires",
