@@ -163,14 +163,20 @@ export default function Hero() {
               {t.hero.closingText}
             </p>
 
-            {/* Datos de contacto (Margen derecho) */}
+            {/* Datos de contacto (Margen derecho) — usan el dictionary */}
             <div className="flex flex-col gap-2 text-xs md:text-sm font-mono tracking-[0.1em] uppercase text-[#FAFAF7]/60 md:text-right shrink-0">
               <span className="text-[#FAFAF7] font-bold tracking-[0.2em] mb-2">{t.hero.ctaTitle}</span>
-              <a href="mailto:hello@innhovex.com" className="hover:text-[#FAFAF7] transition-colors duration-300">
-                hello@innhovex.com
+              <a
+                href={`mailto:${t.contact.info.emailValue}`}
+                className="hover:text-[#FAFAF7] transition-colors duration-300"
+              >
+                {t.contact.info.emailValue}
               </a>
-              <a href="tel:+5491100000000" className="hover:text-[#FAFAF7] transition-colors duration-300 mt-1">
-                +54 9 11 0000-0000
+              <a
+                href={`tel:${t.contact.info.phoneValue.replace(/\s/g, "")}`}
+                className="hover:text-[#FAFAF7] transition-colors duration-300 mt-1"
+              >
+                {t.contact.info.phoneValue}
               </a>
             </div>
           </motion.div>
