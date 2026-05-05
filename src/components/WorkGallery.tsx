@@ -143,49 +143,104 @@ function GridCard({
           initial={{ y: "110%" }}
           animate={{ y: "0%" }}
           transition={{ duration: 1.1, delay: 0.25 + index * 0.08, ease: EASE }}
-          className="font-serif tracking-[-0.03em] leading-[0.92] text-[#FAFAF7]"
-          style={{ fontSize: "clamp(1.5rem, 4.4vw, 4.5rem)" }}
+          className="font-serif tracking-[-0.02em] leading-[1] text-[#FAFAF7]"
+          style={{ fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)" }}
         >
           {project.title}
         </motion.h3>
       </div>
 
-      {/* Imagen — z alto SOLO en la activa (viaja arriba de la franja). Las demás siguen visibles pero la franja las tapa al expandirse. */}
+      {/* Imagen / Logo — z alto SOLO en la activa (viaja arriba de la franja). */}
       <motion.div
         ref={setRef}
         layoutId={`work-img-${project.id}`}
         onClick={onOpen}
         whileHover={isAnyOpen ? undefined : "hover"}
-        style={{ zIndex: isOpen ? 100 : 1 }}
-        className="relative w-full aspect-[3/4] cursor-pointer overflow-hidden bg-black"
+        style={{
+          zIndex: isOpen ? 100 : 1,
+          backgroundColor:
+            project.displayMode === "logo"
+              ? project.bgColor ?? "#0A0A0A"
+              : "#000000",
+        }}
+        className="relative w-full aspect-[3/4] cursor-pointer overflow-hidden"
       >
-        <motion.div
-          variants={{ hover: { scale: 1.06 } }}
-          transition={{ duration: 0.7, ease: EASE }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            sizes="(min-width: 768px) 25vw, 50vw"
-            className="object-cover"
-            priority={index < 2}
-          />
-        </motion.div>
+        {project.displayMode === "logo" ? (
+          // Modo logo: logo grande centrado, sin imagen de fondo
+          <motion.div
+            variants={{ hover: { scale: 1.04 } }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="absolute inset-0 flex items-center justify-center p-8 md:p-10"
+          >
+            {project.cardLogo || project.logoNegative || project.logo ? (
+              <Image
+                src={project.cardLogo ?? project.logoNegative ?? project.logo!}
+                alt={`${project.title} logo`}
+                fill
+                sizes="(min-width: 768px) 25vw, 50vw"
+                className="object-contain"
+                priority={index < 2}
+              />
+            ) : null}
+          </motion.div>
+        ) : (
+          // Modo image (default): imagen full-bleed con filter pack sutil para cohesión visual
+          <>
+            <motion.div
+              variants={{
+                hover: { scale: 1.06, filter: "grayscale(0%) contrast(1)" },
+              }}
+              initial={{ filter: "grayscale(55%) contrast(1.02)" }}
+              transition={{ duration: 0.8, ease: EASE }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 768px) 25vw, 50vw"
+                className="object-cover"
+                priority={index < 2}
+              />
+            </motion.div>
 
-        {/* Logo overlay (esquina inferior izq) */}
-        {project.logoNegative || project.logo ? (
-          <div className="absolute bottom-3 left-3 w-20 h-7 md:w-24 md:h-8 opacity-90 pointer-events-none">
-            <Image
-              src={project.logoNegative ?? project.logo!}
-              alt=""
-              fill
-              sizes="120px"
-              className="object-contain object-left"
+            {/* Tinte navy MUY sutil con mix-blend-multiply. En hover desaparece → full color. */}
+            <motion.div
+              aria-hidden
+              variants={{ hover: { opacity: 0 } }}
+              initial={{ opacity: 0.35 }}
+              transition={{ duration: 0.8, ease: EASE }}
+              className="absolute inset-0 pointer-events-none mix-blend-multiply"
+              style={{ backgroundColor: "#1E2A47" }}
             />
-          </div>
-        ) : null}
+
+            {/* Velo sutil para legibilidad del logo y número */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0A0A0A]/35 via-transparent to-transparent"
+            />
+
+            {/* Logo overlay (esquina inferior izq) — más grande, usa cardLogo si está definido */}
+            {project.cardLogo || project.logoNegative || project.logo ? (
+              <div
+                className="absolute bottom-4 left-4 w-32 h-12 md:w-40 md:h-14 opacity-95 pointer-events-none"
+                style={{
+                  filter: project.cardLogoInvert
+                    ? "brightness(0) invert(1)"
+                    : undefined,
+                }}
+              >
+                <Image
+                  src={project.cardLogo ?? project.logoNegative ?? project.logo!}
+                  alt=""
+                  fill
+                  sizes="180px"
+                  className="object-contain object-left"
+                />
+              </div>
+            ) : null}
+          </>
+        )}
 
         {/* Indicador de click */}
         <span className="absolute top-3 right-3 text-[9px] font-mono tracking-[0.2em] uppercase text-[#FAFAF7]/70">
@@ -300,14 +355,19 @@ function Preview({
             transition: { duration: 0.7, delay: TEXT_DELAY + 0.05, ease: EASE },
           }}
           exit={{ opacity: 0, transition: { duration: 0.25 } }}
-          className="md:col-span-3 max-w-xs space-y-3"
+          className="md:col-span-3 flex flex-col items-start gap-6 md:gap-8 md:max-w-xs"
         >
-          <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 border-[#FAFAF7]/50 pl-3">
-            {t.common.problem}
-          </h4>
-          <p className="text-[13px] md:text-sm leading-relaxed text-[#FAFAF7]/90 pl-3">
-            {localized.problem}
-          </p>
+          {/* Spacer simétrico que matchea el alto del logo del lado derecho — solo desktop */}
+          <div className="hidden md:block w-20 md:w-24 h-10 md:h-14" aria-hidden />
+
+          <div className="space-y-4 md:min-h-[180px]">
+            <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 border-[#FAFAF7]/50 pl-3">
+              {t.common.problem}
+            </h4>
+            <p className="text-sm md:text-[15px] leading-[1.55] text-[#FAFAF7]/90 pl-3">
+              {localized.problem}
+            </p>
+          </div>
         </motion.div>
 
         {/* Centro — imagen (con su logo embebido) + título superpuesto */}
@@ -317,16 +377,36 @@ function Preview({
             transition={{
               layout: { duration: 0.6, delay: 0.5, ease: EASE },
             }}
-            style={{ zIndex: 100 }}
-            className="relative w-full max-w-md aspect-[3/4] overflow-hidden bg-black shadow-2xl"
+            style={{
+              zIndex: 100,
+              backgroundColor:
+                project.displayMode === "logo"
+                  ? project.bgColor ?? "#0A0A0A"
+                  : "#000000",
+            }}
+            className="relative w-full max-w-md aspect-[3/4] overflow-hidden shadow-2xl"
           >
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-            />
+            {project.displayMode === "logo" ? (
+              <div className="absolute inset-0 flex items-center justify-center p-12 md:p-16">
+                {project.cardLogo || project.logoNegative || project.logo ? (
+                  <Image
+                    src={project.cardLogo ?? project.logoNegative ?? project.logo!}
+                    alt={`${project.title} logo`}
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-contain"
+                  />
+                ) : null}
+              </div>
+            ) : (
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover"
+              />
+            )}
           </motion.div>
 
           {/* Título gigante superpuesto */}
@@ -351,7 +431,7 @@ function Preview({
           </div>
         </div>
 
-        {/* Box derecha — Solución */}
+        {/* Box derecha — Logo + Solución */}
         <motion.div
           initial={{ opacity: 0, x: -8 }}
           animate={{
@@ -360,14 +440,29 @@ function Preview({
             transition: { duration: 0.7, delay: TEXT_DELAY + 0.05, ease: EASE },
           }}
           exit={{ opacity: 0, transition: { duration: 0.25 } }}
-          className="md:col-span-3 max-w-xs space-y-3 md:justify-self-end md:text-right"
+          className="md:col-span-3 flex flex-col items-start md:items-end gap-6 md:gap-8 md:justify-self-end md:max-w-xs"
         >
-          <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 md:border-l-0 md:border-r-2 border-[#FAFAF7]/50 pl-3 md:pl-0 md:pr-3">
-            {t.common.solution}
-          </h4>
-          <p className="text-[13px] md:text-sm leading-relaxed text-[#FAFAF7]/90 pl-3 md:pl-0 md:pr-3">
-            {localized.solution}
-          </p>
+          {/* Logo arriba de solución — sutil, no compite con el título central */}
+          {project.logoNegative || project.logo ? (
+            <div className="relative w-20 md:w-24 h-10 md:h-14 opacity-70">
+              <Image
+                src={project.logoNegative ?? project.logo!}
+                alt={`${project.title} logo`}
+                fill
+                sizes="(max-width: 768px) 80px, 96px"
+                className="object-contain object-left md:object-right"
+              />
+            </div>
+          ) : null}
+
+          <div className="space-y-4 md:text-right md:min-h-[180px]">
+            <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#FAFAF7] border-l-2 md:border-l-0 md:border-r-2 border-[#FAFAF7]/50 pl-3 md:pl-0 md:pr-3">
+              {t.common.solution}
+            </h4>
+            <p className="text-sm md:text-[15px] leading-[1.55] text-[#FAFAF7]/90 pl-3 md:pl-0 md:pr-3">
+              {localized.solution}
+            </p>
+          </div>
         </motion.div>
       </div>
 

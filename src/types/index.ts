@@ -38,9 +38,12 @@ export interface Project {
   // Assets visuales
   logo?: string;               // ruta pública al logo dark-on-light
   logoNegative?: string;       // versión sobre fondo oscuro
+  cardLogo?: string;           // logo específico para overlay del card (override de logoNegative)
+  cardLogoInvert?: boolean;    // si true, aplica filter CSS para volver el logo blanco (útil cuando el SVG es dark)
   image: string;               // hero image grande
   bgColor?: string;            // fondo de la tarjeta sticky
   accentColor?: string;        // color acento de marca
+  displayMode?: "image" | "logo"; // "image" (default) muestra imagen; "logo" muestra logo grande sobre fondo transparente
 
   // Tech
   stack: string[];             // stack principal (máx 6)
