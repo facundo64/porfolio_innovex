@@ -29,17 +29,52 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "INNHOVEX — Desarrollo Web & Software a medida",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://innhovex.com"),
+  title: {
+    default: "INNHOVEX — Desarrollo Web & Software a medida",
+    template: "%s | INNHOVEX",
+  },
   description:
-    "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
-  keywords: ["desarrollo web", "software", "INNHOVEX", "agencia", "TypeScript", "Next.js"],
-  authors: [{ name: "INNHOVEX" }],
-  robots: "index, follow",
+    "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse. Especialistas en Next.js, React y arquitecturas de alto rendimiento.",
+  keywords: ["desarrollo web", "software a medida", "INNHOVEX", "agencia digital", "TypeScript", "Next.js", "diseño UX/UI", "Argentina"],
+  authors: [{ name: "INNHOVEX", url: "https://innhovex.com" }],
+  creator: "INNHOVEX",
+  publisher: "INNHOVEX",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "INNHOVEX — Desarrollo Web & Software",
-    description: "Estudio de desarrollo web y software a medida.",
-    type: "website",
+    title: "INNHOVEX — Desarrollo Web & Software a medida",
+    description: "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
+    url: "/",
+    siteName: "INNHOVEX",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "INNHOVEX — Estudio de desarrollo web y software",
+      },
+    ],
     locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "INNHOVEX — Desarrollo Web & Software a medida",
+    description: "Creamos experiencias digitales premium para marcas que quieren destacarse.",
+    images: ["/og-image.jpg"],
   },
   icons: {
     icon: [
