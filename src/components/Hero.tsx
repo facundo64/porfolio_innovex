@@ -22,7 +22,7 @@ export default function Hero() {
   return (
     <section
       data-theme="dark"
-      className="relative w-full bg-[#0A0A0A] overflow-hidden h-[140vh] md:h-[200vh]"
+      className="relative w-full bg-[#0A0A0A] overflow-hidden min-h-[140vh] md:min-h-[200vh]"
     >
       {/* Imagen: ocupa MÁS del 100% (-top y h-[120%]) para tener "sobra" de imagen para el parallax */}
       <div className="absolute inset-0 overflow-hidden">
@@ -85,7 +85,7 @@ export default function Hero() {
         </div>
 
         {/* Contenedor central — pl-2 lo corre apenas a la derecha para no coincidir con IEX */}
-        <div className="mt-[38vh] md:mt-[44vh] max-w-5xl flex flex-col gap-10 md:gap-16 pl-2 md:pl-16">
+        <div className="mt-[30vh] md:mt-[44vh] max-w-5xl flex flex-col gap-8 md:gap-16 pl-2 md:pl-16">
           
           {/* Intro Original (Arriba) */}
           <p
@@ -114,7 +114,7 @@ export default function Hero() {
           <h1
             className="font-serif text-[#FAFAF7] tracking-[-0.05em]"
             style={{
-              fontSize: "clamp(5rem, 19vw, 20rem)",
+              fontSize: "clamp(4rem, 19vw, 20rem)",
               lineHeight: 0.85,
               marginLeft: "-1vw",
             }}
@@ -156,7 +156,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.2 }}
-            className="flex flex-col md:flex-row md:items-end justify-between border-t border-[#FAFAF7]/10 pt-8 mt-4 gap-12"
+            className="flex flex-col md:flex-row md:items-end justify-between border-t border-[#FAFAF7]/10 pt-6 mt-2 gap-6 md:gap-12"
           >
             {/* Texto de cierre / posicionamiento (Marketing Opción 2) */}
             <p className="font-serif text-[#FAFAF7]/70 text-lg md:text-xl lg:text-2xl leading-relaxed max-w-xl">
