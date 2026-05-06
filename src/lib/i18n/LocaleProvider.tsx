@@ -38,7 +38,11 @@ function subscribe(callback: () => void) {
   };
 }
 function emit() {
-  subscribers.forEach((cb) => cb());
+  // Copy before iterating to avoid mutation during iteration
+  // (e.g., if a subscriber unsubscribes while emitting)
+  for (const cb of [...subscribers]) {
+    cb();
+  }
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {

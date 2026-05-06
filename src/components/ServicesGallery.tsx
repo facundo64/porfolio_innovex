@@ -10,9 +10,14 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 export default function ServicesGallery() {
   const t = useT();
   const services = t.services.items;
-  const [activeId, setActiveId] = useState<string>(services[0].id);
+  const fallbackId = services[0]?.id ?? "";
+  const [activeId, setActiveId] = useState<string>(fallbackId);
 
-  const active = services.find((s) => s.id === activeId)!;
+  const active = services.find((s) => s.id === activeId) ?? services[0];
+
+  if (!active) {
+    return null;
+  }
 
   return (
     <div

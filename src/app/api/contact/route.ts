@@ -7,6 +7,48 @@ const FROM_EMAIL =
 const TO_EMAIL =
   process.env.CONTACT_TO_EMAIL ?? "innhovex@gmail.com";
 
+/* ─── Rate limiting in-memory (max 3 envíos por IP por hora) ─────────── */
+const RATE_LIMIT = 3;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const attempts = new Map<string, number[]>();
+
+function getClientIp(req: Request): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const windowStart = now - RATE_WINDOW_MS;
+  const history = attempts.get(ip) ?? [];
+  const recent = history.filter((t) => t > windowStart);
+
+  if (recent.length >= RATE_LIMIT) {
+    attempts.set(ip, recent);
+    return true;
+  }
+
+  recent.push(now);
+  attempts.set(ip, recent);
+  return false;
+}
+
+/* ─── Cleanup periódico para evitar memory leak ──────────────────────── */
+setInterval(() => {
+  const cutoff = Date.now() - RATE_WINDOW_MS;
+  for (const [ip, timestamps] of attempts.entries()) {
+    const fresh = timestamps.filter((t) => t > cutoff);
+    if (fresh.length === 0) {
+      attempts.delete(ip);
+    } else {
+      attempts.set(ip, fresh);
+    }
+  }
+}, RATE_WINDOW_MS);
+
 type Payload = {
   name?: string;
   email?: string;
@@ -20,6 +62,15 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { ok: false, error: "config" },
       { status: 500 }
+    );
+  }
+
+  const clientIp = getClientIp(req);
+  if (isRateLimited(clientIp)) {
+    console.warn("[contact] Rate limit excedido para IP:", clientIp);
+    return NextResponse.json(
+      { ok: false, error: "rate_limited" },
+      { status: 429 }
     );
   }
 
@@ -38,6 +89,13 @@ export async function POST(req: Request) {
   if (!name || !email || !message) {
     return NextResponse.json(
       { ok: false, error: "missing_fields" },
+      { status: 400 }
+    );
+  }
+
+  if (name.length > 100 || email.length > 255 || company.length > 150 || message.length > 5000) {
+    return NextResponse.json(
+      { ok: false, error: "too_long" },
       { status: 400 }
     );
   }

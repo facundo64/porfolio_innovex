@@ -12,7 +12,7 @@ const SOCIALS = [
   { label: "GitHub", href: "https://github.com/facundo64" },
 ];
 
-type FormStatus = "idle" | "submitting" | "success" | "error";
+type FormStatus = "idle" | "submitting" | "success" | "error" | "rate_limited";
 
 export default function ContactGallery() {
   const t = useT();
@@ -39,7 +39,14 @@ export default function ContactGallery() {
         body: JSON.stringify(payload),
       });
       const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error ?? "send_failed");
+      if (!res.ok || !json.ok) {
+        if (json.error === "rate_limited") {
+          setStatus("rate_limited");
+        } else {
+          throw new Error(json.error ?? "send_failed");
+        }
+        return;
+      }
       setStatus("success");
       formRef.current?.reset();
     } catch (err) {
@@ -223,13 +230,21 @@ export default function ContactGallery() {
               >
                 <span aria-hidden>✓</span> {t.contact.successMessage}
               </motion.p>
+            ) : status === "rate_limited" ? (
+              <motion.p
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm font-mono tracking-[0.05em] text-[#F4B4A1] flex items-center gap-2"
+              >
+                <span aria-hidden>⏳</span> Demasiados intentos. Esperá un momento y probá de nuevo.
+              </motion.p>
             ) : status === "error" ? (
               <motion.p
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-sm font-mono tracking-[0.05em] text-[#F4B4A1] flex items-center gap-2"
               >
-                <span aria-hidden>!</span> {t.contact.errorMessage}
+                <span aria-hidden>⚠</span> {t.contact.errorMessage}
               </motion.p>
             ) : (
               <span className="block text-[10px] md:text-[11px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/40">

@@ -44,6 +44,14 @@ export default function Preloader() {
       document.documentElement.style.overflow = "hidden";
     }
     /* eslint-enable react-hooks/set-state-in-effect */
+
+    // Cleanup: si el componente se desmonta mientras el preloader está visible,
+    // restauramos el overflow para que la página no quede trabada sin scroll.
+    return () => {
+      if (typeof window !== "undefined") {
+        document.documentElement.style.overflow = "";
+      }
+    };
   }, []);
 
   useEffect(() => {

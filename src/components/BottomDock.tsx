@@ -29,10 +29,11 @@ export default function BottomDock() {
     const onScroll = () => {
       const y = window.scrollY;
       setCompact(y > 100 && y > lastY);
-      lastY = y;
 
       // Auto-close menu on scroll
       if (Math.abs(y - lastY) > 20) setMenuOpen(false);
+
+      lastY = y;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

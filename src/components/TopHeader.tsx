@@ -24,19 +24,27 @@ export default function TopHeader() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const check = () => {
+      ticking = false;
       setScrolled(window.scrollY > 80);
       const el = document.elementFromPoint(window.innerWidth / 2, 40);
       if (!el) return;
       const section = el.closest("[data-theme]") as HTMLElement | null;
       setOnDark(section?.dataset.theme === "dark");
     };
+    const onScrollOrResize = () => {
+      if (!ticking) {
+        requestAnimationFrame(check);
+        ticking = true;
+      }
+    };
     check();
-    window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
     return () => {
-      window.removeEventListener("scroll", check);
-      window.removeEventListener("resize", check);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
     };
   }, [pathname]);
 

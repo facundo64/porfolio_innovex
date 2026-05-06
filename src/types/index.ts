@@ -40,6 +40,8 @@ export interface Project {
   logoNegative?: string;       // versión sobre fondo oscuro
   cardLogo?: string;           // logo específico para overlay del card (override de logoNegative)
   cardLogoInvert?: boolean;    // si true, aplica filter CSS para volver el logo blanco (útil cuando el SVG es dark)
+  previewLogo?: string;        // logo específico para el preview (típicamente el isotipo). Override de logoNegative en el preview.
+  previewLogoLarger?: boolean; // si true, hace el logo del preview más grande (útil cuando es solo el isotipo)
   image: string;               // hero image grande
   bgColor?: string;            // fondo de la tarjeta sticky
   accentColor?: string;        // color acento de marca

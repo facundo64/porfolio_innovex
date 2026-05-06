@@ -1,28 +1,5 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === "production";
-
-/**
- * CSP restrictivo. En dev permitimos 'unsafe-eval' porque Next/Turbopack lo
- * necesita para HMR; en prod lo quitamos.
- */
-const csp = [
-  "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
-  "style-src 'self' 'unsafe-inline'",
-  "font-src 'self' data:",
-  "img-src 'self' data: blob: https:",
-  "connect-src 'self'",
-  "frame-src 'none'",
-  "frame-ancestors 'none'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "manifest-src 'self'",
-  "worker-src 'self' blob:",
-  ...(isProd ? ["upgrade-insecure-requests"] : []),
-].join("; ");
-
 const nextConfig: NextConfig = {
   async headers() {
     return [
@@ -45,7 +22,6 @@ const nextConfig: NextConfig = {
           { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
           { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
           { key: "Origin-Agent-Cluster", value: "?1" },
-          { key: "Content-Security-Policy", value: csp },
         ],
       },
       {

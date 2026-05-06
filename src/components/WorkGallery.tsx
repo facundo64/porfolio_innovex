@@ -9,9 +9,16 @@ import { useT } from "@/lib/i18n/LocaleProvider";
 import { useLocalizedProject } from "@/lib/i18n/useLocalizedProject";
 
 const SHOWCASE_IDS = ["citep", "jem-si", "obra-azul", "cripnar"] as const;
-const showcase: Project[] = SHOWCASE_IDS.map(
-  (id) => projects.find((p) => p.id === id)!
-).filter(Boolean);
+const showcase: Project[] = SHOWCASE_IDS
+  .map((id) => projects.find((p) => p.id === id))
+  .filter((p): p is Project => p !== undefined);
+
+if (showcase.length !== SHOWCASE_IDS.length) {
+  const missing = SHOWCASE_IDS.filter(
+    (id) => !projects.some((p) => p.id === id)
+  );
+  console.error("[WorkGallery] Proyectos faltantes:", missing.join(", "));
+}
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
@@ -173,14 +180,16 @@ function GridCard({
             className="absolute inset-0 flex items-center justify-center p-8 md:p-10"
           >
             {project.cardLogo || project.logoNegative || project.logo ? (
-              <Image
-                src={project.cardLogo ?? project.logoNegative ?? project.logo!}
-                alt={`${project.title} logo`}
-                fill
-                sizes="(min-width: 768px) 25vw, 50vw"
-                className="object-contain"
-                priority={index < 2}
-              />
+              <div style={{ filter: "brightness(0) invert(1)" }}>
+                <Image
+                  src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
+                  alt={`${project.title} logo`}
+                  fill
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-contain"
+                  priority={index < 2}
+                />
+              </div>
             ) : null}
           </motion.div>
         ) : (
@@ -220,18 +229,14 @@ function GridCard({
               className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0A0A0A]/35 via-transparent to-transparent"
             />
 
-            {/* Logo overlay (esquina inferior izq) — más grande, usa cardLogo si está definido */}
+            {/* Logo overlay (esquina inferior izq) — más grande, forzado a blanco */}
             {project.cardLogo || project.logoNegative || project.logo ? (
               <div
                 className="absolute bottom-4 left-4 w-32 h-12 md:w-40 md:h-14 opacity-95 pointer-events-none"
-                style={{
-                  filter: project.cardLogoInvert
-                    ? "brightness(0) invert(1)"
-                    : undefined,
-                }}
+                style={{ filter: "brightness(0) invert(1)" }}
               >
                 <Image
-                  src={project.cardLogo ?? project.logoNegative ?? project.logo!}
+                  src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
                   alt=""
                   fill
                   sizes="180px"
@@ -389,13 +394,15 @@ function Preview({
             {project.displayMode === "logo" ? (
               <div className="absolute inset-0 flex items-center justify-center p-12 md:p-16">
                 {project.cardLogo || project.logoNegative || project.logo ? (
-                  <Image
-                    src={project.cardLogo ?? project.logoNegative ?? project.logo!}
-                    alt={`${project.title} logo`}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-contain"
-                  />
+                  <div style={{ filter: "brightness(0) invert(1)" }} className="w-full h-full relative">
+                    <Image
+                      src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
+                      alt={`${project.title} logo`}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-contain"
+                    />
+                  </div>
                 ) : null}
               </div>
             ) : (
@@ -442,11 +449,14 @@ function Preview({
           exit={{ opacity: 0, transition: { duration: 0.25 } }}
           className="md:col-span-3 flex flex-col items-start md:items-end gap-6 md:gap-8 md:justify-self-end md:max-w-xs"
         >
-          {/* Logo arriba de solución — sutil, no compite con el título central */}
+          {/* Logo arriba de solución — forzado a blanco para uniformidad */}
           {project.logoNegative || project.logo ? (
-            <div className="relative w-20 md:w-24 h-10 md:h-14 opacity-70">
+            <div 
+              className="relative w-20 md:w-24 h-10 md:h-14 opacity-70"
+              style={{ filter: "brightness(0) invert(1)" }}
+            >
               <Image
-                src={project.logoNegative ?? project.logo!}
+                src={project.logoNegative ?? project.logo ?? ""}
                 alt={`${project.title} logo`}
                 fill
                 sizes="(max-width: 768px) 80px, 96px"

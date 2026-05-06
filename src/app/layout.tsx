@@ -9,6 +9,7 @@ import Preloader from "@/components/Preloader";
 import ConditionalDockSpacer from "@/components/ConditionalDockSpacer";
 import ChatBot from "@/components/ChatBot";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
+import { headers } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-sans-geist",
@@ -42,11 +43,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? "";
+
   return (
     <html
       lang="es"
@@ -56,6 +59,7 @@ export default function RootLayout({
       <head>
         {/* Setea el lang attr ANTES del React mount para evitar flash y mantener accesibilidad */}
         <script
+          nonce={nonce || undefined}
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var l=localStorage.getItem('innhovex:locale');if(l==='es'||l==='en')document.documentElement.lang=l;}catch(e){}})();`,
           }}
