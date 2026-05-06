@@ -70,6 +70,9 @@ export const metadata: Metadata = {
     locale: "es_AR",
     type: "website",
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   twitter: {
     card: "summary_large_image",
     title: "INNHOVEX — Desarrollo Web & Software a medida",
@@ -112,6 +115,64 @@ export default async function RootLayout({
           nonce={nonce || undefined}
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var l=localStorage.getItem('innhovex:locale');if(l==='es'||l==='en')document.documentElement.lang=l;}catch(e){}})();`,
+          }}
+        />
+        {/* Schema.org JSON-LD para SEO */}
+        <script
+          type="application/ld+json"
+          nonce={nonce || undefined}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "INNHOVEX",
+              "alternateName": "IEX",
+              "url": "https://innhovex.com",
+              "logo": "https://innhovex.com/logo-innhovex.svg",
+              "image": "https://innhovex.com/og-image.jpg",
+              "description": "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
+              "sameAs": [
+                "https://instagram.com/innhovex",
+                "https://linkedin.com/company/innhovex",
+                "https://github.com/facundo64"
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+54-9-11-7058-8887",
+                "contactType": "sales",
+                "areaServed": ["AR", "US", "ES", "MX", "CL"],
+                "availableLanguage": ["Spanish", "English"],
+                "email": "innhovex@gmail.com"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Buenos Aires",
+                "addressCountry": "AR"
+              },
+              "foundingDate": "2024",
+              "founders": [
+                {
+                  "@type": "Person",
+                  "name": "INNHOVEX Team"
+                }
+              ],
+              "knowsAbout": [
+                "Desarrollo Web",
+                "Software a Medida",
+                "Next.js",
+                "React",
+                "TypeScript",
+                "Diseño UX/UI",
+                "Aplicaciones Web",
+                "SaaS"
+              ],
+              "serviceType": [
+                "Desarrollo Web",
+                "Desarrollo de Software",
+                "Consultoría Tecnológica",
+                "Diseño UX/UI"
+              ]
+            })
           }}
         />
       </head>

@@ -120,8 +120,75 @@ Auditoría completa del código con fixes en seguridad, bugs y hardening del por
 
 ---
 
+## SEO Improvements — Mayo 2026
+
+### OG Images
+
+**Archivo:** `/public/og-image.jpg` (nuevo)
+
+- Creada imagen OG 1200x630px usando `imagenIEX.jpg`
+- Referenciada en metadata de todas las páginas
+- Previews en redes sociales funcionando correctamente
+
+### Schema.org JSON-LD
+
+**Archivo:** `src/app/layout.tsx`
+
+- Agregado structured data para `Organization`
+- Incluye: nombre, logo, contacto, redes sociales, áreas de expertise
+- Mejora rich snippets en Google
+
+### Canonicals por página
+
+**Archivos:** `src/app/*/page.tsx`
+
+Todas las páginas ahora tienen:
+- `alternates.canonical` correcto
+- Metadata OG completo (title, description, images)
+- Twitter Cards consistentes
+
+| Página | Canonical |
+|--------|-----------|
+| Home | `/` |
+| Work | `/work` |
+| Services | `/services` |
+| Process | `/process` |
+| Contact | `/contact` |
+
+### Sitemap actualizado
+
+**Archivo:** `src/app/sitemap.ts`
+
+- Agregada página `/process` (faltaba)
+- 5 URLs indexadas correctamente
+- Prioridades optimizadas
+
+### Google Site Verification
+
+**Archivo:** `src/app/layout.tsx`
+
+- Agregado soporte para `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`
+- Configurar en `.env.local` para verificar propiedad en Google Search Console
+
+---
+
+## Archivos SEO modificados
+
+| Archivo | Cambio |
+|---------|--------|
+| `public/og-image.jpg` | **Nuevo** — Imagen OG 1200x630px |
+| `src/app/layout.tsx` | Schema.org JSON-LD + Google verification |
+| `src/app/work/page.tsx` | Metadata completo + canonical |
+| `src/app/services/page.tsx` | Metadata completo + canonical |
+| `src/app/process/page.tsx` | Metadata completo + canonical |
+| `src/app/contact/page.tsx` | Metadata completo + canonical |
+| `src/app/sitemap.ts` | Agregado `/process` |
+
+---
+
 ## Notas
 
 - TypeScript compila sin errores (`tsc --noEmit` OK)
 - ESLint sin errores ni warnings en los archivos modificados
 - Los API keys en `.env.local` están protegidas por `.gitignore` (`.env*`)
+- OG Image verificada: existe en `/public/og-image.jpg`
