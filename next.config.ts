@@ -56,7 +56,10 @@ const nextConfig: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 92],
   },
+
+  allowedDevOrigins: ["192.168.0.6"],
 };
 
 export default nextConfig;

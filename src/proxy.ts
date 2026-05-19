@@ -19,7 +19,7 @@ const cspBase = [
   ...(isProd ? ["upgrade-insecure-requests"] : []),
 ].join("; ");
 
-export function middleware() {
+export function proxy() {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const csp = cspBase.replace("{{NONCE}}", nonce);
 

@@ -12,12 +12,31 @@ const RATE_LIMIT = 3;
 const RATE_WINDOW_MS = 60 * 60 * 1000;
 const attempts = new Map<string, number[]>();
 
+const ALLOWED_ORIGIN_SUFFIXES = ["innhovex.com", "vercel.app", "localhost:3000", "localhost:3001"];
+
 function getClientIp(req: Request): string {
   return (
+    req.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
     "unknown"
   );
+}
+
+function hashIp(ip: string): string {
+  let h = 0;
+  for (let i = 0; i < ip.length; i++) h = (h * 31 + ip.charCodeAt(i)) | 0;
+  return `ip_${(h >>> 0).toString(36)}`;
+}
+
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return true;
+  try {
+    const host = new URL(origin).host;
+    return ALLOWED_ORIGIN_SUFFIXES.some((s) => host === s || host.endsWith(`.${s}`) || host.endsWith(s));
+  } catch {
+    return false;
+  }
 }
 
 function isRateLimited(ip: string): boolean {
@@ -36,19 +55,6 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-/* ─── Cleanup periódico para evitar memory leak ──────────────────────── */
-setInterval(() => {
-  const cutoff = Date.now() - RATE_WINDOW_MS;
-  for (const [ip, timestamps] of attempts.entries()) {
-    const fresh = timestamps.filter((t) => t > cutoff);
-    if (fresh.length === 0) {
-      attempts.delete(ip);
-    } else {
-      attempts.set(ip, fresh);
-    }
-  }
-}, RATE_WINDOW_MS);
-
 type Payload = {
   name?: string;
   email?: string;
@@ -57,6 +63,13 @@ type Payload = {
 };
 
 export async function POST(req: Request) {
+  if (!isAllowedOrigin(req.headers.get("origin"))) {
+    return NextResponse.json(
+      { ok: false, error: "forbidden_origin" },
+      { status: 403 }
+    );
+  }
+
   if (!RESEND_API_KEY) {
     console.error("[contact] RESEND_API_KEY no está configurado");
     return NextResponse.json(
@@ -67,10 +80,10 @@ export async function POST(req: Request) {
 
   const clientIp = getClientIp(req);
   if (isRateLimited(clientIp)) {
-    console.warn("[contact] Rate limit excedido para IP:", clientIp);
+    console.warn("[contact] Rate limit excedido:", hashIp(clientIp));
     return NextResponse.json(
       { ok: false, error: "rate_limited" },
-      { status: 429 }
+      { status: 429, headers: { "Retry-After": "3600" } }
     );
   }
 

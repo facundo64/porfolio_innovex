@@ -95,6 +95,7 @@ export default async function RootLayout({
   return (
     <html
       lang="es"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
       suppressHydrationWarning
     >
@@ -102,6 +103,7 @@ export default async function RootLayout({
         {/* Setea el lang attr ANTES del React mount para evitar flash y mantener accesibilidad */}
         <script
           nonce={nonce || undefined}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var l=localStorage.getItem('innhovex:locale');if(l==='es'||l==='en')document.documentElement.lang=l;}catch(e){}})();`,
           }}
@@ -110,6 +112,7 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           nonce={nonce || undefined}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",

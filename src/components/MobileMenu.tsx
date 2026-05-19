@@ -63,7 +63,7 @@ export default function MobileMenu() {
             animate={{
               rotate: open ? 45 : 0,
               y: open ? 6 : 0,
-              backgroundColor: open ? "#FAFAF7" : "currentColor",
+              backgroundColor: open ? "#FAFAF7" : "#0A0A0A",
             }}
             transition={{ duration: 0.35, ease: EASE }}
             className="block h-[1.5px] w-full rounded-full origin-center"
@@ -77,7 +77,7 @@ export default function MobileMenu() {
             animate={{
               rotate: open ? -45 : 0,
               y: open ? -6 : 0,
-              backgroundColor: open ? "#FAFAF7" : "currentColor",
+              backgroundColor: open ? "#FAFAF7" : "#0A0A0A",
             }}
             transition={{ duration: 0.35, ease: EASE }}
             className="block h-[1.5px] w-full rounded-full origin-center"
