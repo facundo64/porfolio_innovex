@@ -315,17 +315,41 @@ function Preview({
 }) {
   const t = useT();
   const localized = useLocalizedProject(project);
+  const scrollRef = useRef<HTMLDivElement>(null);
   // Cuando el preview entra, los textos aparecen después de la franja (~1.1s)
   const TEXT_DELAY = 1.05;
+
+  const scrollToGallery = () => {
+    const container = scrollRef.current;
+    const target = container?.querySelector<HTMLElement>(`#gallery-${project.id}`);
+    if (!container || !target) return;
+    const start = container.scrollTop;
+    const end = Math.max(0, target.offsetTop - 40);
+    const distance = end - start;
+    if (Math.abs(distance) < 4) return;
+    const duration = 1600;
+    const startTime = performance.now();
+    const easeInOutCubic = (x: number) =>
+      x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      container.scrollTop = start + distance * easeInOutCubic(progress);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
 
   return (
     <motion.div
       key={project.id}
+      ref={scrollRef}
+      data-lenis-prevent
       className="fixed inset-0 z-[95] flex flex-col overflow-y-auto overscroll-contain"
       initial={{ pointerEvents: "auto" }}
       exit={{ opacity: 0 }}
     >
-      {/* HEADER — botón volver + cliente, en flex (sin superposición posible) */}
+      {/* HEADER — botón volver + cliente + visitar sitio */}
       <motion.header
         initial={{ opacity: 0 }}
         animate={{
@@ -487,16 +511,180 @@ function Preview({
         exit={{ opacity: 0, transition: { duration: 0.25 } }}
         className="relative z-[110] flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-8 px-6 md:px-14 py-5 md:py-6 border-t border-white/12"
       >
-        <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70 shrink-0">
-          {localized.role}
-        </span>
+        <div className="flex flex-col gap-2 shrink-0">
+          <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70">
+            {localized.role}
+          </span>
+          {project.discipline && project.discipline.length > 0 && (
+            <ul className="flex flex-wrap gap-1.5 max-w-xs">
+              {project.discipline.map((d) => (
+                <li
+                  key={d}
+                  className="text-[9px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/55 border border-white/15 rounded-full px-2 py-0.5"
+                >
+                  {d}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <p className="font-serif text-base md:text-lg lg:text-xl tracking-[-0.01em] text-[#FAFAF7]/95 max-w-2xl md:text-center leading-snug">
           {localized.tagline}
         </p>
-        <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70 shrink-0">
-          {project.year}
-        </span>
+        <div className="flex items-center gap-4 shrink-0">
+          <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70">
+            {project.year}
+          </span>
+          {project.gallery && project.gallery.length > 0 && (
+            <button
+              type="button"
+              onClick={scrollToGallery}
+              className="text-[9px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/55 hover:text-[#FAFAF7] flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <motion.span
+                animate={{ y: [0, 3, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-block"
+                aria-hidden
+              >
+                ↓
+              </motion.span>
+              {t.common.gallery}
+            </button>
+          )}
+        </div>
       </motion.footer>
+
+      {/* GALLERY — stack vertical cinematográfico con scroll-snap + captions numerados */}
+      {project.gallery && project.gallery.length > 0 && (
+        <motion.section
+          id={`gallery-${project.id}`}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, delay: TEXT_DELAY + 0.35, ease: EASE },
+          }}
+          exit={{ opacity: 0, transition: { duration: 0.2 } }}
+          className="relative z-[110] px-6 md:px-14 pt-12 pb-24 md:pt-16 md:pb-32"
+        >
+          <div className="flex items-center gap-4 mb-12 md:mb-16">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/40 shrink-0">
+              {t.common.gallery}
+            </span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+          <div className="flex flex-col gap-20 md:gap-28">
+            {project.gallery.map((item, i) => (
+              <motion.article
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-15%" }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-start"
+              >
+                {/* Caption lateral — numeración + fase + descripción */}
+                <div className="md:col-span-4 md:sticky md:top-32 flex flex-col gap-3">
+                  <span className="text-[10px] font-mono tracking-[0.28em] uppercase text-[#FAFAF7]/40">
+                    {String(i + 1).padStart(2, "0")} / {item.phase}
+                  </span>
+                  <p className="font-serif text-base md:text-lg leading-snug tracking-[-0.01em] text-[#FAFAF7]/90 max-w-sm">
+                    {item.caption}
+                  </p>
+                </div>
+
+                {/* Imagen o placeholder */}
+                <div className="md:col-span-8 relative w-full aspect-video overflow-hidden bg-[#0A0A0A] border border-white/8">
+                  {item.src ? (
+                    <Image
+                      src={item.src}
+                      alt={`${project.title} — ${item.phase}`}
+                      fill
+                      sizes="(min-width: 768px) 66vw, 100vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-[#FAFAF7]/25">
+                      <div
+                        className="absolute inset-0 opacity-30"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(135deg, transparent 49%, rgba(255,255,255,0.04) 50%, transparent 51%)",
+                          backgroundSize: "12px 12px",
+                        }}
+                      />
+                      <span className="relative font-mono text-xs tracking-[0.28em] uppercase">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="relative text-[10px] font-mono tracking-[0.22em] uppercase">
+                        {t.common.imagePending}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
+      {/* CTA FIJO — botón "Visitar sitio" si está live, chip de estado si no */}
+      {project.demo ? (
+        <motion.a
+          href={project.demo}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
+          }}
+          exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
+          className="fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full bg-white/12 backdrop-blur-md border border-white/20 px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] hover:bg-white/22 transition-colors shadow-lg"
+        >
+          <span>{t.common.visitSite}</span>
+          <span aria-hidden>↗</span>
+        </motion.a>
+      ) : project.status === "in-progress" || project.status === "private" ? (
+        <motion.button
+          type="button"
+          onClick={
+            project.gallery && project.gallery.length > 0
+              ? scrollToGallery
+              : undefined
+          }
+          initial={{ opacity: 0, y: 12 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
+          }}
+          exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
+          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full bg-white/8 backdrop-blur-md border border-white/15 px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/85 shadow-lg transition-colors ${
+            project.gallery && project.gallery.length > 0
+              ? "hover:bg-white/15 hover:text-[#FAFAF7] cursor-pointer"
+              : "cursor-default"
+          }`}
+        >
+          <motion.span
+            aria-hidden
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1.5 h-1.5 rounded-full bg-amber-300"
+          />
+          <span>
+            {project.status === "in-progress"
+              ? t.common.statusInProgress
+              : t.common.statusPrivate}
+          </span>
+          {project.gallery && project.gallery.length > 0 && (
+            <span aria-hidden className="opacity-50">↓</span>
+          )}
+        </motion.button>
+      ) : null}
     </motion.div>
   );
 }

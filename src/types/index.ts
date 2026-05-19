@@ -55,10 +55,23 @@ export interface Project {
   // Links
   demo?: string;
   github?: string;
+  gallery?: GalleryItem[];     // stack vertical de capturas del proceso con captions numerados
+
+  // Estado del proyecto (controla el chip que reemplaza al botón "Visitar sitio")
+  status?: "live" | "in-progress" | "private";
+
+  // Disciplinas del engagement (lenguaje de agencia, no de rol individual)
+  discipline?: string[];       // ej: ["Diseño", "Desarrollo", "Estrategia"]
 
   // Presentación
   featured: boolean;           // aparece en showcase principal
   order?: number;              // orden de despliegue
+}
+
+export interface GalleryItem {
+  src?: string;                // si no hay src, se renderiza un placeholder
+  phase: string;               // ej: "Discovery", "Sistema de diseño", "Implementación"
+  caption: string;             // línea curatorial corta
 }
 
 export interface Skill {

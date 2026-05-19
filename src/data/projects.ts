@@ -101,6 +101,30 @@ export const projects: Project[] = [
     ],
     tags: ["Featured", "Motion", "Bilingüe"],
     github: "https://github.com/facundo64/JEM-SI",
+    status: "in-progress",
+    discipline: ["Diseño", "Desarrollo", "Motion", "Estrategia digital"],
+    gallery: [
+      {
+        phase: "Discovery",
+        caption:
+          "Sesiones con el equipo del grupo para mapear las tres unidades de negocio y definir la narrativa industrial unificada.",
+      },
+      {
+        phase: "Sistema visual",
+        caption:
+          "Lenguaje gráfico, tipografía y motion principles. Tokens compartidos entre los tres microsites.",
+      },
+      {
+        phase: "Hero canvas",
+        caption:
+          "Secuencia de 384 frames optimizada con fallback de baja calidad. Loop continuo en scroll vertical.",
+      },
+      {
+        phase: "Implementación",
+        caption:
+          "Plataforma desplegada en entorno privado del cliente. Iteración continua con el área de comunicación.",
+      },
+    ],
     featured: true,
     order: 2,
   },
@@ -158,6 +182,7 @@ export const projects: Project[] = [
       "Cumplimiento Ley 25.326 (protección de datos)",
     ],
     tags: ["Featured", "Auth segura", "Dual-facing"],
+    demo: "https://www.citep-forense.com/",
     featured: true,
     order: 3,
   },
@@ -213,6 +238,30 @@ export const projects: Project[] = [
       "SEO optimizado + OG images",
     ],
     tags: ["Gobierno", "Institucional"],
+    status: "in-progress",
+    discipline: ["Diseño", "Desarrollo", "Integración Supabase", "SEO institucional"],
+    gallery: [
+      {
+        phase: "Discovery institucional",
+        caption:
+          "Relevamiento con DINACRIMIN y GNA para mapear los tres ejes de marca (Ministerio, Gendarmería, Congreso) bajo un mismo paraguas visual.",
+      },
+      {
+        phase: "Branding triple",
+        caption:
+          "Sistema visual que convive con tres identidades oficiales sin perder jerarquía. Tokens y guidelines para el uso correcto de cada escudo.",
+      },
+      {
+        phase: "Agenda y disertantes",
+        caption:
+          "Base de datos en Supabase con CRUD de disertantes, paneles y sesiones. Vista pública filtrable por día, eje temático y sala.",
+      },
+      {
+        phase: "Inscripción segmentada",
+        caption:
+          "Flujo diferenciado para asistentes nacionales, internacionales y streaming. Validación de cupos y confirmación por mail.",
+      },
+    ],
     featured: true,
     order: 4,
   },
@@ -265,6 +314,7 @@ export const projects: Project[] = [
       "Performance 95+ en Lighthouse",
     ],
     tags: ["Servicios", "Lead-gen"],
+    demo: "https://www.obraazulpiscinas.com",
     featured: true,
     order: 5,
   },

@@ -24,6 +24,11 @@ export type Dictionary = {
     problem: string;
     solution: string;
     deliverables: string;
+    visitSite: string;
+    gallery: string;
+    statusInProgress: string;
+    statusPrivate: string;
+    imagePending: string;
   };
   services: {
     eyebrow: string;
@@ -134,6 +139,11 @@ const es: Dictionary = {
     problem: "Problema",
     solution: "Solución",
     deliverables: "Entregables",
+    visitSite: "Visitar sitio",
+    gallery: "Proceso del proyecto",
+    statusInProgress: "En desarrollo · Cliente activo",
+    statusPrivate: "Proyecto privado · Bajo NDA",
+    imagePending: "Captura pendiente",
   },
   services: {
     eyebrow: "Servicios / 2025—2026",
@@ -335,6 +345,11 @@ const en: Dictionary = {
     problem: "Problem",
     solution: "Solution",
     deliverables: "Deliverables",
+    visitSite: "Visit site",
+    gallery: "Project process",
+    statusInProgress: "In development · Active client",
+    statusPrivate: "Private project · Under NDA",
+    imagePending: "Capture pending",
   },
   services: {
     eyebrow: "Services / 2025—2026",
