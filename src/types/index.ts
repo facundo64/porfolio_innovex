@@ -46,6 +46,7 @@ export interface Project {
   bgColor?: string;            // fondo de la tarjeta sticky
   accentColor?: string;        // color acento de marca
   displayMode?: "image" | "logo"; // "image" (default) muestra imagen; "logo" muestra logo grande sobre fondo transparente
+  logoKeepColor?: boolean;     // si true, el logo se muestra a color (no se fuerza a blanco). Para emblemas raster multicolor.
 
   // Tech
   stack: string[];             // stack principal (máx 6)

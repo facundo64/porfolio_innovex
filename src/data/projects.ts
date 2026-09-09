@@ -101,7 +101,6 @@ export const projects: Project[] = [
     ],
     tags: ["Featured", "Motion", "Bilingüe"],
     github: "https://github.com/facundo64/JEM-SI",
-    status: "in-progress",
     discipline: ["Diseño", "Desarrollo", "Motion", "Estrategia digital"],
     gallery: [
       {
@@ -270,7 +269,7 @@ export const projects: Project[] = [
     title: "Obra Azul",
     subtitle: "Diseño, construcción y mantenimiento de piletas.",
     tagline: "Presencia web para una empresa de servicios con 10+ años de trayectoria.",
-    client: "Obra Azul · Zona Norte GBA",
+    client: "Obra Azul Piscinas · Villa Martelli, Buenos Aires",
     role: "Diseño · Frontend",
     category: "corporate",
     year: "2025",
@@ -299,9 +298,9 @@ export const projects: Project[] = [
         ],
       },
     },
-    logo: "/projects/obra-azul/obra azul horizontal copia.svg",
-    logoNegative: "/projects/obra-azul/obra azul horizontal copia.svg",
-    cardLogo: "/projects/obra-azul/obra azul horizontal copia.svg",
+    logo: "/projects/obra-azul/logo-horizontal.svg",
+    logoNegative: "/projects/obra-azul/logo-horizontal.svg",
+    cardLogo: "/projects/obra-azul/logo-horizontal.svg",
     cardLogoInvert: true,
     image: "/projects/obra-azul/IMG-20250627-WA0188.jpg",
     bgColor: "#1E2A47",
@@ -315,8 +314,64 @@ export const projects: Project[] = [
     ],
     tags: ["Servicios", "Lead-gen"],
     demo: "https://www.obraazulpiscinas.com",
+    discipline: ["Identidad", "Diseño web", "Desarrollo", "SEO local"],
     featured: true,
     order: 5,
+  },
+  {
+    id: "yerbas-de-mi-tierra",
+    title: "Yerbas de mi Tierra",
+    subtitle: "Yerbatería de Río Grande con yerba de productores misioneros.",
+    tagline: "De la marca a la operación entera: identidad, tipografía propia y landing.",
+    client: "Yerbas de mi Tierra · Río Grande, Tierra del Fuego",
+    role: "Identidad · Tipografía · Full stack",
+    category: "corporate",
+    year: "2026",
+    problem:
+      "Una yerbatería sin identidad visual ni presencia digital: traer yerba misionera al punto más austral del país, con la operación anotada en papel.",
+    solution:
+      "Sistema de identidad completo (lectura del emblema, color, tipografía propia dibujada desde el logo), landing conversion-first y app de fidelización Club del Mate.",
+    value:
+      "Landing lista para publicar y Club del Mate ya en producción en el mostrador. Una operación digital entera, no solo una página.",
+    i18n: {
+      en: {
+        subtitle: "Yerba mate shop in Río Grande sourcing from Misiones growers.",
+        tagline: "From brand to full operation: identity, custom typeface and landing.",
+        role: "Identity · Typography · Full stack",
+        problem:
+          "A yerba mate shop with no visual identity or digital presence, bringing Misiones yerba to the southernmost tip of the country with paper-based operations.",
+        solution:
+          "Full identity system (emblem reading, color, a custom typeface drawn from the logo), a conversion-first landing and the Club del Mate loyalty app.",
+        value:
+          "Landing ready to publish and Club del Mate already in production at the counter. A whole digital operation, not just a page.",
+        highlights: [
+          "Custom typeface drawn from the logo (67 glyphs, 10 KB)",
+          "Conversion-first landing, no backend or personal data",
+          "Club del Mate: loyalty with signed QR",
+          "Color system derived from the emblem with contrast rules",
+        ],
+      },
+    },
+    logo: "/projects/yerbas-de-mi-tierra/isologo.png",
+    logoNegative: "/projects/yerbas-de-mi-tierra/isologo.png",
+    cardLogo: "/projects/yerbas-de-mi-tierra/isologo.png",
+    logoKeepColor: true,
+    image: "/projects/yerbas-de-mi-tierra/y-hero.jpg",
+    displayMode: "logo",
+    bgColor: "#EFE3CD",
+    accentColor: "#A34A2C",
+    stack: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion", "Tipografía propia"],
+    highlights: [
+      "Tipografía propia dibujada desde el logo (67 glifos, 10 KB)",
+      "Landing conversion-first sin backend ni datos personales",
+      "Club del Mate: fidelización con QR firmado",
+      "Sistema de color derivado del emblema con reglas de contraste",
+    ],
+    tags: ["Featured", "Identidad", "Tipografía propia"],
+    demo: "https://yerbasdemitierra.vercel.app",
+    discipline: ["Identidad", "Tipografía", "Diseño web", "Desarrollo"],
+    featured: true,
+    order: 6,
   },
   {
     id: "automata",
@@ -352,7 +407,7 @@ export const projects: Project[] = [
     ],
     tags: ["IA", "Multi-tenant", "R&D"],
     featured: false,
-    order: 6,
+    order: 7,
   },
 ];
 

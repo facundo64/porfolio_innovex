@@ -7,8 +7,17 @@ import { projects } from "@/data/projects";
 import type { Project } from "@/types";
 import { useT } from "@/lib/i18n/LocaleProvider";
 import { useLocalizedProject } from "@/lib/i18n/useLocalizedProject";
+import ObraAzulExpediente from "./ObraAzulExpediente";
+import YerbasExpediente from "./YerbasExpediente";
 
-const SHOWCASE_IDS = ["citep", "jem-si", "obra-azul", "cripnar"] as const;
+/** Proyectos que muestran un expediente propio al desplazar el preview (en lugar de la galería genérica). */
+const EXPEDIENTES: Record<string, (id: string) => React.ReactNode> = {
+  "obra-azul": (id) => <ObraAzulExpediente id={id} />,
+  "yerbas-de-mi-tierra": (id) => <YerbasExpediente id={id} />,
+};
+
+// CRIPNAR queda pendiente (sigue en la data): para reactivarlo, volvé a poner "cripnar" acá.
+const SHOWCASE_IDS = ["citep", "jem-si", "obra-azul", "yerbas-de-mi-tierra"] as const;
 const showcase: Project[] = SHOWCASE_IDS
   .map((id) => projects.find((p) => p.id === id))
   .filter((p): p is Project => p !== undefined);
@@ -160,11 +169,10 @@ function GridCard({
       {/* Imagen / Logo — z alto SOLO en la activa (viaja arriba de la franja). */}
       <motion.div
         ref={setRef}
-        layoutId={`work-img-${project.id}`}
         onClick={onOpen}
         whileHover={isAnyOpen ? undefined : "hover"}
         style={{
-          zIndex: isOpen ? 100 : 1,
+          zIndex: 1,
           backgroundColor:
             project.displayMode === "logo"
               ? project.bgColor ?? "#0A0A0A"
@@ -180,7 +188,7 @@ function GridCard({
             className="absolute inset-0 flex items-center justify-center p-8 md:p-10"
           >
             {project.cardLogo || project.logoNegative || project.logo ? (
-              <div style={{ filter: "brightness(0) invert(1)" }}>
+              <div style={{ filter: project.logoKeepColor ? undefined : "brightness(0) invert(1)" }}>
                 <Image
                   src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
                   alt={`${project.title} logo`}
@@ -319,6 +327,31 @@ function Preview({
   // Cuando el preview entra, los textos aparecen después de la franja (~1.1s)
   const TEXT_DELAY = 1.05;
 
+  // Algunos proyectos muestran un expediente propio al desplazar; el resto, la galería genérica.
+  const hasExpediente = project.id in EXPEDIENTES;
+  const hasGallery = !!project.gallery && project.gallery.length > 0;
+  const hasProcess = hasExpediente || hasGallery;
+
+  // El CTA fijo es transparente sobre la portada (oscura) y pasa a sólido cuando
+  // debajo aparece el expediente (fondo claro), para no perderse.
+  const [ctaOnLight, setCtaOnLight] = useState(false);
+  useEffect(() => {
+    const c = scrollRef.current;
+    if (!c || !hasProcess) return;
+    const onScroll = () => {
+      const exp = c.querySelector<HTMLElement>(`#gallery-${project.id}`);
+      if (!exp) {
+        setCtaOnLight(false);
+        return;
+      }
+      const ctaLine = c.clientHeight - 150; // altura aproximada donde vive el CTA
+      setCtaOnLight(exp.offsetTop - c.scrollTop < ctaLine);
+    };
+    c.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => c.removeEventListener("scroll", onScroll);
+  }, [project.id, hasProcess]);
+
   const scrollToGallery = () => {
     const container = scrollRef.current;
     const target = container?.querySelector<HTMLElement>(`#gallery-${project.id}`);
@@ -349,6 +382,8 @@ function Preview({
       initial={{ pointerEvents: "auto" }}
       exit={{ opacity: 0 }}
     >
+      {/* PORTADA — ocupa el viewport completo para que el expediente no asome hasta scrollear */}
+      <div className="flex flex-col min-h-[100dvh]">
       {/* HEADER — botón volver + cliente + visitar sitio */}
       <motion.header
         initial={{ opacity: 0 }}
@@ -402,10 +437,13 @@ function Preview({
         {/* Centro — imagen (con su logo embebido) + título superpuesto */}
         <div className="md:col-span-6 relative w-full h-full flex items-center justify-center md:min-h-[55vh]">
           <motion.div
-            layoutId={`work-img-${project.id}`}
-            transition={{
-              layout: { duration: 0.6, delay: 0.5, ease: EASE },
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              transition: { duration: 0.7, delay: 0.55, ease: EASE },
             }}
+            exit={{ opacity: 0, transition: { duration: 0.25 } }}
             style={{
               zIndex: 100,
               backgroundColor:
@@ -418,7 +456,7 @@ function Preview({
             {project.displayMode === "logo" ? (
               <div className="absolute inset-0 flex items-center justify-center p-12 md:p-16">
                 {project.cardLogo || project.logoNegative || project.logo ? (
-                  <div style={{ filter: "brightness(0) invert(1)" }} className="w-full h-full relative">
+                  <div style={{ filter: project.logoKeepColor ? undefined : "brightness(0) invert(1)" }} className="w-full h-full relative">
                     <Image
                       src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
                       alt={`${project.title} logo`}
@@ -440,26 +478,28 @@ function Preview({
             )}
           </motion.div>
 
-          {/* Título gigante superpuesto */}
-          <div className="absolute inset-0 z-[105] flex items-center justify-center pointer-events-none">
-            <div className="overflow-hidden w-full">
-              <motion.h2
-                initial={{ y: "110%" }}
-                animate={{
-                  y: "0%",
-                  transition: { duration: 1, delay: TEXT_DELAY, ease: EASE },
-                }}
-                exit={{
-                  y: "110%",
-                  transition: { duration: 0.4, ease: EASE },
-                }}
-                className="font-serif text-center leading-[0.85] tracking-[-0.04em] text-[#FAFAF7] mix-blend-difference"
-                style={{ fontSize: "clamp(2.5rem, 11vw, 9rem)" }}
-              >
-                {project.title}
-              </motion.h2>
+          {/* Título gigante superpuesto — no en modo logo (taparía el logo) */}
+          {project.displayMode !== "logo" && (
+            <div className="absolute inset-0 z-[105] flex items-center justify-center pointer-events-none">
+              <div className="overflow-hidden w-full">
+                <motion.h2
+                  initial={{ y: "110%" }}
+                  animate={{
+                    y: "0%",
+                    transition: { duration: 1, delay: TEXT_DELAY, ease: EASE },
+                  }}
+                  exit={{
+                    y: "110%",
+                    transition: { duration: 0.4, ease: EASE },
+                  }}
+                  className="font-serif text-center leading-[0.85] tracking-[-0.04em] text-[#FAFAF7] mix-blend-difference"
+                  style={{ fontSize: "clamp(2.5rem, 11vw, 9rem)" }}
+                >
+                  {project.title}
+                </motion.h2>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Box derecha — Logo + Solución */}
@@ -473,11 +513,11 @@ function Preview({
           exit={{ opacity: 0, transition: { duration: 0.25 } }}
           className="md:col-span-3 flex flex-col items-start md:items-end gap-6 md:gap-8 md:justify-self-end md:max-w-xs"
         >
-          {/* Logo arriba de solución — forzado a blanco para uniformidad */}
+          {/* Logo arriba de solución — a blanco por defecto, a color si logoKeepColor */}
           {project.logoNegative || project.logo ? (
-            <div 
-              className="relative w-20 md:w-24 h-10 md:h-14 opacity-70"
-              style={{ filter: "brightness(0) invert(1)" }}
+            <div
+              className={`relative w-20 md:w-24 h-10 md:h-14 ${project.logoKeepColor ? "" : "opacity-70"}`}
+              style={{ filter: project.logoKeepColor ? undefined : "brightness(0) invert(1)" }}
             >
               <Image
                 src={project.logoNegative ?? project.logo ?? ""}
@@ -535,7 +575,7 @@ function Preview({
           <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70">
             {project.year}
           </span>
-          {project.gallery && project.gallery.length > 0 && (
+          {hasProcess && (
             <button
               type="button"
               onClick={scrollToGallery}
@@ -554,9 +594,14 @@ function Preview({
           )}
         </div>
       </motion.footer>
+      </div>
+      {/* fin PORTADA */}
+
+      {/* EXPEDIENTE propio del proyecto (reemplaza la galería genérica) */}
+      {hasExpediente && EXPEDIENTES[project.id](`gallery-${project.id}`)}
 
       {/* GALLERY — stack vertical cinematográfico con scroll-snap + captions numerados */}
-      {project.gallery && project.gallery.length > 0 && (
+      {!hasExpediente && hasGallery && (
         <motion.section
           id={`gallery-${project.id}`}
           initial={{ opacity: 0, y: 24 }}
@@ -576,7 +621,7 @@ function Preview({
             <div className="flex-1 h-px bg-white/10" />
           </div>
           <div className="flex flex-col gap-20 md:gap-28">
-            {project.gallery.map((item, i) => (
+            {project.gallery?.map((item, i) => (
               <motion.article
                 key={i}
                 initial={{ opacity: 0, y: 40 }}
@@ -643,7 +688,11 @@ function Preview({
             transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
           }}
           exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
-          className="fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full bg-white/12 backdrop-blur-md border border-white/20 px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] hover:bg-white/22 transition-colors shadow-lg"
+          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] transition-colors shadow-lg ${
+            ctaOnLight
+              ? "bg-[#0A0A0A]/90 border border-white/25 hover:bg-[#0A0A0A]"
+              : "bg-white/12 border border-white/20 hover:bg-white/22"
+          }`}
         >
           <span>{t.common.visitSite}</span>
           <span aria-hidden>↗</span>
@@ -652,7 +701,7 @@ function Preview({
         <motion.button
           type="button"
           onClick={
-            project.gallery && project.gallery.length > 0
+            hasProcess
               ? scrollToGallery
               : undefined
           }
@@ -663,9 +712,13 @@ function Preview({
             transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
           }}
           exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
-          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full bg-white/8 backdrop-blur-md border border-white/15 px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/85 shadow-lg transition-colors ${
-            project.gallery && project.gallery.length > 0
-              ? "hover:bg-white/15 hover:text-[#FAFAF7] cursor-pointer"
+          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase shadow-lg transition-colors ${
+            ctaOnLight
+              ? "bg-[#0A0A0A]/90 border border-white/25 text-[#FAFAF7]"
+              : "bg-white/8 border border-white/15 text-[#FAFAF7]/90"
+          } ${
+            hasProcess
+              ? `cursor-pointer ${ctaOnLight ? "hover:bg-[#0A0A0A]" : "hover:bg-white/15 hover:text-[#FAFAF7]"}`
               : "cursor-default"
           }`}
         >
@@ -680,7 +733,7 @@ function Preview({
               ? t.common.statusInProgress
               : t.common.statusPrivate}
           </span>
-          {project.gallery && project.gallery.length > 0 && (
+          {hasProcess && (
             <span aria-hidden className="opacity-50">↓</span>
           )}
         </motion.button>

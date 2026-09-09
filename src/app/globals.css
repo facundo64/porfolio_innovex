@@ -25,8 +25,10 @@
   box-sizing: border-box;
 }
 
+/* Sin scroll-behavior: smooth — Lenis maneja el scroll suave y el nativo
+   entraba en conflicto (micro-saltos con la rueda del mouse). */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
