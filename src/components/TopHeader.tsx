@@ -49,7 +49,7 @@ export default function TopHeader() {
   }, [pathname]);
 
   // En /work, /services, /process y /contact el fondo es oscuro (gradient atmosférico) — logo blanco siempre
-  const darkRoutes = ["/work", "/services", "/process", "/contact"];
+  const darkRoutes = ["/work", "/services", "/process", "/contact", "/privacidad", "/consentimiento", "/terminos"];
   const isDarkRoute = darkRoutes.includes(pathname);
   const useWhite = isDarkRoute || onDark || scrolled;
 

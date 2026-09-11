@@ -85,6 +85,15 @@ export type Dictionary = {
     tagline: string;
     rights: string;
     madeIn: string;
+    claim: string;
+    legalTitle: string;
+    contactTitle: string;
+    links: {
+      contact: string;
+      privacy: string;
+      consent: string;
+      terms: string;
+    };
   };
   hero: {
     metaLeft: string;
@@ -258,6 +267,15 @@ const es: Dictionary = {
     tagline: "Estudio digital · Buenos Aires",
     rights: "Todos los derechos reservados",
     madeIn: "Hecho en Argentina",
+    claim: "Diseñamos y construimos productos digitales a medida.",
+    legalTitle: "Legal",
+    contactTitle: "Contacto",
+    links: {
+      contact: "Contacto",
+      privacy: "Política de privacidad",
+      consent: "Consentimiento para el procesamiento de datos personales",
+      terms: "Términos y condiciones",
+    },
   },
   hero: {
     metaLeft: "Estudio digital · Est. 2024",
@@ -464,6 +482,15 @@ const en: Dictionary = {
     tagline: "Digital studio · Buenos Aires",
     rights: "All rights reserved",
     madeIn: "Made in Argentina",
+    claim: "We design and build bespoke digital products.",
+    legalTitle: "Legal",
+    contactTitle: "Contact",
+    links: {
+      contact: "Contact",
+      privacy: "Privacy Policy",
+      consent: "Consent to the processing of personal data",
+      terms: "Terms & Conditions",
+    },
   },
   hero: {
     metaLeft: "Digital studio · Est. 2024",

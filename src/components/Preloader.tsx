@@ -8,7 +8,7 @@ const SESSION_KEY = "innhovex:preloader-seen";
 const EASE = [0.22, 1, 0.36, 1] as const;
 const CURTAIN_EASE = [0.76, 0, 0.24, 1] as const;
 
-function InnhovexMark({ className = "" }: { className?: string }) {
+export function InnhovexMark({ className = "" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 183.55138 149.64339"

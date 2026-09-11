@@ -55,18 +55,11 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
+    // La imagen la aporta src/app/opengraph-image.tsx (convención de archivo de Next).
     title: "INNHOVEX — Desarrollo Web & Software a medida",
     description: "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
     url: "/",
     siteName: "INNHOVEX",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "INNHOVEX — Estudio de desarrollo web y software",
-      },
-    ],
     locale: "es_AR",
     type: "website",
   },
@@ -74,10 +67,10 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
   twitter: {
+    // La imagen la aporta src/app/twitter-image.tsx.
     card: "summary_large_image",
     title: "INNHOVEX — Desarrollo Web & Software a medida",
     description: "Creamos experiencias digitales premium para marcas que quieren destacarse.",
-    images: ["/og-image.jpg"],
   },
   appleWebApp: {
     title: "INNHOVEX",
@@ -120,7 +113,7 @@ export default async function RootLayout({
               "alternateName": "IEX",
               "url": "https://innhovex.com",
               "logo": "https://innhovex.com/logo-innhovex.svg",
-              "image": "https://innhovex.com/og-image.jpg",
+              "image": "https://innhovex.com/opengraph-image",
               "description": "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
               "sameAs": [
                 "https://instagram.com/innhovex",
