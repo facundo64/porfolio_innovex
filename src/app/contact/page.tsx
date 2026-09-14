@@ -11,20 +11,11 @@ export const metadata: Metadata = {
     title: "Contacto — INNHOVEX",
     description: "Hablemos sobre tu próximo proyecto. Estamos listos para crear algo increíble juntos.",
     url: "/contact",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Contacto INNHOVEX — Estudio de desarrollo web",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contacto — INNHOVEX",
     description: "Hablemos sobre tu próximo proyecto. Estamos listos para crear algo increíble juntos.",
-    images: ["/og-image.jpg"],
   },
 };
 

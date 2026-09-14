@@ -11,20 +11,11 @@ export const metadata: Metadata = {
     title: "Work — Proyectos INNHOVEX",
     description: "Descubre nuestros casos de éxito en desarrollo web y software a medida.",
     url: "/work",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Proyectos INNHOVEX — Desarrollo web y software",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Work — Proyectos INNHOVEX",
     description: "Descubre nuestros casos de éxito en desarrollo web y software a medida.",
-    images: ["/og-image.jpg"],
   },
 };
 
