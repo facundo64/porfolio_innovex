@@ -11,6 +11,16 @@ import ChatBot from "@/components/ChatBot";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { headers } from "next/headers";
 
+// URL base para las metatags absolutas (og:image, canonical, etc.).
+// Prioridad: variable propia → dominio de producción de Vercel → fallback.
+// Así el preview al compartir apunta SIEMPRE al deploy vivo, y el día que
+// se conecte innhovex.com como dominio de producción se actualiza solo.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://innhovex.com";
+
 const geistSans = Geist({
   variable: "--font-sans-geist",
   subsets: ["latin"],
@@ -29,7 +39,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://innhovex.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "INNHOVEX — Desarrollo Web & Software a medida",
     template: "%s | INNHOVEX",
@@ -111,9 +121,9 @@ export default async function RootLayout({
               "@type": "Organization",
               "name": "INNHOVEX",
               "alternateName": "IEX",
-              "url": "https://innhovex.com",
-              "logo": "https://innhovex.com/logo-innhovex.svg",
-              "image": "https://innhovex.com/opengraph-image",
+              "url": siteUrl,
+              "logo": `${siteUrl}/logo-innhovex.svg`,
+              "image": `${siteUrl}/opengraph-image`,
               "description": "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
               "sameAs": [
                 "https://instagram.com/innhovex",
