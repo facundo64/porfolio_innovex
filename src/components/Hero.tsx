@@ -23,12 +23,11 @@ export default function Hero() {
   const vigRef = useRef<HTMLDivElement>(null);
   const finRef = useRef<HTMLDivElement>(null);
   const lapicitoRef = useRef<HTMLDivElement>(null);
-  const postitRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sec = secRef.current, img = imgRef.current, lap = lapizRef.current;
-    const vig = vigRef.current, fin = finRef.current, lapicito = lapicitoRef.current, postit = postitRef.current;
-    if (!sec || !img || !lap || !vig || !fin || !lapicito || !postit) return;
+    const vig = vigRef.current, fin = finRef.current, lapicito = lapicitoRef.current;
+    if (!sec || !img || !lap || !vig || !fin || !lapicito) return;
     const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const onScroll = () => {
@@ -55,9 +54,6 @@ export default function Hero() {
       lapicito.style.opacity = enCurso ? "1" : "0";
       lapicito.style.left = `${8 + tl * 80}%`;
       lapicito.style.top = `${bordeVp - hr.top + vh * 0.06}px`;
-      // El post-it acompaña la transición y se va cuando entra el mapa (ahí
-      // lo reemplaza el pin "nuestra base"), para no tapar el mapa ni el header.
-      postit.classList.toggle("hl-on", tl > 0.6 && hr.bottom > vh * 0.62);
     };
 
     let tick = false;
@@ -98,17 +94,6 @@ export default function Hero() {
       <div ref={lapicitoRef} className="hl-hero-lapicito" aria-hidden>
         <svg width="1" height="1" viewBox="0 0 1 1" overflow="visible">
           <Lapiz scale={1.15} />
-        </svg>
-      </div>
-      <div ref={postitRef} className="hl-postit hl-hero-postit hl-rot-2">
-        {t.home.heroPostit.line1}
-        <br />
-        {t.home.heroPostit.line2}
-        <br />
-        <b>{t.home.heroPostit.strong}</b>
-        <svg className="hl-flecha-postit" viewBox="0 0 80 120" aria-hidden>
-          <path d="M20 4 C 60 30, 70 70, 34 110" fill="none" stroke="#2A2B30" strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M26 98 L34 111 L46 102" fill="none" stroke="#2A2B30" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
 

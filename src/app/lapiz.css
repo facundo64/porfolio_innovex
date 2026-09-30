@@ -71,10 +71,6 @@
 }
 .hl-hero-lapicito { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; opacity: 0; transition: opacity .3s; }
 .hl-hero-lapicito svg { display: block; overflow: visible; }
-.hl-hero-postit { position: absolute; left: 52%; top: 168vh; z-index: 4; font-size: 19px; max-width: 250px; opacity: 0; scale: .7; transition: opacity .5s, scale .6s cubic-bezier(.34,1.56,.64,1); }
-.hl-hero-postit b { font-weight: 700; color: var(--navy); }
-.hl-hero-postit.hl-on { opacity: 1; scale: 1; }
-.hl-flecha-postit { position: absolute; right: 18px; top: calc(100% + 4px); width: 60px; height: 90px; }
 /* El texto del hero pasa de blanco a tinta cuando el fondo se vuelve papel */
 .hl-hero-in, .hl-hero-in * { transition: color .9s cubic-bezier(.22,1,.36,1), text-shadow .9s, border-color .9s; }
 .hl-hero.hl-en-papel .hl-hero-in { color: var(--ink); }
@@ -139,6 +135,9 @@
 .hl-pin-label { position: absolute; translate: -50% 0; font-size: 15px; padding: 10px 12px 9px; max-width: 170px; opacity: 0; scale: .6; transition: opacity .4s, scale .5s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
 .hl-pin-label.hl-on { opacity: 1; scale: 1; }
 .hl-pin-label small { display: block; font-size: 13px; opacity: .7; }
+/* Pin del estudio: es el punto de partida del viaje, más grande que el resto */
+.hl-pin-estudio { font-size: 18px; max-width: 220px; padding: 14px 16px 12px; z-index: 2; }
+.hl-pin-estudio small { font-size: 15px; font-weight: 700; color: var(--navy); opacity: 1; margin-top: 2px; }
 
 /* ---------- POR DENTRO (escritorio) ---------- */
 .hl-dentro { padding: clamp(80px, 11vw, 150px) var(--gutter); position: relative; }
@@ -222,6 +221,8 @@
   .hl-etapa p { font-size: 15px; }
   .hl-pin-label { font-size: 12px; padding: 7px 8px 6px; max-width: 110px; }
   .hl-pin-label small { display: none; }
+  .hl-pin-estudio { font-size: 13px; max-width: 150px; padding: 8px 10px 7px; }
+  .hl-pin-estudio small { display: block; font-size: 12px; }
   .hl-dentro-grid { grid-template-columns: minmax(0, 1fr); }
   .hl-opciones { grid-template-columns: minmax(0, 1fr); }
   .hl-hero-contacto { text-align: left; }
@@ -232,7 +233,6 @@
   .hl-app-ico { width: 52px; height: 52px; }
   .hl-app-ico svg { width: 22px; height: 22px; }
   .hl-hero-meta span:last-child { display: none; }
-  .hl-hero-postit { left: auto; right: var(--gutter); font-size: 17px; }
   .hl-ventana-barra .hl-ej { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {

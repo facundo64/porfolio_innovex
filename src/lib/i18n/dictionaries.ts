@@ -146,7 +146,6 @@ export type Dictionary = {
     closing: string;
   };
   home: {
-    heroPostit: { line1: string; line2: string; strong: string };
     viaje: {
       mapLabel: string;
       kicker: string;
@@ -379,11 +378,6 @@ const es: Dictionary = {
     reel: "Reel · 2026",
   },
   home: {
-    heroPostit: {
-      line1: "Buenos Aires,",
-      line2: "nuestra base.",
-      strong: "De acá sale el viaje ↓",
-    },
     viaje: {
       mapLabel: "Mapa de Argentina con el recorrido de proyectos",
       kicker: "✎ bajá despacio…",
@@ -415,8 +409,8 @@ const es: Dictionary = {
           pin: "yerbatería",
         },
       ],
-      studioPin: "nuestra base",
-      studioPinSub: "Buenos Aires",
+      studioPin: "Buenos Aires, nuestra base.",
+      studioPinSub: "De acá sale el viaje ↓",
       endKicker: "✎ y el viaje sigue",
       endTitle: "Cada parada es un caso completo.",
       endBody: "Cómo empezó, qué dibujamos, qué construimos y cómo funciona hoy.",
@@ -700,11 +694,6 @@ const en: Dictionary = {
     reel: "Reel · 2026",
   },
   home: {
-    heroPostit: {
-      line1: "Buenos Aires,",
-      line2: "our home base.",
-      strong: "The journey starts here ↓",
-    },
     viaje: {
       mapLabel: "Map of Argentina with the route of our projects",
       kicker: "✎ scroll slowly…",
@@ -736,8 +725,8 @@ const en: Dictionary = {
           pin: "yerba shop",
         },
       ],
-      studioPin: "our base",
-      studioPinSub: "Buenos Aires",
+      studioPin: "Buenos Aires, our home base.",
+      studioPinSub: "The journey starts here ↓",
       endKicker: "✎ and the journey goes on",
       endTitle: "Every stop is a complete case.",
       endBody: "How it started, what we drew, what we built and how it works today.",

@@ -129,7 +129,7 @@ export default function HomeViaje() {
 
   // Posición de los post-it sobre el mapa (en % de la caja).
   const labels = [
-    { cls: "hl-rot-2", style: { left: "74.7%", top: "calc(38.5% - 64px)" }, name: v.studioPin, sub: v.studioPinSub },
+    { cls: "hl-rot-2 hl-pin-estudio", style: { left: "74.7%", top: "calc(38.5% - 104px)" }, name: v.studioPin, sub: v.studioPinSub },
     { cls: "hl-rot-1", style: { left: "calc(74.7% - 8%)", top: "calc(38.5% + 36px)" }, name: PIN_NOMBRES[0], sub: v.stops[0].pin },
     { cls: "hl-rot-4", style: { left: "calc(27.4% + 14%)", top: "calc(51.3% + 26px)" }, name: PIN_NOMBRES[1], sub: v.stops[1].pin },
     { cls: "hl-rot-3", style: { left: "calc(29.9% + 36%)", top: "calc(94.6% - 58px)" }, name: PIN_NOMBRES[2], sub: v.stops[2].pin },
