@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import "./lapiz.css";
 import BottomDock from "@/components/BottomDock";
 import PageTransition, { TransitionProvider } from "@/components/PageTransition";
 import TopHeader from "@/components/TopHeader";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
-import ConditionalDockSpacer from "@/components/ConditionalDockSpacer";
 import ChatBot from "@/components/ChatBot";
 import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { headers } from "next/headers";
+import { kalam } from "@/lib/fonts/expedientes";
+import Footer from "@/components/Footer";
 
 // URL base para las metatags absolutas (og:image, canonical, etc.).
 // Prioridad: variable propia → dominio de producción de Vercel → fallback.
@@ -98,7 +100,7 @@ export default async function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${kalam.variable} h-full`}
       suppressHydrationWarning
     >
       <head>
@@ -177,7 +179,7 @@ export default async function RootLayout({
             <SmoothScroll />
             <TopHeader />
             <PageTransition>{children}</PageTransition>
-            <ConditionalDockSpacer />
+            <Footer />
             <BottomDock />
             <ChatBot />
           </TransitionProvider>

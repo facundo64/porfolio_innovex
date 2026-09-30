@@ -7,7 +7,8 @@ export default function LocaleToggle() {
   const { locale, setLocale } = useLocale();
 
   return (
-    <div className="relative inline-flex items-center gap-1 rounded-full border border-[#1E2A47]/15 bg-white/40 backdrop-blur-md px-1 py-1 text-[10px] font-mono tracking-[0.18em] uppercase">
+    <div className="relative inline-flex items-center gap-1 border-2 border-[#2A2B30] bg-[#FAFAF7] shadow-[2px_3px_0_#2A2B30] px-1 py-1 text-[10px] font-mono tracking-[0.18em] uppercase"
+      style={{ borderRadius: "22px 12px 20px 10px / 10px 20px 12px 22px" }}>
       {(["es", "en"] as const).map((l) => {
         const active = locale === l;
         return (

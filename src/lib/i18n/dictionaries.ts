@@ -31,8 +31,24 @@ export type Dictionary = {
     statusPrivate: string;
     imagePending: string;
   };
+  work: {
+    eyebrow: string;
+    kicker: string;
+    titleLine1: string;
+    titleEm: string;
+    subtitle: string;
+    open: string;
+    bandKicker: string;
+    bandTitle: string;
+    bandTitleEm: string;
+    bandText: string;
+  };
   services: {
     eyebrow: string;
+    kicker: string;
+    detailLabel: string;
+    ctaMsg: string;
+    processCta: string;
     titleLine1: string;
     titleLine2: string;
     titleEm: string;
@@ -50,6 +66,9 @@ export type Dictionary = {
   };
   contact: {
     eyebrow: string;
+    kicker: string;
+    formBar: string;
+    rateLimited: string;
     titleLine1: string;
     titleLine2Prefix: string;
     titleLine2Em: string;
@@ -110,6 +129,9 @@ export type Dictionary = {
   };
   process: {
     eyebrow: string;
+    kicker: string;
+    stepsLabel: string;
+    bandKicker: string;
     titleLine1: string;
     titleLine2: string;
     titleEm: string;
@@ -197,8 +219,24 @@ const es: Dictionary = {
     statusPrivate: "Proyecto privado · Bajo NDA",
     imagePending: "Captura pendiente",
   },
+  work: {
+    eyebrow: "Trabajos / 2025—2026",
+    kicker: "✎ casos reales",
+    titleLine1: "Cada proyecto,",
+    titleEm: "una parada.",
+    subtitle: "Empresas de todo el país que confiaron en nosotros. Tocá una foto para ver el caso completo: cómo empezó, qué dibujamos y cómo funciona hoy.",
+    open: "ver caso →",
+    bandKicker: "✎ la próxima parada",
+    bandTitle: "¿Tu empresa ",
+    bandTitleEm: "es la siguiente?",
+    bandText: "Contanos qué necesitás y armamos el recorrido juntos.",
+  },
   services: {
     eyebrow: "Servicios / 2025—2026",
+    kicker: "✎ lo que hacemos",
+    detailLabel: "servicio",
+    ctaMsg: "Hola, me interesa el servicio de {s}.",
+    processCta: "Ver cómo trabajamos →",
     titleLine1: "Todo lo que",
     titleLine2: "necesitás para",
     titleEm: "construir online",
@@ -271,6 +309,9 @@ const es: Dictionary = {
   },
   contact: {
     eyebrow: "Contacto / 2025—2026",
+    kicker: "✎ escribinos",
+    formBar: "nuevo mensaje",
+    rateLimited: "Demasiados intentos. Esperá un momento y probá de nuevo.",
     titleLine1: "Empecemos",
     titleLine2Prefix: "a",
     titleLine2Em: "construir",
@@ -423,6 +464,9 @@ const es: Dictionary = {
   },
   process: {
     eyebrow: "Proceso / 2025—2026",
+    kicker: "✎ paso a paso",
+    stepsLabel: "4 pasos",
+    bandKicker: "✎ ¿arrancamos?",
     titleLine1: "Cómo",
     titleLine2: "trabajamos",
     titleEm: "juntos",
@@ -496,8 +540,24 @@ const en: Dictionary = {
     statusPrivate: "Private project · Under NDA",
     imagePending: "Capture pending",
   },
+  work: {
+    eyebrow: "Work / 2025—2026",
+    kicker: "✎ real cases",
+    titleLine1: "Every project,",
+    titleEm: "a stop.",
+    subtitle: "Companies from all over Argentina that trusted us. Tap a photo to see the full case: how it started, what we drew and how it works today.",
+    open: "see case →",
+    bandKicker: "✎ the next stop",
+    bandTitle: "Is your company ",
+    bandTitleEm: "next?",
+    bandText: "Tell us what you need and we'll map out the journey together.",
+  },
   services: {
     eyebrow: "Services / 2025—2026",
+    kicker: "✎ what we do",
+    detailLabel: "service",
+    ctaMsg: "Hi, I'm interested in {s}.",
+    processCta: "See how we work →",
     titleLine1: "Everything",
     titleLine2: "you need to",
     titleEm: "build online",
@@ -570,6 +630,9 @@ const en: Dictionary = {
   },
   contact: {
     eyebrow: "Contact / 2025—2026",
+    kicker: "✎ write to us",
+    formBar: "new message",
+    rateLimited: "Too many attempts. Wait a moment and try again.",
     titleLine1: "Let's start",
     titleLine2Prefix: "",
     titleLine2Em: "building",
@@ -722,6 +785,9 @@ const en: Dictionary = {
   },
   process: {
     eyebrow: "Process / 2025—2026",
+    kicker: "✎ step by step",
+    stepsLabel: "4 steps",
+    bandKicker: "✎ shall we start?",
     titleLine1: "How",
     titleLine2: "we work",
     titleEm: "together",

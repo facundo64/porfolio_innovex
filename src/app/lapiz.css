@@ -1,5 +1,6 @@
 /*
- * Home a lápiz — portado del boceto aprobado (docs/boceto-home/index.html).
+ * Sistema "a lápiz" del sitio — nace del boceto aprobado del Home
+ * (docs/boceto-home/index.html) y lo comparten todas las páginas.
  * Todas las clases llevan el prefijo hl- para no chocar con los expedientes.
  * Las variables viven en .hl (wrapper del Home y dock).
  */
@@ -237,3 +238,159 @@
 @media (prefers-reduced-motion: reduce) {
   .hl *, .hl *::before, .hl *::after { transition: none !important; animation: none !important; }
 }
+
+/* =====================================================================
+ * Páginas internas (Trabajos, Servicios, Proceso, Contacto, legales):
+ * la misma hoja punteada del Home, con cabecera común y cierre oscuro.
+ * ===================================================================== */
+.hl-pagina { width: 100%; min-height: 100dvh; color: var(--ink); font-family: var(--sans); font-size: 16px; overflow-x: clip; }
+.hl-pagina h1, .hl-pagina h2, .hl-pagina h3, .hl-pagina h4 { font-weight: 400; margin: 0; text-wrap: balance; }
+.hl-pagina p { margin: 0; }
+
+.hl-cabecera { padding: 128px var(--gutter) clamp(56px, 8vw, 110px); }
+.hl-cab-meta { display: flex; justify-content: space-between; gap: 16px; color: var(--lapiz-suave); }
+.hl-cab-kicker { margin-top: clamp(40px, 7vh, 72px); }
+.hl-cab-titulo { font-family: var(--serif); font-size: clamp(3rem, 9vw, 9.5rem); line-height: .92; letter-spacing: -.04em; margin-top: 14px; }
+.hl-cab-titulo .hl-linea { display: block; overflow: hidden; padding-bottom: .06em; }
+.hl-cab-titulo .hl-linea:has(.hl-subrayado) { padding-bottom: .16em; }
+.hl-cab-titulo .hl-subrayado svg { height: .15em; bottom: -.05em; }
+.hl-cab-titulo i { color: var(--lapiz-suave); }
+.hl-cab-titulo .hl-punto { color: var(--navy-2); }
+.hl-cab-sub { margin-top: 32px; font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.4; color: #3A3A3A; max-width: 40rem; }
+.hl-seccion { padding: 0 var(--gutter) clamp(90px, 11vw, 150px); }
+
+/* Cierre oscuro (mismo lenguaje que "¿Qué necesitás?") */
+.hl-banda { background: var(--ink); color: var(--paper); padding: clamp(80px, 11vw, 140px) var(--gutter); display: grid; gap: 28px; }
+.hl-banda .hl-kicker { color: var(--postit); }
+.hl-banda .hl-titulo { font-size: clamp(2.8rem, 7.5vw, 7rem); }
+.hl-banda .hl-titulo i { color: rgba(250,250,247,.5); }
+.hl-banda p { font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.4; color: rgba(250,250,247,.72); max-width: 40rem; }
+.hl-banda .hl-btn-lapiz { background: var(--paper); border-color: var(--paper); box-shadow: 3px 4px 0 var(--postit); margin-top: 8px; }
+
+/* ---------- Trabajos: fotos pegadas en la hoja ---------- */
+.hl-fotos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 56px clamp(20px, 3vw, 44px); align-items: start; }
+.hl-foto-caso { display: grid; gap: 18px; }
+.hl-foto {
+  position: relative; display: block; width: 100%; text-align: left; cursor: pointer;
+  background: #fff; padding: 12px 12px 16px; border: 0;
+  box-shadow: 0 0 0 1px rgba(42,43,48,.08), 3px 8px 18px -8px rgba(20,20,30,.45);
+  rotate: var(--r, 0deg); transition: rotate .45s cubic-bezier(.34,1.56,.64,1), translate .45s cubic-bezier(.34,1.56,.64,1), box-shadow .45s;
+}
+.hl-foto::before {
+  content: ""; position: absolute; top: -11px; left: 50%; translate: -50% 0; rotate: -4deg; z-index: 2;
+  width: 78px; height: 22px; background: rgba(255,227,110,.75); box-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+.hl-foto:hover, .hl-foto:focus-visible { rotate: 0deg; translate: 0 -6px; box-shadow: 0 0 0 1px rgba(42,43,48,.1), 6px 16px 28px -10px rgba(20,20,30,.5); }
+.hl-foto-img { position: relative; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; }
+.hl-foto-num { position: absolute; top: 10px; right: 12px; z-index: 2; font-family: var(--mano); font-size: 18px; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.45); }
+.hl-foto-pie { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-top: 14px; }
+.hl-foto-pie strong { font-family: var(--mano); font-weight: 700; font-size: clamp(18px, 1.6vw, 22px); line-height: 1.1; color: var(--lapiz); }
+.hl-foto-pie span { font-family: var(--mano); font-size: 15px; color: var(--navy-2); white-space: nowrap; }
+.hl-foto-caso figcaption { display: grid; gap: 6px; padding: 0 4px; }
+.hl-foto-caso figcaption p { font-size: 15px; line-height: 1.5; color: #3A3A3A; }
+.hl-foto-caso figcaption small { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--lapiz-suave); }
+
+/* ---------- Servicios ---------- */
+.hl-serv-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.hl-serv-lista { display: grid; gap: 10px; }
+.hl-serv-item {
+  position: relative; display: flex; align-items: baseline; gap: 18px; width: fit-content; max-width: 100%; text-align: left; cursor: pointer;
+  background: none; border: 0; padding: 18px 22px; color: var(--lapiz-suave); transition: color .3s;
+}
+.hl-serv-item:hover, .hl-serv-item[aria-pressed="true"] { color: var(--ink); }
+.hl-serv-item .hl-serv-n { font-family: var(--mano); font-size: 20px; color: var(--navy-2); }
+.hl-serv-item .hl-serv-t { font-family: var(--serif); font-size: clamp(2rem, 3.6vw, 3.4rem); line-height: 1; letter-spacing: -.03em; }
+.hl-serv-item .hl-circulo { position: absolute; inset: -4px -6px; width: calc(100% + 12px); height: calc(100% + 8px); pointer-events: none; overflow: visible; }
+.hl-serv-item .hl-circulo path { fill: none; stroke: var(--postit); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; transition: stroke-dashoffset .8s cubic-bezier(.65,0,.35,1), opacity .2s; }
+.hl-serv-item[aria-pressed="true"] .hl-circulo path { stroke-dashoffset: 0; opacity: 1; }
+.hl-serv-detalle { position: sticky; top: 110px; }
+.hl-serv-cuerpo { padding: clamp(22px, 3vw, 36px); display: grid; gap: 20px; }
+.hl-serv-cuerpo .hl-serv-tag { font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.8rem); line-height: 1.05; letter-spacing: -.02em; }
+.hl-serv-cuerpo > p { font-size: 17px; line-height: 1.6; color: #3A3A3A; max-width: 56ch; }
+.hl-serv-cuerpo .hl-tarea { margin: 0; min-height: 0; }
+.hl-serv-pie { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 40px; margin-top: clamp(56px, 8vw, 96px); }
+.hl-serv-pie .hl-postit { font-size: 19px; max-width: 380px; }
+
+/* ---------- Proceso: pasos unidos por una línea a lápiz ---------- */
+.hl-pasos { position: relative; display: grid; gap: clamp(48px, 7vw, 88px); max-width: 68rem; }
+.hl-pasos-linea {
+  position: absolute; left: 44px; top: 20px; bottom: 20px; width: 3px; translate: -50% 0;
+  background: repeating-linear-gradient(to bottom, var(--navy) 0 7px, transparent 7px 13px);
+  clip-path: inset(0 0 calc(100% - var(--prog, 0) * 100%) 0);
+}
+.hl-paso { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: clamp(20px, 3vw, 44px); align-items: start; }
+.hl-paso-num { position: relative; width: 88px; height: 88px; display: grid; place-items: center; background: var(--paper); border-radius: 50%; font-family: var(--mano); font-weight: 700; font-size: 32px; color: var(--navy); }
+.hl-paso-num svg { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); overflow: visible; }
+.hl-paso-num svg path { fill: none; stroke: var(--lapiz); stroke-width: 2.4; stroke-linecap: round; }
+.hl-paso-cuerpo { display: grid; gap: 16px; padding-top: 8px; }
+.hl-paso-cuerpo h3 { font-family: var(--serif); font-size: clamp(2.2rem, 4.6vw, 4rem); line-height: 1; letter-spacing: -.03em; }
+.hl-paso-cuerpo p { font-size: 18px; line-height: 1.6; color: #3A3A3A; max-width: 52ch; }
+.hl-paso-cuerpo .hl-postit { font-size: 16px; padding: 10px 14px 9px; }
+.hl-proc-intro { margin-bottom: clamp(56px, 8vw, 96px); font-size: 19px; max-width: 340px; }
+
+/* ---------- Contacto ---------- */
+.hl-cont-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(36px, 5vw, 80px); align-items: start; }
+.hl-form { padding: clamp(22px, 3vw, 40px); display: grid; gap: 26px; }
+.hl-campo { display: grid; gap: 6px; }
+.hl-campo label { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--lapiz-suave); }
+.hl-campo label b { color: var(--rojo); font-weight: 400; }
+.hl-campo input, .hl-campo textarea {
+  width: 100%; background: transparent; border: 0; border-bottom: 2px solid var(--lapiz); border-radius: 0 0 6px 10px / 0 0 3px 4px;
+  padding: 8px 2px 10px; font-family: var(--serif); font-size: clamp(1.2rem, 1.8vw, 1.45rem); color: var(--ink); outline: none; resize: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.hl-campo input:focus, .hl-campo textarea:focus { border-color: var(--navy-2); box-shadow: 0 3px 0 var(--postit); }
+.hl-form-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; padding-top: 6px; }
+.hl-form-acciones .hl-o { font-family: var(--mano); font-size: 18px; color: var(--lapiz-suave); }
+.hl-btn-lapiz:disabled { opacity: .6; cursor: wait; }
+.hl-btn-lapiz.hl-wpp:hover { background: #25D366; }
+.hl-form-estado { font-family: var(--mono); font-size: 13px; line-height: 1.5; display: flex; gap: 8px; }
+.hl-form-estado.hl-ok { color: #2E7D4F; }
+.hl-form-estado.hl-mal { color: #B3261E; }
+.hl-form-estado.hl-nota { color: var(--lapiz-suave); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.hl-cont-lado { display: grid; gap: 34px; padding-top: 12px; }
+.hl-cont-postits { display: flex; flex-wrap: wrap; gap: 30px 22px; }
+.hl-cont-postits .hl-postit { max-width: 100%; font-size: 18px; }
+.hl-cont-postits .hl-postit small { display: block; font-size: 13px; opacity: .7; margin-bottom: 4px; }
+.hl-cont-postits .hl-postit a { color: inherit; text-decoration: none; font-weight: 700; }
+.hl-cont-postits .hl-postit a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.hl-cont-datos { display: grid; gap: 18px; }
+.hl-cont-datos > div:not(.hl-pills) { display: grid; gap: 4px; }
+.hl-cont-datos small { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--lapiz-suave); }
+.hl-cont-datos span { font-family: var(--serif); font-size: 1.35rem; color: var(--ink); }
+.hl-pills { display: flex; flex-wrap: wrap; gap: 12px; }
+.hl-pill { font: 500 13px var(--sans); color: var(--lapiz); text-decoration: none; padding: 7px 14px; border: 2px solid var(--lapiz); border-radius: var(--trazo); background: #fff; transition: background .2s, translate .2s; }
+.hl-pill:hover { background: var(--postit); translate: 0 -2px; }
+
+/* ---------- Documentos legales ---------- */
+.hl-legal { max-width: 50rem; margin: 0 auto; }
+.hl-legal .hl-cabecera { padding-left: 0; padding-right: 0; }
+.hl-legal .hl-cab-titulo { font-size: clamp(2.6rem, 6.5vw, 5.6rem); }
+.hl-legal-sec { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px 24px; padding: 34px 0; border-top: 1.5px dashed rgba(42,43,48,.3); }
+.hl-legal-sec > span { font-family: var(--mano); font-size: 22px; color: var(--navy-2); }
+.hl-legal-sec h2 { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.1rem); letter-spacing: -.02em; }
+.hl-legal-sec div div { display: grid; gap: 14px; margin-top: 14px; font-size: 16px; line-height: 1.65; color: #3A3A3A; }
+.hl-legal-nota { margin-top: 40px; border: 2px dashed rgba(42,43,48,.45); border-radius: 14px 8px 16px 10px; padding: 18px 20px; background: #FCFCFA; font-size: 14px; line-height: 1.6; color: var(--lapiz-suave); }
+.hl-volver { display: inline-flex; gap: 8px; color: var(--lapiz-suave); text-decoration: none; }
+.hl-volver:hover { color: var(--ink); }
+
+@media (max-width: 900px) {
+  .hl-fotos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 18px; }
+  .hl-serv-grid, .hl-cont-grid { grid-template-columns: minmax(0, 1fr); }
+  .hl-serv-detalle { position: static; }
+  .hl-serv-item { padding: 12px 16px; }
+}
+@media (max-width: 560px) {
+  .hl-cabecera { padding-top: 104px; }
+  .hl-cab-meta span:last-child { display: none; }
+  .hl-foto { padding: 8px 8px 12px; }
+  .hl-foto-pie { flex-direction: column; gap: 2px; }
+  .hl-foto-pie span { font-size: 13px; }
+  .hl-foto-caso figcaption p { font-size: 13px; }
+  .hl-paso { grid-template-columns: 60px minmax(0, 1fr); }
+  .hl-paso-num { width: 60px; height: 60px; font-size: 24px; }
+  .hl-pasos-linea { left: 30px; }
+  .hl-paso-cuerpo p { font-size: 16px; }
+  .hl-legal-sec { grid-template-columns: minmax(0, 1fr); }
+}
+.hl-banda .hl-titulo.hl-largo { font-size: clamp(2rem, 4.2vw, 3.8rem); line-height: 1.05; max-width: 22ch; }

@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import TransitionLink from "./TransitionLink";
 import { useT } from "@/lib/i18n/LocaleProvider";
-import "./home/home.css";
 
 // Trazo a mano que encierra la opción activa (o la que está bajo el mouse).
 const TRAZO = "M50 3 C 85 2, 98 12, 97 21 C 96 33, 75 38, 48 37 C 18 36, 3 30, 3 20 C 3 9, 22 3, 60 5";

@@ -11,6 +11,8 @@ import ObraAzulExpediente from "./ObraAzulExpediente";
 import YerbasExpediente from "./YerbasExpediente";
 import CitepExpediente from "./CitepExpediente";
 import JemsiExpediente from "./JemsiExpediente";
+import TransitionLink from "./TransitionLink";
+import Cabecera, { Banda, Subrayado } from "./lapiz/Cabecera";
 
 /** Proyectos que muestran un expediente propio al desplazar el preview (en lugar de la galería genérica). */
 const EXPEDIENTES: Record<string, (id: string) => React.ReactNode> = {
@@ -89,41 +91,32 @@ export default function WorkGallery() {
 
   const current = openIndex !== null ? showcase[openIndex] : null;
 
+  const w = t.work;
+
   return (
-    <div 
-      className="relative w-full min-h-[100dvh] text-[#FAFAF7] overflow-hidden"
-      style={{
-        background: "radial-gradient(circle at 60% 120%, #D1D2C1 0%, #88A6A5 55%, #50747E 90%, #283A42 120%)",
-      }}
-    >
-      {/* Viñeta oscura en el borde superior para dar la profundidad exacta de la imagen */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-64 pointer-events-none bg-gradient-to-b from-[#0F161A]/80 to-transparent z-0"
+    <div className="hl hl-pagina hl-lienzo" data-theme="light">
+      <Cabecera
+        meta={[w.eyebrow, t.common.salonVisual]}
+        kicker={w.kicker}
+        lineas={[
+          w.titleLine1,
+          <i key="i">
+            <Subrayado>{w.titleEm.replace(/\.$/, "")}</Subrayado>
+            <span className="hl-punto">.</span>
+          </i>,
+        ]}
+        sub={w.subtitle}
       />
 
-      {/* Ruido texturizado extra fino y sutil (casi imperceptible) */}
-      <div
-        className="absolute inset-0 mix-blend-overlay opacity-[0.08] pointer-events-none z-0"
-        style={{
-          backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-      {/* Header — salón visual. En mobile va abajo del TopHeader (top-20). En desktop al costado del logo. */}
-      <div className="absolute top-20 md:top-10 left-6 md:left-60 right-6 md:right-44 z-20 flex items-start justify-between gap-6 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75">
-        <span>{t.common.selectedWork} / 2025—2026</span>
-        <span className="hidden md:inline">{t.common.salonVisual}</span>
-      </div>
-
-      {/* Salón visual — grid de 4 cards alineados */}
-      <div className="relative min-h-[100dvh] w-full flex items-center px-6 md:px-14 pt-28 md:pt-32 pb-20 md:pb-24">
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 items-end">
+      {/* Los casos, como fotos pegadas en la hoja */}
+      <section className="hl-seccion">
+        <div className="hl-fotos">
           {showcase.map((p, i) => (
             <GridCard
               key={p.id}
               project={p}
               index={i}
-              isOpen={openIndex === i}
+              openLabel={w.open}
               isAnyOpen={openIndex !== null}
               setRef={(el) => {
                 itemRefs.current[i] = el;
@@ -132,7 +125,13 @@ export default function WorkGallery() {
             />
           ))}
         </div>
-      </div>
+      </section>
+
+      <Banda kicker={w.bandKicker} titulo={w.bandTitle} tituloEm={w.bandTitleEm} texto={w.bandText}>
+        <TransitionLink className="hl-btn-lapiz" href="/contact">
+          {t.nav.talk} →
+        </TransitionLink>
+      </Banda>
 
       {/* Overlay franja + preview */}
       <AnimatePresence>
@@ -149,137 +148,123 @@ export default function WorkGallery() {
 
 /* ─── Grid card (salón) ─────────────────────────────────────────────── */
 
+// Leve inclinación de cada foto pegada (se endereza al pasar el mouse).
+const GIROS = ["-2.5deg", "1.8deg", "-1.2deg", "2.6deg"];
+
 function GridCard({
   project,
   index,
-  isOpen,
+  openLabel,
   isAnyOpen,
   setRef,
   onOpen,
 }: {
   project: Project;
   index: number;
-  isOpen: boolean;
+  openLabel: string;
   isAnyOpen: boolean;
   setRef: (el: HTMLDivElement | null) => void;
   onOpen: () => void;
 }) {
   const localized = useLocalizedProject(project);
+  const logo = project.cardLogo ?? project.logoNegative ?? project.logo;
+  const lugar = project.client?.split("·")[1]?.trim();
   return (
-    <figure className="flex flex-col gap-5 md:gap-6">
-      {/* Título — serif gigante estilo Hero, slide up reveal */}
-      <div className="overflow-hidden">
-        <motion.h3
-          initial={{ y: "110%" }}
-          animate={{ y: "0%" }}
-          transition={{ duration: 1.1, delay: 0.25 + index * 0.08, ease: EASE }}
-          className="font-serif tracking-[-0.02em] leading-[1] text-[#FAFAF7]"
-          style={{ fontSize: "clamp(1.25rem, 2.5vw, 2.5rem)" }}
-        >
-          {project.title}
-        </motion.h3>
-      </div>
-
-      {/* Imagen / Logo — z alto SOLO en la activa (viaja arriba de la franja). */}
+    <motion.figure
+      className="hl-foto-caso"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, delay: 0.7 + index * 0.1, ease: EASE }}
+    >
       <motion.div
         ref={setRef}
+        role="button"
+        tabIndex={0}
+        aria-label={`${project.title} — ${openLabel}`}
         onClick={onOpen}
-        whileHover={isAnyOpen ? undefined : "hover"}
-        style={{
-          zIndex: 1,
-          backgroundColor:
-            project.displayMode === "logo"
-              ? project.bgColor ?? "#0A0A0A"
-              : "#000000",
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onOpen();
+          }
         }}
-        className="relative w-full aspect-[3/4] cursor-pointer overflow-hidden"
+        whileHover={isAnyOpen ? undefined : "hover"}
+        className="hl-foto"
+        style={{ "--r": GIROS[index % GIROS.length] } as React.CSSProperties}
       >
-        {project.displayMode === "logo" ? (
-          // Modo logo: logo grande centrado, sin imagen de fondo
-          <motion.div
-            variants={{ hover: { scale: 1.04 } }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="absolute inset-0 flex items-center justify-center p-8 md:p-10"
-          >
-            {project.cardLogo || project.logoNegative || project.logo ? (
-              <div style={{ filter: project.logoKeepColor ? undefined : "brightness(0) invert(1)" }}>
-                <Image
-                  src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
-                  alt={`${project.title} logo`}
-                  fill
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="object-contain"
-                  priority={index < 2}
-                />
-              </div>
-            ) : null}
-          </motion.div>
-        ) : (
-          // Modo image (default): imagen full-bleed con filter pack sutil para cohesión visual
-          <>
+        <div
+          className="hl-foto-img"
+          style={{
+            backgroundColor:
+              project.displayMode === "logo" ? project.bgColor ?? "#0A0A0A" : "#000000",
+          }}
+        >
+          {project.displayMode === "logo" ? (
+            // Modo logo: logo grande centrado, sin imagen de fondo
             <motion.div
-              variants={{
-                hover: { scale: 1.06, filter: "grayscale(0%) contrast(1)" },
-              }}
-              initial={{ filter: "grayscale(55%) contrast(1.02)" }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="absolute inset-0"
+              variants={{ hover: { scale: 1.04 } }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="absolute inset-0 flex items-center justify-center p-6 md:p-8"
             >
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                sizes="(min-width: 768px) 25vw, 50vw"
-                className="object-cover"
-                priority={index < 2}
-              />
+              {logo ? (
+                <div style={{ filter: project.logoKeepColor ? undefined : "brightness(0) invert(1)" }}>
+                  <Image
+                    src={logo}
+                    alt={`${project.title} logo`}
+                    fill
+                    sizes="(min-width: 768px) 25vw, 50vw"
+                    className="object-contain"
+                    priority={index < 2}
+                  />
+                </div>
+              ) : null}
             </motion.div>
-
-            {/* Tinte navy MUY sutil con mix-blend-multiply. En hover desaparece → full color. */}
-            <motion.div
-              aria-hidden
-              variants={{ hover: { opacity: 0 } }}
-              initial={{ opacity: 0.35 }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="absolute inset-0 pointer-events-none mix-blend-multiply"
-              style={{ backgroundColor: "#1E2A47" }}
-            />
-
-            {/* Velo sutil para legibilidad del logo y número */}
-            <div
-              aria-hidden
-              className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0A0A0A]/35 via-transparent to-transparent"
-            />
-
-            {/* Logo overlay (esquina inferior izq) — más grande, forzado a blanco */}
-            {project.cardLogo || project.logoNegative || project.logo ? (
-              <div
-                className="absolute bottom-4 left-4 w-32 h-12 md:w-40 md:h-14 opacity-95 pointer-events-none"
-                style={{ filter: "brightness(0) invert(1)" }}
+          ) : (
+            <>
+              <motion.div
+                variants={{ hover: { scale: 1.06, filter: "grayscale(0%) contrast(1)" } }}
+                initial={{ filter: "grayscale(35%) contrast(1.02)" }}
+                transition={{ duration: 0.8, ease: EASE }}
+                className="absolute inset-0"
               >
                 <Image
-                  src={project.cardLogo ?? project.logoNegative ?? project.logo ?? ""}
-                  alt=""
+                  src={project.image}
+                  alt={project.title}
                   fill
-                  sizes="180px"
-                  className="object-contain object-left"
+                  sizes="(min-width: 768px) 25vw, 50vw"
+                  className="object-cover"
+                  priority={index < 2}
                 />
-              </div>
-            ) : null}
-          </>
-        )}
-
-        {/* Indicador de click */}
-        <span className="absolute top-3 right-3 text-[9px] font-mono tracking-[0.2em] uppercase text-[#FAFAF7]/70">
-          0{index + 1}
-        </span>
+              </motion.div>
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0A0A0A]/45 via-transparent to-transparent"
+              />
+              {logo ? (
+                <div
+                  className="absolute bottom-3 left-3 w-28 h-10 md:w-36 md:h-12 opacity-95 pointer-events-none"
+                  style={{ filter: "brightness(0) invert(1)" }}
+                >
+                  <Image src={logo} alt="" fill sizes="160px" className="object-contain object-left" />
+                </div>
+              ) : null}
+            </>
+          )}
+          <span className="hl-foto-num" aria-hidden>
+            0{index + 1}
+          </span>
+        </div>
+        <div className="hl-foto-pie">
+          <strong>{project.title}</strong>
+          <span>{openLabel}</span>
+        </div>
       </motion.div>
 
-      {/* Caption */}
-      <figcaption className="text-[11px] md:text-xs text-[#FAFAF7]/55 leading-relaxed normal-case">
-        {localized.tagline}
+      <figcaption>
+        {lugar ? <small>{lugar}</small> : null}
+        <p>{localized.tagline}</p>
       </figcaption>
-    </figure>
+    </motion.figure>
   );
 }
 

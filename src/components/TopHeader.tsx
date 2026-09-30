@@ -48,12 +48,9 @@ export default function TopHeader() {
     };
   }, [pathname]);
 
-  // En /work, /services, /process y /contact el fondo es oscuro (gradient atmosférico) — logo blanco siempre
-  const darkRoutes = ["/work", "/services", "/process", "/contact", "/privacidad", "/consentimiento", "/terminos"];
-  const isDarkRoute = darkRoutes.includes(pathname);
-  // En la home el color sigue a la sección de abajo (data-theme): el hero
-  // pasa a papel al final y las secciones a lápiz son claras.
-  const useWhite = isDarkRoute || onDark;
+  // Todas las páginas son hoja clara; el logo pasa a blanco solo sobre
+  // secciones marcadas data-theme="dark" (hero del Home, cierres oscuros).
+  const useWhite = onDark;
 
   return (
     <motion.header

@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { useT } from "@/lib/i18n/LocaleProvider";
+import Cabecera, { Subrayado } from "./lapiz/Cabecera";
 
-const EASE = [0.76, 0, 0.24, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const SOCIALS = [
   { label: "Instagram", href: "https://instagram.com/innhovex" },
@@ -65,261 +66,123 @@ export default function ContactGallery() {
   const whatsappNumber = t.contact.info.phoneValue.replace(/\D/g, "");
   const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(t.contact.whatsappPrefill)}`;
 
+  const c = t.contact;
+
   return (
-    <div
-      className="relative w-full min-h-[100dvh] text-[#FAFAF7] overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(circle at 60% 120%, #D1D2C1 0%, #88A6A5 55%, #50747E 90%, #283A42 120%)",
-      }}
-    >
-      {/* Viñeta oscura arriba (igual que Work) */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-64 pointer-events-none bg-gradient-to-b from-[#0F161A]/80 to-transparent z-0"
+    <div className="hl hl-pagina hl-lienzo" data-theme="light">
+      <Cabecera
+        meta={[c.eyebrow, c.info.locationValue]}
+        kicker={c.kicker}
+        lineas={[
+          c.titleLine1,
+          <>
+            {c.titleLine2Prefix ? `${c.titleLine2Prefix} ` : null}
+            <i>
+              <Subrayado>{c.titleLine2Em}</Subrayado>
+            </i>
+          </>,
+          <>
+            {c.titleLine3.replace(/\.$/, "")}
+            <span className="hl-punto">.</span>
+          </>,
+        ]}
+        sub={c.subtitle}
       />
 
-      {/* Grano texturizado (igual que Work) */}
-      <div
-        aria-hidden
-        className="absolute inset-0 mix-blend-overlay opacity-[0.08] pointer-events-none z-0"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      {/* HERO TÍTULO */}
-      <section className="relative z-10 px-6 md:px-14 pt-28 md:pt-32 pb-12 md:pb-16">
-        {/* Eyebrow */}
-        <div className="flex items-start justify-between text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
+      <section className="hl-seccion">
+        <div className="hl-cont-grid">
+          {/* Formulario sobre una hoja dibujada */}
+          <motion.div
+            className="hl-ventana"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: EASE }}
+            transition={{ duration: 0.9, delay: 0.9, ease: EASE }}
           >
-            {t.contact.eyebrow}
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: EASE }}
-            className="hidden md:inline"
-          >
-            {t.contact.info.locationValue}
-          </motion.span>
-        </div>
-
-        {/* Título gigante — siempre 3 líneas: line1 / [prefix] em. / line3 */}
-        <h1
-          className="font-serif text-[#FAFAF7] tracking-[-0.04em] mt-10 md:mt-14"
-          style={{ fontSize: "clamp(2.75rem, 9vw, 10rem)", lineHeight: 0.9 }}
-        >
-          {/* Línea 1 — regular */}
-          <span className="block overflow-hidden" style={{ lineHeight: 0.92 }}>
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1.3, delay: 0.4, ease: EASE }}
-              className="block"
-            >
-              {t.contact.titleLine1}
-            </motion.span>
-          </span>
-
-          {/* Línea 2 — [prefix opcional] + italic con punto navy */}
-          <span className="block overflow-hidden" style={{ lineHeight: 0.92 }}>
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1.3, delay: 0.48, ease: EASE }}
-              className="block"
-            >
-              {t.contact.titleLine2Prefix ? (
-                <span className="text-[#FAFAF7]/92">{t.contact.titleLine2Prefix}{" "}</span>
-              ) : null}
-              <em className="italic text-[#FAFAF7]">
-                {t.contact.titleLine2Em}
-                <span className="text-[#1E2A47]">.</span>
-              </em>
-            </motion.span>
-          </span>
-
-          {/* Línea 3 — regular */}
-          <span className="block overflow-hidden" style={{ lineHeight: 0.92 }}>
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1.3, delay: 0.56, ease: EASE }}
-              className="block"
-            >
-              {t.contact.titleLine3}
-            </motion.span>
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.95, ease: EASE }}
-          className="mt-10 md:mt-14 max-w-2xl text-base md:text-xl font-serif text-[#FAFAF7]/75 leading-relaxed"
-        >
-          {t.contact.subtitle}
-        </motion.p>
-      </section>
-
-      {/* BODY — formulario + info lateral */}
-      <section className="relative z-10 px-6 md:px-14 pb-24 md:pb-32 grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16">
-        {/* FORM */}
-        <motion.form
-          ref={formRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.05, ease: EASE }}
-          onSubmit={handleSubmit}
-          className="lg:col-span-7 space-y-8 border-t border-[#FAFAF7]/12 pt-12"
-        >
-          <h2 className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-            {t.contact.formTitle}
-          </h2>
-
-          <Field name="name" label={t.contact.fields.name} required />
-          <Field name="email" label={t.contact.fields.email} type="email" required />
-          <Field name="company" label={t.contact.fields.company} />
-          <Field
-            key={prefill}
-            name="message"
-            label={t.contact.fields.message}
-            multiline
-            required
-            defaultValue={prefill}
-          />
-
-          {/* Botones: Submit + WhatsApp + nota */}
-          <div className="pt-4 space-y-5">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 flex-wrap">
-              <button
-                type="submit"
-                disabled={status === "submitting"}
-                className="group inline-flex items-center justify-center gap-3 bg-[#FAFAF7] text-[#0A0A0A] px-7 py-4 rounded-full text-[11px] font-mono tracking-[0.18em] uppercase hover:bg-[#1E2A47] hover:text-[#FAFAF7] transition-colors duration-300 disabled:opacity-60"
-              >
-                {status === "submitting"
-                  ? t.contact.fields.submitting
-                  : t.contact.fields.submit}
-                <span
-                  aria-hidden
-                  className="inline-block transition-transform group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </button>
-
-              <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/40 px-1">
-                {t.contact.orDivider}
-              </span>
-
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3 border border-[#FAFAF7]/25 text-[#FAFAF7] px-7 py-4 rounded-full text-[11px] font-mono tracking-[0.18em] uppercase hover:bg-[#25D366] hover:border-[#25D366] hover:text-[#0A0A0A] transition-colors duration-300"
-              >
-                <WhatsAppIcon />
-                {t.contact.whatsappCta}
-              </a>
+            <div className="hl-ventana-barra">
+              <span className="hl-pts" aria-hidden><i /><i /><i /></span>
+              <span className="hl-url">{c.formBar}</span>
             </div>
+            <form ref={formRef} onSubmit={handleSubmit} className="hl-form" aria-label={c.formTitle}>
+              <Field name="name" label={c.fields.name} required autoComplete="name" />
+              <Field name="email" label={c.fields.email} type="email" required autoComplete="email" />
+              <Field name="company" label={c.fields.company} autoComplete="organization" />
+              <Field
+                key={prefill}
+                name="message"
+                label={c.fields.message}
+                multiline
+                required
+                defaultValue={prefill}
+              />
 
-            {/* Estado del envío */}
-            {status === "success" ? (
-              <motion.p
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-mono tracking-[0.05em] text-[#A7E5C4] flex items-center gap-2"
-              >
-                <span aria-hidden>✓</span> {t.contact.successMessage}
-              </motion.p>
-            ) : status === "rate_limited" ? (
-              <motion.p
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-mono tracking-[0.05em] text-[#F4B4A1] flex items-center gap-2"
-              >
-                <span aria-hidden>⏳</span> Demasiados intentos. Esperá un momento y probá de nuevo.
-              </motion.p>
-            ) : status === "error" ? (
-              <motion.p
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-mono tracking-[0.05em] text-[#F4B4A1] flex items-center gap-2"
-              >
-                <span aria-hidden>⚠</span> {t.contact.errorMessage}
-              </motion.p>
-            ) : (
-              <span className="block text-[10px] md:text-[11px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/40">
-                {t.contact.note}
-              </span>
-            )}
-          </div>
-        </motion.form>
-
-        {/* INFO LATERAL */}
-        <motion.aside
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.15, ease: EASE }}
-          className="lg:col-span-5 space-y-12 lg:border-t border-[#FAFAF7]/12 lg:pt-12 lg:pl-8"
-        >
-          <InfoBlock label={t.contact.info.emailLabel}>
-            <a
-              href={`mailto:${t.contact.info.emailValue}`}
-              className="font-serif text-2xl md:text-3xl text-[#FAFAF7] hover:text-[#1E2A47] transition-colors tracking-[-0.02em]"
-            >
-              {t.contact.info.emailValue}
-            </a>
-          </InfoBlock>
-
-          <InfoBlock label={t.contact.info.phoneLabel}>
-            <a
-              href={`tel:${t.contact.info.phoneValue.replace(/\s/g, "")}`}
-              className="font-serif text-xl md:text-2xl text-[#FAFAF7]/90 hover:text-[#FAFAF7] transition-colors tracking-[-0.01em]"
-            >
-              {t.contact.info.phoneValue}
-            </a>
-          </InfoBlock>
-
-          <InfoBlock label={t.contact.info.locationLabel}>
-            <p className="font-serif text-xl md:text-2xl text-[#FAFAF7]/90 tracking-[-0.01em]">
-              {t.contact.info.locationValue}
-            </p>
-          </InfoBlock>
-
-          <InfoBlock label={t.contact.info.hoursLabel}>
-            <p className="text-sm md:text-base text-[#FAFAF7]/75">
-              {t.contact.info.hoursValue}
-            </p>
-          </InfoBlock>
-
-          {/* Socials */}
-          <div className="pt-4">
-            <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55 mb-4">
-              {t.contact.socialTitle}
-            </h4>
-            <div className="flex flex-wrap gap-3">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] font-mono tracking-[0.18em] uppercase border border-[#FAFAF7]/15 px-4 py-2 rounded-full text-[#FAFAF7]/85 hover:bg-[#FAFAF7] hover:text-[#0A0A0A] transition-colors"
-                >
-                  {s.label}
+              <div className="hl-form-acciones">
+                <button type="submit" className="hl-btn-lapiz hl-oscuro" disabled={status === "submitting"}>
+                  {status === "submitting" ? c.fields.submitting : c.fields.submit} →
+                </button>
+                <span className="hl-o">{c.orDivider}</span>
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="hl-btn-lapiz hl-wpp">
+                  <WhatsAppIcon />
+                  {c.whatsappCta}
                 </a>
-              ))}
+              </div>
+
+              {status === "success" ? (
+                <p className="hl-form-estado hl-ok" role="status">
+                  <span aria-hidden>✓</span> {c.successMessage}
+                </p>
+              ) : status === "rate_limited" ? (
+                <p className="hl-form-estado hl-mal" role="alert">
+                  <span aria-hidden>⏳</span> {c.rateLimited}
+                </p>
+              ) : status === "error" ? (
+                <p className="hl-form-estado hl-mal" role="alert">
+                  <span aria-hidden>⚠</span> {c.errorMessage}
+                </p>
+              ) : (
+                <p className="hl-form-estado hl-nota">{c.note}</p>
+              )}
+            </form>
+          </motion.div>
+
+          {/* Datos en post-its */}
+          <motion.aside
+            className="hl-cont-lado"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 1.05, ease: EASE }}
+          >
+            <div className="hl-cont-postits">
+              <div className="hl-postit hl-rot-2">
+                <small>{c.info.emailLabel}</small>
+                <a href={`mailto:${c.info.emailValue}`}>{c.info.emailValue}</a>
+              </div>
+              <div className="hl-postit hl-rot-1">
+                <small>{c.info.phoneLabel}</small>
+                <a href={`tel:${c.info.phoneValue.replace(/\s/g, "")}`}>{c.info.phoneValue}</a>
+              </div>
             </div>
-          </div>
-        </motion.aside>
+            <div className="hl-cont-datos">
+              <div>
+                <small>{c.info.locationLabel}</small>
+                <span>{c.info.locationValue}</span>
+              </div>
+              <div>
+                <small>{c.info.hoursLabel}</small>
+                <span>{c.info.hoursValue}</span>
+              </div>
+            </div>
+            <div className="hl-cont-datos">
+              <small>{c.socialTitle}</small>
+              <div className="hl-pills">
+                {SOCIALS.map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="hl-pill">
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.aside>
+        </div>
       </section>
     </div>
   );
@@ -334,6 +197,7 @@ function Field({
   required,
   multiline,
   defaultValue,
+  autoComplete,
 }: {
   name: string;
   label: string;
@@ -341,74 +205,19 @@ function Field({
   required?: boolean;
   multiline?: boolean;
   defaultValue?: string;
+  autoComplete?: string;
 }) {
-  const [focused, setFocused] = useState(false);
-  const [hasValue, setHasValue] = useState(!!defaultValue);
-  const float = focused || hasValue;
-
-  const commonClass =
-    "w-full bg-transparent border-b border-[#FAFAF7]/20 pt-7 pb-3 text-base md:text-lg font-serif text-[#FAFAF7] placeholder:text-transparent focus:outline-none focus:border-[#FAFAF7] transition-colors duration-300";
-
   return (
-    <div className="relative">
-      <label
-        htmlFor={name}
-        className={`absolute left-0 pointer-events-none transition-all duration-300 ${
-          float
-            ? "top-0 text-[10px] tracking-[0.22em] uppercase text-[#FAFAF7]/55 font-mono"
-            : "top-7 text-base md:text-lg text-[#FAFAF7]/45 font-serif"
-        }`}
-      >
+    <div className="hl-campo">
+      <label htmlFor={name}>
         {label}
-        {required ? <span className="text-[#1E2A47]"> *</span> : null}
+        {required ? <b> *</b> : null}
       </label>
       {multiline ? (
-        <textarea
-          id={name}
-          name={name}
-          required={required}
-          rows={4}
-          defaultValue={defaultValue}
-          onFocus={() => setFocused(true)}
-          onBlur={(e) => {
-            setFocused(false);
-            setHasValue(e.target.value.length > 0);
-          }}
-          className={`${commonClass} resize-none`}
-        />
+        <textarea id={name} name={name} required={required} rows={4} defaultValue={defaultValue} />
       ) : (
-        <input
-          id={name}
-          name={name}
-          type={type}
-          required={required}
-          onFocus={() => setFocused(true)}
-          onBlur={(e) => {
-            setFocused(false);
-            setHasValue(e.target.value.length > 0);
-          }}
-          className={commonClass}
-        />
+        <input id={name} name={name} type={type} required={required} autoComplete={autoComplete} />
       )}
-    </div>
-  );
-}
-
-/* ─── InfoBlock ──────────────────────────────────────────────────────── */
-
-function InfoBlock({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-3">
-      <h4 className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55 border-l-2 border-[#FAFAF7]/40 pl-3">
-        {label}
-      </h4>
-      <div className="pl-3">{children}</div>
     </div>
   );
 }

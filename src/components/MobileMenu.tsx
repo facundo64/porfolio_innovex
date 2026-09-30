@@ -56,14 +56,15 @@ export default function MobileMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? t.nav.close : t.nav.menu}
         aria-expanded={open}
-        className="md:hidden relative z-[120] flex h-10 w-10 items-center justify-center rounded-full bg-white/15 backdrop-blur-md border border-white/20 pointer-events-auto"
+        className="md:hidden relative z-[120] flex h-10 w-10 items-center justify-center bg-[#FAFAF7] border-2 border-[#2A2B30] shadow-[2px_3px_0_#2A2B30] pointer-events-auto"
+        style={{ borderRadius: "22px 12px 20px 10px / 10px 20px 12px 22px" }}
       >
         <span className="relative flex h-3.5 w-5 flex-col items-center justify-between">
           <motion.span
             animate={{
               rotate: open ? 45 : 0,
               y: open ? 6 : 0,
-              backgroundColor: open ? "#FAFAF7" : "#0A0A0A",
+              backgroundColor: "#2A2B30",
             }}
             transition={{ duration: 0.35, ease: EASE }}
             className="block h-[1.5px] w-full rounded-full origin-center"
@@ -71,13 +72,13 @@ export default function MobileMenu() {
           <motion.span
             animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }}
             transition={{ duration: 0.2 }}
-            className="block h-[1.5px] w-full rounded-full bg-current"
+            className="block h-[1.5px] w-full rounded-full bg-[#2A2B30]"
           />
           <motion.span
             animate={{
               rotate: open ? -45 : 0,
               y: open ? -6 : 0,
-              backgroundColor: open ? "#FAFAF7" : "#0A0A0A",
+              backgroundColor: "#2A2B30",
             }}
             transition={{ duration: 0.35, ease: EASE }}
             className="block h-[1.5px] w-full rounded-full origin-center"
@@ -111,17 +112,11 @@ export default function MobileMenu() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.5, ease: EASE }}
-              className="md:hidden fixed top-0 right-0 bottom-0 z-[118] w-[82%] max-w-sm bg-[#0A0A0A] text-[#FAFAF7] flex flex-col"
-              style={{
-                background:
-                  "radial-gradient(circle at 100% 100%, #283A42 0%, #0A0A0A 80%)",
-              }}
+              className="hl hl-lienzo md:hidden fixed top-0 right-0 bottom-0 z-[118] w-[82%] max-w-sm text-[#0A0A0A] flex flex-col border-l-2 border-[#2A2B30]"
             >
               {/* Header del panel — espacio para el botón hamburguesa que queda flotando */}
               <div className="flex items-center justify-between px-6 pt-6 pb-4">
-                <span className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-                  {t.nav.menu}
-                </span>
+                <span className="hl-kicker">✎ {t.nav.menu.toLowerCase()}</span>
               </div>
 
               {/* Navegación — tipografía grande serif */}
@@ -141,26 +136,24 @@ export default function MobileMenu() {
                     >
                       <TransitionLink
                         href={link.href}
-                        className="group flex items-baseline justify-between border-b border-[#FAFAF7]/10 py-4"
+                        className="group flex items-baseline justify-between border-b border-dashed border-[#2A2B30]/30 py-4"
                       >
                         <span
                           className={`font-serif tracking-[-0.02em] transition-colors ${
                             active
-                              ? "text-[#FAFAF7]"
-                              : "text-[#FAFAF7]/55 group-hover:text-[#FAFAF7]"
+                              ? "text-[#0A0A0A]"
+                              : "text-[#6C6D74] group-hover:text-[#0A0A0A]"
                           }`}
                           style={{ fontSize: "clamp(1.75rem, 8vw, 2.5rem)" }}
                         >
                           {link.label}
                         </span>
                         {active ? (
-                          <span className="text-[9px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/50">
-                            ON
-                          </span>
+                          <span className="font-[family-name:var(--mano)] text-base text-[#2D3E66]">✎</span>
                         ) : (
                           <span
                             aria-hidden
-                            className="text-[#FAFAF7]/30 group-hover:text-[#FAFAF7] transition-colors"
+                            className="text-[#6C6D74] group-hover:text-[#0A0A0A] transition-colors"
                           >
                             →
                           </span>
@@ -176,12 +169,11 @@ export default function MobileMenu() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
-                className="px-6 pt-6 pb-8 border-t border-[#FAFAF7]/10 flex items-center justify-between gap-4"
+                className="px-6 pt-6 pb-8 border-t border-dashed border-[#2A2B30]/30 flex items-center justify-between gap-4"
               >
-                <div className="text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55 leading-tight">
-                  Innhovex<br />
-                  Buenos Aires
-                </div>
+                <TransitionLink href="/contact" className="hl-btn-lapiz hl-oscuro">
+                  {t.nav.talk} →
+                </TransitionLink>
                 <LocaleToggle />
               </motion.div>
             </motion.aside>

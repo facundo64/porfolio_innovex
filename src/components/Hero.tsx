@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { useT } from "@/lib/i18n/LocaleProvider";
 import Lapiz from "./home/Lapiz";
-import "./home/home.css";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));

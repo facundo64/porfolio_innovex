@@ -1,224 +1,104 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { useT } from "@/lib/i18n/LocaleProvider";
 import TransitionLink from "./TransitionLink";
+import Cabecera, { Banda, Subrayado } from "./lapiz/Cabecera";
 
-const EASE = [0.76, 0, 0.24, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
+// Círculo a mano alrededor del número de cada paso (uno distinto por paso).
+const CIRCULOS = [
+  "M50 4 C 80 3, 97 22, 96 50 C 95 80, 76 97, 48 96 C 20 95, 4 78, 4 50 C 4 22, 22 5, 56 6",
+  "M48 3 C 78 4, 96 20, 97 52 C 96 82, 74 97, 50 97 C 20 96, 3 78, 4 48 C 5 20, 26 4, 60 7",
+  "M52 4 C 84 5, 97 26, 95 52 C 93 80, 72 96, 46 95 C 18 94, 4 74, 5 46 C 6 18, 28 3, 58 5",
+  "M50 3 C 82 4, 98 24, 96 50 C 94 82, 72 98, 48 96 C 18 94, 3 76, 4 48 C 5 20, 24 4, 62 6",
+];
+const ROT = ["hl-rot-2", "hl-rot-1", "hl-rot-4", "hl-rot-3"];
 
 export default function ProcessGallery() {
   const t = useT();
+  const p = t.process;
+  const pasosRef = useRef<HTMLDivElement>(null);
+
+  // La línea punteada que une los pasos se dibuja a medida que se baja.
+  useEffect(() => {
+    const el = pasosRef.current;
+    if (!el) return;
+    const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const onScroll = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const prog = reducir ? 1 : Math.min(1, Math.max(0, (vh * 0.7 - r.top) / r.height));
+      el.style.setProperty("--prog", prog.toFixed(3));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
 
   return (
-    <div
-      className="relative w-full min-h-[100dvh] text-[#FAFAF7] overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(circle at 60% 120%, #D1D2C1 0%, #88A6A5 55%, #50747E 90%, #283A42 120%)",
-      }}
-    >
-      {/* Viñeta oscura arriba */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-64 pointer-events-none bg-gradient-to-b from-[#0F161A]/80 to-transparent z-0"
+    <div className="hl hl-pagina hl-lienzo" data-theme="light">
+      <Cabecera
+        meta={[p.eyebrow, p.stepsLabel]}
+        kicker={p.kicker}
+        lineas={[
+          p.titleLine1,
+          <i key="i">{p.titleLine2}</i>,
+          <>
+            <Subrayado>{p.titleEm}</Subrayado>
+            <span className="hl-punto">.</span>
+          </>,
+        ]}
+        sub={p.subtitle}
       />
 
-      {/* Grano texturizado */}
-      <div
-        aria-hidden
-        className="absolute inset-0 mix-blend-overlay opacity-[0.08] pointer-events-none z-0"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      {/* HERO TÍTULO */}
-      <section className="relative z-10 px-6 md:px-14 pt-28 md:pt-32 pb-12 md:pb-16">
-        {/* Eyebrow */}
-        <div className="flex items-start justify-between text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/75">
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: EASE }}
-          >
-            {t.process.eyebrow}
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: EASE }}
-            className="hidden md:inline"
-          >
-            04 / Steps
-          </motion.span>
-        </div>
-
-        {/* Título gigante */}
-        <h1
-          className="font-serif text-[#FAFAF7] tracking-[-0.04em] mt-10 md:mt-14"
-          style={{ fontSize: "clamp(2.75rem, 9vw, 10rem)", lineHeight: 0.9 }}
+      <section className="hl-seccion">
+        <motion.div
+          className={`hl-postit hl-proc-intro hl-rot-3`}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 1, ease: EASE }}
         >
-          {[
-            { text: t.process.titleLine1, italic: false, accent: false },
-            { text: t.process.titleLine2, italic: true, accent: false },
-            { text: `${t.process.titleEm}.`, italic: false, accent: true },
-          ].map((line, i) => (
-            <span key={i} className="block overflow-hidden" style={{ lineHeight: 0.92 }}>
-              <motion.span
-                initial={{ y: "110%" }}
-                animate={{ y: "0%" }}
-                transition={{ duration: 1.3, delay: 0.4 + i * 0.08, ease: EASE }}
-                className={`block ${line.italic ? "italic text-[#FAFAF7]/92" : ""}`}
-              >
-                {line.accent ? (
-                  <>
-                    {line.text.replace(".", "")}
-                    <span className="text-[#1E2A47]">.</span>
-                  </>
-                ) : (
-                  line.text
-                )}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+          {p.intro}
+        </motion.div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.95, ease: EASE }}
-          className="mt-10 md:mt-14 max-w-2xl text-base md:text-xl font-serif text-[#FAFAF7]/80 leading-relaxed"
-        >
-          {t.process.subtitle}
-        </motion.p>
-      </section>
-
-      {/* INTRO + STEPS */}
-      <section className="relative z-10 px-6 md:px-14 pb-20 md:pb-24">
-        {/* Intro */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.05, ease: EASE }}
-          className="max-w-xl text-sm md:text-base text-[#FAFAF7]/65 leading-relaxed mb-16 md:mb-20 ml-auto md:text-right"
-        >
-          {t.process.intro}
-        </motion.p>
-
-        {/* Steps — lista editorial vertical */}
-        <div className="space-y-0 border-t border-[#FAFAF7]/15">
-          {t.process.steps.map((step, i) => (
+        <div ref={pasosRef} className="hl-pasos">
+          <div className="hl-pasos-linea" aria-hidden />
+          {p.steps.map((step, i) => (
             <motion.article
               key={step.n}
+              className="hl-paso"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.9, delay: i * 0.06, ease: EASE }}
-              className="group relative grid grid-cols-12 gap-4 md:gap-8 py-8 md:py-14 border-b border-[#FAFAF7]/15 hover:bg-[#FAFAF7]/[0.03] transition-colors duration-500"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: EASE }}
             >
-              {/* Mobile: número + título lado a lado en una sola fila */}
-              <div className="col-span-12 md:hidden flex items-baseline gap-4">
-                <span
-                  className="font-serif text-[#FAFAF7]/40 group-hover:text-[#FAFAF7]/70 transition-colors duration-500 leading-none shrink-0"
-                  style={{ fontSize: "clamp(2.5rem, 12vw, 4rem)" }}
-                >
-                  {step.n}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <h3
-                    className="font-serif text-[#FAFAF7] tracking-[-0.03em] leading-[0.95]"
-                    style={{ fontSize: "clamp(1.5rem, 7vw, 2.25rem)" }}
-                  >
-                    {step.title}
-                  </h3>
-                  <span className="mt-2 inline-block text-[10px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-                    {step.duration}
-                  </span>
-                </div>
+              <div className="hl-paso-num">
+                <svg viewBox="0 0 100 100" aria-hidden>
+                  <path d={CIRCULOS[i % CIRCULOS.length]} />
+                </svg>
+                {step.n}
               </div>
-
-              {/* Desktop: número en col-span-2 */}
-              <div className="hidden md:block md:col-span-2">
-                <span
-                  className="font-serif text-[#FAFAF7]/40 group-hover:text-[#FAFAF7]/70 transition-colors duration-500 leading-none"
-                  style={{ fontSize: "clamp(3rem, 7vw, 6.5rem)" }}
-                >
-                  {step.n}
-                </span>
+              <div className="hl-paso-cuerpo">
+                <h3>{step.title}</h3>
+                <span className={`hl-postit ${ROT[i % ROT.length]}`}>{step.duration}</span>
+                <p>{step.description}</p>
               </div>
-
-              {/* Desktop: título del paso en col-span-4 */}
-              <div className="hidden md:block md:col-span-4">
-                <h3
-                  className="font-serif text-[#FAFAF7] tracking-[-0.03em] leading-[0.95]"
-                  style={{ fontSize: "clamp(1.75rem, 3.6vw, 3.25rem)" }}
-                >
-                  {step.title}
-                </h3>
-                <span className="mt-3 inline-block text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-                  {step.duration}
-                </span>
-              </div>
-
-              {/* Descripción */}
-              <div className="col-span-12 md:col-span-6 md:pl-8 flex items-center">
-                <p className="text-sm md:text-lg text-[#FAFAF7]/85 leading-relaxed max-w-xl">
-                  {step.description}
-                </p>
-              </div>
-
-              {/* Línea de progreso animada en hover */}
-              <motion.div
-                aria-hidden
-                className="absolute left-0 right-0 bottom-0 h-px bg-[#FAFAF7]"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                style={{ transformOrigin: "left" }}
-                transition={{ duration: 0.6, ease: EASE }}
-              />
             </motion.article>
           ))}
         </div>
       </section>
 
-      {/* CLOSING + CTA */}
-      <section className="relative z-10 px-6 md:px-14 py-20 md:py-24 border-t border-[#FAFAF7]/12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-end">
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: EASE }}
-            className="lg:col-span-7 font-serif text-[#FAFAF7] tracking-[-0.02em] leading-[1.1]"
-            style={{ fontSize: "clamp(1.75rem, 3.4vw, 2.75rem)" }}
-          >
-            {t.process.closing}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.1, ease: EASE }}
-            className="lg:col-span-5 flex flex-col items-start lg:items-end gap-5"
-          >
-            <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/55">
-              {t.common.startProject}
-            </span>
-            <TransitionLink
-              href="/contact"
-              className="group inline-flex items-center gap-3 bg-[#FAFAF7] text-[#0A0A0A] px-7 py-4 rounded-full text-[11px] font-mono tracking-[0.18em] uppercase hover:bg-[#1E2A47] hover:text-[#FAFAF7] transition-colors duration-300"
-            >
-              {t.services.cta}
-              <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </TransitionLink>
-          </motion.div>
-        </div>
-      </section>
+      <Banda kicker={p.bandKicker} titulo={p.closing} tituloEm="">
+        <TransitionLink className="hl-btn-lapiz" href="/contact">
+          {t.nav.talk} →
+        </TransitionLink>
+      </Banda>
     </div>
   );
 }
