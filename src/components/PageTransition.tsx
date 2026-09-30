@@ -53,8 +53,16 @@ export function TransitionProvider({
 
   const navigate = useCallback(
     (href: string) => {
-      if (href === pathname || phase !== "idle") return;
-      pendingHref.current = href;
+      if (phase !== "idle") return;
+      // La cortina se levanta cuando cambia el pathname, que no incluye
+      // ?query ni #hash: comparamos solo la ruta (/work?p=jem-si → /work).
+      const path = href.split(/[?#]/)[0] || "/";
+      if (path === pathname) {
+        // Misma página con otros parámetros: sin cortina (no cambiaría el pathname).
+        if (href !== pathname) router.push(href);
+        return;
+      }
+      pendingHref.current = path;
       setPhase("covering");
       window.setTimeout(() => {
         router.push(href);
