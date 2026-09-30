@@ -380,8 +380,8 @@ const es: Dictionary = {
   },
   home: {
     heroPostit: {
-      line1: "Acá estamos:",
-      line2: "Puerto Madero, Buenos Aires.",
+      line1: "Buenos Aires,",
+      line2: "nuestra base.",
       strong: "De acá sale el viaje ↓",
     },
     viaje: {
@@ -415,7 +415,7 @@ const es: Dictionary = {
           pin: "yerbatería",
         },
       ],
-      studioPin: "el estudio",
+      studioPin: "nuestra base",
       studioPinSub: "Buenos Aires",
       endKicker: "✎ y el viaje sigue",
       endTitle: "Cada parada es un caso completo.",
@@ -701,8 +701,8 @@ const en: Dictionary = {
   },
   home: {
     heroPostit: {
-      line1: "Here we are:",
-      line2: "Puerto Madero, Buenos Aires.",
+      line1: "Buenos Aires,",
+      line2: "our home base.",
       strong: "The journey starts here ↓",
     },
     viaje: {
@@ -736,7 +736,7 @@ const en: Dictionary = {
           pin: "yerba shop",
         },
       ],
-      studioPin: "the studio",
+      studioPin: "our base",
       studioPinSub: "Buenos Aires",
       endKicker: "✎ and the journey goes on",
       endTitle: "Every stop is a complete case.",

@@ -11,7 +11,7 @@ const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
 /**
  * Hero largo (2x viewport) con parallax. Cuando el texto ya pasó, un lápiz
- * redibuja la misma foto (Puerto Madero) desde abajo y el dibujo se funde en
+ * redibuja la misma foto de Buenos Aires desde abajo y el dibujo se funde en
  * la hoja punteada del mapa que sigue (ver HomeViaje).
  * La foto y su versión a lápiz son 3:2 y comparten el recorte (object-cover).
  */
@@ -55,7 +55,9 @@ export default function Hero() {
       lapicito.style.opacity = enCurso ? "1" : "0";
       lapicito.style.left = `${8 + tl * 80}%`;
       lapicito.style.top = `${bordeVp - hr.top + vh * 0.06}px`;
-      postit.classList.toggle("hl-on", tl > 0.6);
+      // El post-it acompaña la transición y se va cuando entra el mapa (ahí
+      // lo reemplaza el pin "nuestra base"), para no tapar el mapa ni el header.
+      postit.classList.toggle("hl-on", tl > 0.6 && hr.bottom > vh * 0.62);
     };
 
     let tick = false;
