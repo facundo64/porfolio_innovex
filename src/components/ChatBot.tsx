@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { QUICK_ACTIONS, WELCOME_MESSAGE } from "@/lib/chatbot/systemPrompt";
@@ -58,6 +59,26 @@ export default function ChatBot() {
   const { locale } = useLocale();
   const tx = TEXTOS[locale];
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  // El post-it aparece recién después del hero (en el Home) o del primer
+  // scroll (resto de páginas): al entrar no tapa la vista ni distrae.
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      const hero = document.querySelector<HTMLElement>(".hl-hero");
+      const vh = window.innerHeight;
+      const pasado = hero ? hero.getBoundingClientRect().bottom < vh * 0.35 : window.scrollY > vh * 0.6;
+      setVisible(pasado);
+    };
+    check();
+    window.addEventListener("scroll", check, { passive: true });
+    window.addEventListener("resize", check);
+    return () => {
+      window.removeEventListener("scroll", check);
+      window.removeEventListener("resize", check);
+    };
+  }, [pathname]);
   const { messages, sendMessage, status, error } = useChat();
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -105,7 +126,7 @@ export default function ChatBot() {
     <div className="hl">
       {/* Lanzador: un post-it pegado en la esquina */}
       <AnimatePresence>
-        {!open && (
+        {!open && visible && (
           <motion.button
             key="launcher"
             type="button"
@@ -116,7 +137,7 @@ export default function ChatBot() {
             initial={{ opacity: 0, scale: 1.35, rotate: 10, y: -30 }}
             animate={{ opacity: 1, scale: 1, rotate: -3, y: 0 }}
             exit={{ opacity: 0, scale: 0.7, rotate: 8, y: 20 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.2 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
           >
             <span className="hl-bot-launcher-live">
               <i aria-hidden />
