@@ -6,30 +6,73 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { QUICK_ACTIONS, WELCOME_MESSAGE } from "@/lib/chatbot/systemPrompt";
 
-const EASE = [0.76, 0, 0.24, 1] as const;
+/**
+ * Asistente IA del sitio, en el lenguaje "a lápiz": el lanzador es un post-it,
+ * el panel una hoja dibujada que se despliega desde él. Es además una muestra
+ * en vivo del servicio de integraciones con IA, por eso cierra invitando a
+ * pedir uno propio.
+ */
+
+const WHATSAPP = "5491170588887";
+
+const TEXTOS = {
+  es: {
+    launcher: "Contanos tu idea",
+    launcherCorto: "Tu idea",
+    live: "IA en vivo",
+    title: "Contanos tu idea",
+    kicker: "asistente IA · hecho por Innhovex",
+    demo: "Esto es una demo en vivo de lo que armamos",
+    placeholder: "Escribí tu idea…",
+    send: "Enviar",
+    close: "Cerrar",
+    typing: "pensando…",
+    whatsapp: "Hablar por WhatsApp",
+    errorTitle: "El asistente se tomó un recreo.",
+    errorBody: "Mientras tanto, escribinos directo y te respondemos nosotros.",
+    errorForm: "Ir al formulario",
+    pie: "¿Querés un asistente así para tu negocio?",
+    pieMsg: "Hola, quiero un asistente con IA como el de su web para mi negocio.",
+  },
+  en: {
+    launcher: "Tell us your idea",
+    launcherCorto: "Your idea",
+    live: "Live AI",
+    title: "Tell us your idea",
+    kicker: "AI assistant · made by Innhovex",
+    demo: "This is a live demo of what we build",
+    placeholder: "Write your idea…",
+    send: "Send",
+    close: "Close",
+    typing: "thinking…",
+    whatsapp: "Chat on WhatsApp",
+    errorTitle: "The assistant is taking a break.",
+    errorBody: "In the meantime, write to us directly and a human will answer.",
+    errorForm: "Go to the form",
+    pie: "Want an assistant like this for your business?",
+    pieMsg: "Hi, I'd like an AI assistant like the one on your site for my business.",
+  },
+} as const;
 
 export default function ChatBot() {
   const { locale } = useLocale();
+  const tx = TEXTOS[locale];
   const [open, setOpen] = useState(false);
-
   const { messages, sendMessage, status, error } = useChat();
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
 
-  // Auto-scroll al fondo cuando llegan mensajes nuevos
   useEffect(() => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, status, error]);
 
-  // Focus input al abrir
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 400);
+    if (open) setTimeout(() => inputRef.current?.focus(), 450);
   }, [open]);
 
-  // Cerrar con Esc
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -39,316 +82,221 @@ export default function ChatBot() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  const isBusy = status === "streaming" || status === "submitted";
+
+  const enviar = (texto: string) => {
+    const t = texto.trim();
+    if (!t || isBusy) return;
+    sendMessage({ text: t });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = input.trim();
-    if (!trimmed || status === "streaming" || status === "submitted") return;
-    sendMessage({ text: trimmed });
+    enviar(input);
     setInput("");
   };
 
-  const handleQuickAction = (prompt: string) => {
-    if (status === "streaming" || status === "submitted") return;
-    sendMessage({ text: prompt });
-  };
-
-  const isBusy = status === "streaming" || status === "submitted";
-  const showWelcome = messages.length === 0;
-  const quickActions = QUICK_ACTIONS[locale];
-  const welcomeText = WELCOME_MESSAGE[locale];
-  const placeholder =
-    locale === "es" ? "Escribí tu mensaje..." : "Write your message...";
-  const labels =
-    locale === "es"
-      ? {
-          title: "Asistente Innhovex",
-          subtitle: "Online · Responde en segundos",
-          whatsapp: "Hablar por WhatsApp",
-          send: "Enviar",
-          poweredBy: "Asistente IA",
-        }
-      : {
-          title: "Innhovex Assistant",
-          subtitle: "Online · Replies in seconds",
-          whatsapp: "Chat on WhatsApp",
-          send: "Send",
-          poweredBy: "AI Assistant",
-        };
+  const whatsappHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+    locale === "es" ? "Hola Innhovex, me gustaría conversar sobre una idea." : "Hi Innhovex, I'd like to talk about an idea."
+  )}`;
+  const esperandoRespuesta = isBusy && messages[messages.length - 1]?.role === "user";
 
   return (
-    <>
-      {/* Launcher — botón flotante esquina inferior derecha */}
-      <motion.button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-label={labels.title}
-        aria-expanded={open}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 1.5, ease: EASE }}
-        className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[80] flex h-14 w-14 md:h-16 md:w-16 items-center justify-center rounded-full bg-[#1E2A47] text-[#FAFAF7] shadow-[0_10px_40px_-10px_rgba(30,42,71,0.7)] hover:scale-105 transition-transform"
-      >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.svg
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            >
-              <path d="M18 6 6 18M6 6l12 12" />
-            </motion.svg>
-          ) : (
-            <motion.svg
-              key="robot"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              width="26"
-              height="26"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {/* Antena */}
-              <path d="M12 2v3" />
-              <circle cx="12" cy="2" r="0.6" fill="currentColor" />
-              {/* Cabeza del robot */}
-              <rect x="4" y="6" width="16" height="12" rx="3" />
-              {/* Ojos */}
-              <circle cx="9" cy="12" r="1.2" fill="currentColor" />
-              <circle cx="15" cy="12" r="1.2" fill="currentColor" />
-              {/* Boca */}
-              <path d="M9.5 15.5h5" />
-              {/* Orejas / receptores */}
-              <path d="M2 12h2" />
-              <path d="M20 12h2" />
-              {/* Base / cuello */}
-              <path d="M10 18v3" />
-              <path d="M14 18v3" />
-            </motion.svg>
-          )}
-        </AnimatePresence>
-
-        {/* Indicador online (punto verde pulsante) */}
-        {!open && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
-            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-green-500 border-2 border-[#FAFAF7]" />
-          </span>
-        )}
-      </motion.button>
-
-      {/* Panel del chat */}
+    <div className="hl">
+      {/* Lanzador: un post-it pegado en la esquina */}
       <AnimatePresence>
-        {open ? (
+        {!open && (
+          <motion.button
+            key="launcher"
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label={tx.launcher}
+            aria-expanded={false}
+            className="hl-bot-launcher"
+            initial={{ opacity: 0, scale: 1.35, rotate: 10, y: -30 }}
+            animate={{ opacity: 1, scale: 1, rotate: -3, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, rotate: 8, y: 20 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.2 }}
+          >
+            <span className="hl-bot-launcher-live">
+              <i aria-hidden />
+              {tx.live}
+            </span>
+            <span className="hl-bot-launcher-txt">
+              <span className="hl-bot-largo">{tx.launcher}</span>
+              <span className="hl-bot-corto">{tx.launcherCorto}</span> ✎
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Panel: hoja dibujada que se despliega desde el post-it */}
+      <AnimatePresence>
+        {open && (
           <motion.aside
-            key="chat-panel"
+            key="panel"
             role="dialog"
             aria-modal="true"
-            aria-label={labels.title}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: EASE }}
-            className="fixed bottom-24 right-4 md:bottom-28 md:right-8 z-[80] w-[calc(100vw-2rem)] sm:w-[400px] h-[70vh] max-h-[600px] flex flex-col rounded-2xl overflow-hidden shadow-[0_25px_80px_-20px_rgba(0,0,0,0.5)] border border-[#FAFAF7]/15"
-            style={{
-              background:
-                "radial-gradient(circle at 100% 100%, #283A42 0%, #0A0A0A 80%)",
-            }}
+            aria-label={tx.title}
+            className="hl-bot"
+            style={{ transformOrigin: "100% 100%" }}
+            initial={{ opacity: 0, scale: 0.55, rotate: 5, y: 40 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
+            exit={{ opacity: 0, scale: 0.6, rotate: 4, y: 30 }}
+            transition={{ type: "spring", stiffness: 240, damping: 24 }}
           >
-            {/* Header */}
-            <div className="relative px-5 pt-5 pb-4 border-b border-[#FAFAF7]/10">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="h-10 w-10 rounded-full bg-[#FAFAF7]/10 backdrop-blur-md border border-[#FAFAF7]/15 flex items-center justify-center">
-                    <span className="font-serif text-[#FAFAF7] text-sm">IX</span>
-                  </div>
-                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-[#0A0A0A]" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-serif text-[#FAFAF7] text-base tracking-tight">
-                    {labels.title}
-                  </h3>
-                  <p className="text-[10px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/55">
-                    {labels.subtitle}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Mensajes — data-lenis-prevent excluye este div del smooth scroll global
-                para que el wheel/trackpad scrollee dentro del chat sin que Lenis lo intercepte */}
-            <div
-              ref={scrollRef}
-              data-lenis-prevent
-              className="flex-1 overflow-y-auto px-5 py-5 space-y-4 overscroll-contain"
-            >
-              {/* Welcome message */}
-              {showWelcome ? (
-                <>
-                  <Bubble role="assistant">{welcomeText}</Bubble>
-
-                  {/* Quick actions */}
-                  <div className="space-y-2 pt-2">
-                    {quickActions.map((action) => (
-                      <button
-                        key={action.id}
-                        type="button"
-                        onClick={() => handleQuickAction(action.prompt)}
-                        disabled={isBusy}
-                        className="w-full text-left px-4 py-3 rounded-xl bg-[#FAFAF7]/5 hover:bg-[#FAFAF7]/10 border border-[#FAFAF7]/10 hover:border-[#FAFAF7]/25 transition-all text-sm text-[#FAFAF7] disabled:opacity-50"
-                      >
-                        <span className="opacity-70 mr-2">→</span>
-                        {action.label}
-                      </button>
-                    ))}
-
-                    <a
-                      href={`https://wa.me/5491170588887?text=${encodeURIComponent(locale === "es" ? "Hola Innhovex, me gustaría conversar." : "Hi Innhovex, I'd like to chat.")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full text-left px-4 py-3 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 transition-all text-sm text-[#FAFAF7]"
-                    >
-                      <span className="opacity-90 mr-2">💬</span>
-                      {labels.whatsapp}
-                    </a>
-                  </div>
-                </>
-              ) : null}
-
-              {/* Mensajes del chat */}
-              {messages.map((m) => {
-                const text = m.parts
-                  .map((part) => (part.type === "text" ? part.text : ""))
-                  .join("");
-                return (
-                  <Bubble key={m.id} role={m.role as "user" | "assistant"}>
-                    <FormattedText text={text} />
-                  </Bubble>
-                );
-              })}
-
-              {/* Loader cuando el bot está pensando */}
-              {isBusy && messages[messages.length - 1]?.role === "user" ? (
-                <div className="flex gap-1 px-4 py-3 max-w-fit">
-                  <span
-                    className="h-2 w-2 rounded-full bg-[#FAFAF7]/60 animate-bounce"
-                    style={{ animationDelay: "0ms" }}
-                  />
-                  <span
-                    className="h-2 w-2 rounded-full bg-[#FAFAF7]/60 animate-bounce"
-                    style={{ animationDelay: "150ms" }}
-                  />
-                  <span
-                    className="h-2 w-2 rounded-full bg-[#FAFAF7]/60 animate-bounce"
-                    style={{ animationDelay: "300ms" }}
-                  />
-                </div>
-              ) : null}
-
-              {/* Error */}
-              {error ? (
-                <p className="text-xs font-mono text-[#F4B4A1] px-2 py-2 rounded-lg bg-[#F4B4A1]/10 border border-[#F4B4A1]/20">
-                  {locale === "es"
-                    ? "Algo falló. Intentá de nuevo o escribinos por WhatsApp."
-                    : "Something went wrong. Try again or message us on WhatsApp."}
-                </p>
-              ) : null}
-            </div>
-
-            {/* Input */}
-            <form
-              onSubmit={handleSubmit}
-              className="relative px-5 py-4 border-t border-[#FAFAF7]/10"
-            >
-              <div className="relative flex items-center gap-2">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={placeholder}
-                  disabled={isBusy}
-                  className="flex-1 bg-[#FAFAF7]/5 border border-[#FAFAF7]/10 rounded-full px-4 py-2.5 text-sm text-[#FAFAF7] placeholder:text-[#FAFAF7]/35 focus:outline-none focus:border-[#FAFAF7]/30 disabled:opacity-60"
-                />
-                <button
-                  type="submit"
-                  disabled={isBusy || !input.trim()}
-                  aria-label={labels.send}
-                  className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-[#FAFAF7] text-[#0A0A0A] hover:bg-[#1E2A47] hover:text-[#FAFAF7] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14m0 0-7-7m7 7-7 7" />
+            <header className="hl-bot-head">
+              <div className="hl-bot-barra">
+                <span className="hl-bot-pts" aria-hidden>
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span className="hl-bot-kicker">✎ {tx.kicker}</span>
+                <button type="button" className="hl-bot-cerrar" onClick={() => setOpen(false)} aria-label={tx.close}>
+                  <svg viewBox="0 0 24 24" aria-hidden>
+                    <path d="M5 5.5 C 9 9.5, 14 14, 19 18.5" />
+                    <path d="M18.5 5 C 14 9.5, 10 14, 5.5 19" />
                   </svg>
                 </button>
               </div>
-              <p className="mt-2 text-center text-[9px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/30">
-                {labels.poweredBy}
-              </p>
+              <div className="hl-bot-tit">
+                <h3>{tx.title}</h3>
+                <motion.div
+                  className="hl-postit hl-bot-demo"
+                  initial={{ opacity: 0, scale: 0.6, rotate: 12 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 4 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 14, delay: 0.35 }}
+                >
+                  {tx.demo}
+                </motion.div>
+              </div>
+            </header>
+
+            {/* data-lenis-prevent: el scroll del chat no lo intercepta Lenis */}
+            <div ref={scrollRef} data-lenis-prevent className="hl-bot-msgs">
+              {messages.length === 0 && (
+                <>
+                  <Burbuja role="assistant">{WELCOME_MESSAGE[locale]}</Burbuja>
+                  <div className="hl-bot-chips">
+                    {QUICK_ACTIONS[locale].map((a, i) => (
+                      <motion.button
+                        key={a.id}
+                        type="button"
+                        className="hl-bot-chip"
+                        onClick={() => enviar(a.prompt)}
+                        disabled={isBusy}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25 + i * 0.07, duration: 0.35 }}
+                      >
+                        {a.label} →
+                      </motion.button>
+                    ))}
+                    <motion.a
+                      className="hl-bot-chip hl-bot-chip-wa"
+                      href={whatsappHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.25 + QUICK_ACTIONS[locale].length * 0.07, duration: 0.35 }}
+                    >
+                      {tx.whatsapp} ↗
+                    </motion.a>
+                  </div>
+                </>
+              )}
+
+              {messages.map((m) => {
+                const text = m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
+                if (!text) return null;
+                return (
+                  <Burbuja key={m.id} role={m.role === "user" ? "user" : "assistant"}>
+                    <FormattedText text={text} />
+                  </Burbuja>
+                );
+              })}
+
+              {esperandoRespuesta && !error && <Garabato label={tx.typing} />}
+
+              {error && (
+                <motion.div
+                  className="hl-bot-error"
+                  initial={{ opacity: 0, scale: 0.8, rotate: -4 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -1.5 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 16 }}
+                >
+                  <strong>{tx.errorTitle}</strong>
+                  <span>{tx.errorBody}</span>
+                  <span className="hl-bot-error-links">
+                    <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                      {tx.whatsapp} ↗
+                    </a>
+                    <a href="/contact">{tx.errorForm} →</a>
+                  </span>
+                </motion.div>
+              )}
+            </div>
+
+            <form onSubmit={handleSubmit} className="hl-bot-form">
+              <input
+                ref={inputRef}
+                id="hl-bot-input"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={tx.placeholder}
+                disabled={isBusy}
+                aria-label={tx.placeholder}
+                autoComplete="off"
+              />
+              <button type="submit" disabled={isBusy || !input.trim()} className="hl-bot-enviar">
+                {tx.send} →
+              </button>
             </form>
+            <a className="hl-bot-pie" href={`/contact?msg=${encodeURIComponent(tx.pieMsg)}`}>
+              {tx.pie} <span aria-hidden>→</span>
+            </a>
           </motion.aside>
-        ) : null}
+        )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
 
-/* ─── Bubble ──────────────────────────────────────────────────────────── */
+/* ─── Burbuja: el bot escribe en papel, el visitante en post-it ─── */
 
-function Bubble({
-  role,
-  children,
-}: {
-  role: "user" | "assistant";
-  children: React.ReactNode;
-}) {
-  const isUser = role === "user";
+function Burbuja({ role, children }: { role: "user" | "assistant"; children: React.ReactNode }) {
+  const esUsuario = role === "user";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: EASE }}
-      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
+      className={`hl-bot-fila ${esUsuario ? "hl-bot-fila-yo" : ""}`}
+      initial={esUsuario ? { opacity: 0, scale: 1.15, rotate: 6 } : { opacity: 0, x: -14, rotate: -2 }}
+      animate={esUsuario ? { opacity: 1, scale: 1, rotate: 1.2 } : { opacity: 1, x: 0, rotate: 0 }}
+      transition={esUsuario ? { type: "spring", stiffness: 320, damping: 17 } : { duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div
-        className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
-          isUser
-            ? "bg-[#FAFAF7] text-[#0A0A0A] rounded-br-md"
-            : "bg-[#FAFAF7]/8 text-[#FAFAF7] border border-[#FAFAF7]/10 rounded-bl-md"
-        }`}
-      >
-        {children}
-      </div>
+      <div className={esUsuario ? "hl-bot-yo" : "hl-bot-ella"}>{children}</div>
     </motion.div>
+  );
+}
+
+/* ─── Garabato: un lápiz que dibuja mientras el bot piensa ─── */
+
+function Garabato({ label }: { label: string }) {
+  return (
+    <div className="hl-bot-garabato" role="status">
+      <svg viewBox="0 0 96 22" aria-hidden>
+        <path pathLength={1} d="M2 12 C 8 2, 14 20, 20 11 S 32 3, 38 12 S 50 20, 56 10 S 68 2, 74 12 S 86 19, 94 9" />
+      </svg>
+      <span>{label}</span>
+    </div>
   );
 }
 
 /* ─── FormattedText — mini parser para markdown básico (negritas + links) ─ */
 
 function FormattedText({ text }: { text: string }) {
-  // Parse **bold**, *italic* y links http(s) o /paths
   const tokens: React.ReactNode[] = [];
   const regex = /(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|https?:\/\/\S+|\/(?:work|services|process|contact)(?:\/\S*)?|wa\.me\/\S+)/g;
   let last = 0;
@@ -356,9 +304,7 @@ function FormattedText({ text }: { text: string }) {
   let key = 0;
 
   while ((match = regex.exec(text)) !== null) {
-    if (match.index > last) {
-      tokens.push(<span key={key++}>{text.slice(last, match.index)}</span>);
-    }
+    if (match.index > last) tokens.push(<span key={key++}>{text.slice(last, match.index)}</span>);
     const t = match[0];
     if (t.startsWith("**") && t.endsWith("**")) {
       tokens.push(<strong key={key++}>{t.slice(2, -2)}</strong>);
@@ -367,31 +313,19 @@ function FormattedText({ text }: { text: string }) {
     } else if (t.startsWith("http") || t.startsWith("wa.me/")) {
       const href = t.startsWith("http") ? t : `https://${t}`;
       tokens.push(
-        <a
-          key={key++}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2 hover:opacity-80"
-        >
+        <a key={key++} href={href} target="_blank" rel="noopener noreferrer">
           {t}
         </a>
       );
     } else if (t.startsWith("/")) {
       tokens.push(
-        <a
-          key={key++}
-          href={t}
-          className="underline underline-offset-2 hover:opacity-80"
-        >
+        <a key={key++} href={t}>
           {t}
         </a>
       );
     }
     last = match.index + t.length;
   }
-  if (last < text.length) {
-    tokens.push(<span key={key++}>{text.slice(last)}</span>);
-  }
+  if (last < text.length) tokens.push(<span key={key++}>{text.slice(last)}</span>);
   return <>{tokens}</>;
 }

@@ -34,7 +34,11 @@ export default function Hero() {
       const vh = window.innerHeight;
       if (!reducir) img.style.transform = `translate3d(0,${window.scrollY * 0.15}px,0)`;
       const hr = sec.getBoundingClientRect();
-      const tl = reducir ? (hr.bottom < vh * 1.3 ? 1 : 0) : clamp((vh * 1.45 - hr.bottom) / (vh * 0.75));
+      // En celular el hero es más corto: el dibujo arranca apenas se baja,
+      // detrás del texto, en vez de esperar dos pantallas de foto vacía.
+      const movil = window.innerWidth < 768;
+      const [ini, largo] = movil ? [1.28, 0.7] : [1.45, 0.75];
+      const tl = reducir ? (hr.bottom < vh * 1.3 ? 1 : 0) : clamp((vh * ini - hr.bottom) / (vh * largo));
       const pr = img.getBoundingClientRect();
       const bordeVp = vh * (1.05 - tl * 1.25);
       const rev = clamp((pr.bottom - bordeVp) / pr.height, 0, 1.2) * 100;
