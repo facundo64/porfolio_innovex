@@ -117,8 +117,8 @@ export default function JemsiExpediente({ id }: { id?: string }) {
           <div className="bloque div-ambar">
             <h3>Piezas de venta</h3>
             <p>
-              Folleto A4 por división, la misma pieza en formato de celular para mandar por
-              WhatsApp y un catálogo de productos de bombeo.
+              Folleto A4 por división y la misma pieza en formato de celular para mandar por
+              WhatsApp.
             </p>
           </div>
         </div>
@@ -488,25 +488,6 @@ export default function JemsiExpediente({ id }: { id?: string }) {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="cols c2" style={{ marginTop: 26, alignItems: "center" }}>
-          <div className="celulares" style={{ gridTemplateColumns: "repeat(2, minmax(0, 1fr))", maxWidth: 380 }}>
-            {[1, 3].map((pg) => (
-              <div className="celular" key={pg}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${A}/j-bombas-${pg}.jpg`} alt={`Catálogo de bombeo — página ${pg}`} loading="lazy" />
-              </div>
-            ))}
-          </div>
-          <div className="bloque">
-            <h3>Catálogo de bombeo</h3>
-            <p>
-              Para la línea de sistemas de bombeo, un catálogo de productos por familia: cada ficha
-              con foto del equipo, caudal, altura y potencia, para que el comprador compare sin
-              pedir otra planilla. Las fotos salen de los catálogos oficiales de cada fabricante.
-            </p>
-          </div>
         </div>
 
         <h3 style={{ marginTop: 36, marginBottom: 12 }}>Decisiones que definieron el proyecto</h3>

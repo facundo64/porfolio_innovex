@@ -109,7 +109,7 @@ export default function CitepExpediente({ id }: { id?: string }) {
           <div className="bloque">
             <span className="num">01</span>
             <h3>Identidad</h3>
-            <p>Isologo redibujado en vector, versiones de uso, paleta, tres voces tipográficas y tarjeta personal impresa.</p>
+            <p>Isologo redibujado en vector, versiones de uso, paleta y tres voces tipográficas.</p>
           </div>
           <div className="bloque">
             <span className="num">02</span>
@@ -224,22 +224,6 @@ export default function CitepExpediente({ id }: { id?: string }) {
             <div className="pie"><b>Escala de grises</b>Fotocopia, fax y sello</div>
           </div>
         </div>
-
-        <h3 style={{ marginTop: 34, marginBottom: 14 }}>Tarjeta personal</h3>
-        <div className="tarjetas">
-          <div className="tarjeta-img">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${A}/c-tarjeta-frente.jpg`} alt="Frente de la tarjeta: CITEP Forense sobre navy" loading="lazy" />
-          </div>
-          <div className="tarjeta-img">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${A}/c-tarjeta-dorso.jpg`} alt="Dorso de la tarjeta con los datos de contacto" loading="lazy" />
-          </div>
-        </div>
-        <p className="chico" style={{ color: "var(--tinta-2)", marginTop: 12, maxWidth: "62ch" }}>
-          Frente navy con el sólido como marca de agua; dorso claro con los datos. Se entregó
-          armada en pliego A4 doble faz, lista para la imprenta.
-        </p>
       </section>
 
       {/* ═════════ FOJA 02 ═════════ */}
