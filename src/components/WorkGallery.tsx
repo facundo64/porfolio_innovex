@@ -692,13 +692,14 @@ function Preview({
             transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
           }}
           exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
-          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] transition-colors shadow-lg ${
+          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md ${ctaOnLight ? "px-3.5 py-3 md:px-5 md:py-2.5" : "px-5 py-2.5"} text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7] transition-colors shadow-lg ${
             ctaOnLight
               ? "bg-[#0A0A0A]/90 border border-white/25 hover:bg-[#0A0A0A]"
               : "bg-white/12 border border-white/20 hover:bg-white/22"
           }`}
         >
-          <span>{t.common.visitSite}</span>
+          {/* sobre el expediente, en celular queda sólo el ícono para no tapar texto */}
+          <span className={ctaOnLight ? "sr-only md:not-sr-only" : ""}>{t.common.visitSite}</span>
           <span aria-hidden>↗</span>
         </motion.a>
       ) : project.status === "in-progress" || project.status === "private" ? (
@@ -716,7 +717,7 @@ function Preview({
             transition: { duration: 0.55, delay: TEXT_DELAY + 0.3, ease: EASE },
           }}
           exit={{ opacity: 0, y: 12, transition: { duration: 0.2 } }}
-          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md px-5 py-2.5 text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase shadow-lg transition-colors ${
+          className={`fixed bottom-36 right-6 md:bottom-40 md:right-14 z-[115] inline-flex items-center gap-2.5 rounded-full backdrop-blur-md ${ctaOnLight ? "px-3.5 py-3 md:px-5 md:py-2.5" : "px-5 py-2.5"} text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase shadow-lg transition-colors ${
             ctaOnLight
               ? "bg-[#0A0A0A]/90 border border-white/25 text-[#FAFAF7]"
               : "bg-white/8 border border-white/15 text-[#FAFAF7]/90"
@@ -732,7 +733,7 @@ function Preview({
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             className="w-1.5 h-1.5 rounded-full bg-amber-300"
           />
-          <span>
+          <span className={ctaOnLight ? "sr-only md:not-sr-only" : ""}>
             {project.status === "in-progress"
               ? t.common.statusInProgress
               : t.common.statusPrivate}

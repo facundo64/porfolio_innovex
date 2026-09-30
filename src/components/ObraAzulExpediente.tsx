@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Captura, Expediente } from "./expediente/Expediente";
 import { kalam } from "@/lib/fonts/expedientes";
 import "./ObraAzulExpediente.css";
 
@@ -60,518 +60,471 @@ function Iso({ c = ISO_ORIGINAL }: { c?: IsoColors }) {
 const CAP = "/projects/obra-azul";
 
 export default function ObraAzulExpediente({ id }: { id?: string }) {
-  const rootRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    const els = root.querySelectorAll(".caratula, .lamina");
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <section id={id} ref={rootRef} className={`oa-exp relative z-[110] ${kalam.variable}`}>
-      <div className="hoja">
-        {/* ═════════ CARÁTULA ═════════ */}
-        <header className="caratula">
-          <div className="sello">
-            <span className="marca-chip">
-              <svg viewBox="0 0 310 277.98" aria-label="Isotipo Obra Azul">
-                <Iso />
-              </svg>
-            </span>
-            <span className="eyebrow">Expediente de proyecto · INNHOVEX · 2026</span>
+    <Expediente id={id} className={`oa-exp ${kalam.variable}`}>
+      {/* ═════════ CARÁTULA ═════════ */}
+      <header className="caratula">
+        <div className="sello">
+          <span className="marca-chip">
+            <svg viewBox="0 0 310 277.98" aria-label="Isotipo Obra Azul">
+              <Iso />
+            </svg>
+          </span>
+          <span className="eyebrow">Expediente de proyecto · INNHOVEX · 2026</span>
+        </div>
+
+        <h1 className="titulo-caratula">Obra Azul.</h1>
+
+        <p className="prosa" style={{ fontSize: "1.06rem" }}>
+          Empresa de reparación y construcción de piscinas en el conurbano bonaerense, sin identidad
+          visual ni presencia digital. El trabajo cubrió tres frentes: marca, sitio público y sistema
+          de gestión de servicios en campo.
+        </p>
+
+      </header>
+
+      {/* ═════════ F.00 ALCANCE ═════════ */}
+      <section className="lamina">
+        <div className="lamina-cab">
+          <span className="folio">F.00</span>
+          <h2>Entregables</h2>
+        </div>
+        <p className="prosa bajada">
+          Se trabajó como un encargo único con tres frentes que comparten una misma identidad. La
+          marca se definió primero porque alimenta a las otras dos: el sitio y el sistema toman de
+          ella el color, la tipografía y el isotipo.
+        </p>
+
+        <div className="pizarra solo-escritorio">
+          <svg viewBox="0 0 700 250" role="img" aria-label="La identidad alimenta al sitio y al sistema">
+            <defs>
+              <marker id="oa-pf" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path
+                  d="M0.5,0.8 L7.5,4.5 L0.5,8.2"
+                  fill="none"
+                  stroke="var(--tinta-3)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </marker>
+            </defs>
+
+            <rect className="d-caja" x="22" y="92" width="170" height="72" rx="4" />
+            <text className="d-mono" x="38" y="116">FASE 1</text>
+            <text className="d-tit" x="38" y="136">Identidad de marca</text>
+            <text className="d-sub" x="38" y="152">Isotipo, paleta, tipografía</text>
+
+            <path className="d-flecha" d="M195,116 C232,114 236,64 268,62" markerEnd="url(#oa-pf)" />
+            <path className="d-flecha" d="M195,142 C232,144 236,192 268,194" markerEnd="url(#oa-pf)" />
+
+            <rect className="d-caja" x="272" y="26" width="186" height="74" rx="4" />
+            <text className="d-mono" x="288" y="50">FASE 2</text>
+            <text className="d-tit" x="288" y="70">Sitio público</text>
+            <text className="d-sub" x="288" y="86">Capta y convierte consultas</text>
+
+            <rect className="d-caja" x="272" y="158" width="186" height="74" rx="4" />
+            <text className="d-mono" x="288" y="182">FASE 3</text>
+            <text className="d-tit" x="288" y="202">Sistema de gestión</text>
+            <text className="d-sub" x="288" y="218">Opera el trabajo vendido</text>
+
+            <path className="d-flecha-acento" d="M461,63 C500,66 502,110 528,116" markerEnd="url(#oa-pf)" />
+            <path className="d-flecha-acento" d="M461,195 C500,192 502,146 528,140" markerEnd="url(#oa-pf)" />
+
+            <rect className="d-caja-alt" x="532" y="92" width="146" height="72" rx="4" />
+            <text className="d-tit" x="548" y="124">Un mismo cliente</text>
+            <text className="d-sub" x="548" y="141">de la consulta a la factura</text>
+
+          </svg>
+        </div>
+
+        <div className="cols c3" style={{ marginTop: 22 }}>
+          <div className="bloque">
+            <h3>Identidad</h3>
+            <p>
+              Isotipo original vectorizado, sistema de color, tipografía y variantes de uso para
+              pantalla, impresión y fondo oscuro.
+            </p>
           </div>
-
-          <h1 className="titulo-caratula">Obra Azul.</h1>
-
-          <p className="prosa" style={{ fontSize: "1.06rem" }}>
-            Empresa de reparación y construcción de piscinas en el conurbano bonaerense, sin identidad
-            visual ni presencia digital. El trabajo cubrió tres frentes: marca, sitio público y sistema
-            de gestión de servicios en campo.
-          </p>
-
-        </header>
-
-        {/* ═════════ F.00 ALCANCE ═════════ */}
-        <section className="lamina">
-          <div className="lamina-cab">
-            <span className="folio">F.00</span>
-            <h2>Entregables</h2>
+          <div className="bloque">
+            <h3>Sitio público</h3>
+            <p>
+              Tres rutas, video en portada, portfolio de obras y contacto centralizado en WhatsApp.
+              En producción con dominio propio.
+            </p>
           </div>
-          <p className="prosa bajada">
-            Se trabajó como un encargo único con tres frentes que comparten una misma identidad. La
-            marca se definió primero porque alimenta a las otras dos: el sitio y el sistema toman de
-            ella el color, la tipografía y el isotipo.
-          </p>
+          <div className="bloque">
+            <h3>Sistema de gestión</h3>
+            <p>
+              Cotizaciones, órdenes de servicio, agenda, inventario, facturación y seguimiento de
+              técnicos en cuatro roles distintos.
+            </p>
+          </div>
+        </div>
+      </section>
 
-          <div className="pizarra">
-            <svg viewBox="0 0 700 250" role="img" aria-label="La identidad alimenta al sitio y al sistema">
+      {/* ═════════ F.01 ANATOMÍA DEL ISOTIPO ═════════ */}
+      <section className="lamina">
+        <div className="lamina-cab">
+          <span className="folio">F.01</span>
+          <h2>Isotipo</h2>
+        </div>
+        <p className="prosa bajada">
+          Dos signos del rubro: la escalera que baja al agua y las olas de la superficie. La escalera
+          va en negativo —el vacío entre los trazos— para que no se empaste a tamaño de favicon.
+        </p>
+
+        <div className="tablero-logo">
+          <div className="construccion">
+            <svg viewBox="-70 -54 452 410" role="img" aria-label="Isotipo con anotaciones">
               <defs>
-                <marker id="oa-pf" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-                  <path
-                    d="M0.5,0.8 L7.5,4.5 L0.5,8.2"
-                    fill="none"
-                    stroke="var(--tinta-3)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                {/* wobble tipo excalidraw, solo para las anotaciones (no para el logo) */}
+                <filter id="oa-rough" x="-20%" y="-20%" width="140%" height="140%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n" />
+                  <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" />
+                </filter>
+                <marker id="oa-arrow" markerWidth="13" markerHeight="13" refX="8" refY="6" orient="auto">
+                  <path d="M1.5,1.5 L9.5,6 L1.5,10.5" fill="none" stroke="var(--lapiz)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                 </marker>
               </defs>
 
-              <rect className="d-caja" x="22" y="92" width="170" height="72" rx="4" />
-              <text className="d-mono" x="38" y="116">FASE 1</text>
-              <text className="d-tit" x="38" y="136">Identidad de marca</text>
-              <text className="d-sub" x="38" y="152">Isotipo, paleta, tipografía</text>
+              {/* área de seguridad, a mano alzada */}
+              <g filter="url(#oa-rough)">
+                <rect x="-20" y="-20" width="350" height="318" fill="none" stroke="var(--tinta-3)" strokeWidth="1.4" strokeDasharray="8 7" />
+              </g>
 
-              <path className="d-flecha" d="M195,116 C232,114 236,64 268,62" markerEnd="url(#oa-pf)" />
-              <path className="d-flecha" d="M195,142 C232,144 236,192 268,194" markerEnd="url(#oa-pf)" />
+              <Iso />
 
-              <rect className="d-caja" x="272" y="26" width="186" height="74" rx="4" />
-              <text className="d-mono" x="288" y="50">FASE 2</text>
-              <text className="d-tit" x="288" y="70">Sitio público</text>
-              <text className="d-sub" x="288" y="86">Capta y convierte consultas</text>
+              {/* flecha → escalera */}
+              <g filter="url(#oa-rough)">
+                <path d="M8,20 C60,22 116,44 147,70" fill="none" stroke="var(--lapiz)" strokeWidth="1.7" strokeLinecap="round" markerEnd="url(#oa-arrow)" />
+              </g>
+              <text className="d-mano" x="-52" y="12" style={{ fontSize: "15px" }}>escalera en negativo</text>
 
-              <rect className="d-caja" x="272" y="158" width="186" height="74" rx="4" />
-              <text className="d-mono" x="288" y="182">FASE 3</text>
-              <text className="d-tit" x="288" y="202">Sistema de gestión</text>
-              <text className="d-sub" x="288" y="218">Opera el trabajo vendido</text>
-
-              <path className="d-flecha-acento" d="M461,63 C500,66 502,110 528,116" markerEnd="url(#oa-pf)" />
-              <path className="d-flecha-acento" d="M461,195 C500,192 502,146 528,140" markerEnd="url(#oa-pf)" />
-
-              <rect className="d-caja-alt" x="532" y="92" width="146" height="72" rx="4" />
-              <text className="d-tit" x="548" y="124">Un mismo cliente</text>
-              <text className="d-sub" x="548" y="141">de la consulta a la factura</text>
-
+              {/* flecha → olas */}
+              <g filter="url(#oa-rough)">
+                <path d="M300,312 C258,300 232,250 210,216" fill="none" stroke="var(--lapiz)" strokeWidth="1.7" strokeLinecap="round" markerEnd="url(#oa-arrow)" />
+              </g>
+              <text className="d-mano" x="362" y="330" textAnchor="end" style={{ fontSize: "15px" }}>tres olas, tres azules</text>
             </svg>
           </div>
 
-          <div className="cols c3" style={{ marginTop: 22 }}>
-            <div className="bloque">
-              <h3>Identidad</h3>
-              <p>
-                Isotipo original vectorizado, sistema de color, tipografía y variantes de uso para
-                pantalla, impresión y fondo oscuro.
-              </p>
+          <div className="capas">
+            <div className="capa">
+              <span className="muestra">
+                <svg viewBox="60 30 195 165">
+                  <path d={D.escalera} fill="#29235c" />
+                </svg>
+              </span>
+              <div>
+                <h4>Escalera · trazo estructural</h4>
+                <span className="mono chico">#29235C — el único elemento que cambia de color en la variante monocroma</span>
+              </div>
             </div>
-            <div className="bloque">
-              <h3>Sitio público</h3>
-              <p>
-                Tres rutas, video en portada, portfolio de obras y contacto centralizado en WhatsApp.
-                En producción con dominio propio.
-              </p>
+            <div className="capa">
+              <span className="muestra">
+                <svg viewBox="30 160 250 70">
+                  <path d={D.olaSup} fill="#7fcbd8" />
+                </svg>
+              </span>
+              <div>
+                <h4>Ola superior · claro</h4>
+                <span className="mono chico">#7FCBD8 — la lámina de agua vista desde arriba</span>
+              </div>
             </div>
-            <div className="bloque">
-              <h3>Sistema de gestión</h3>
-              <p>
-                Cotizaciones, órdenes de servicio, agenda, inventario, facturación y seguimiento de
-                técnicos en cuatro roles distintos.
-              </p>
+            <div className="capa">
+              <span className="muestra">
+                <svg viewBox="30 195 250 70">
+                  <path d={D.olaMed} fill="#319eca" />
+                </svg>
+              </span>
+              <div>
+                <h4>Ola media · profundidad</h4>
+                <span className="mono chico">#319ECA — el azul que gobierna toda la interfaz</span>
+              </div>
+            </div>
+            <div className="capa">
+              <span className="muestra">
+                <svg viewBox="60 230 180 45">
+                  <path d={D.olaInf} fill="#299cc8" />
+                </svg>
+              </span>
+              <div>
+                <h4>Ola inferior · fondo</h4>
+                <span className="mono chico">#299CC8 — cierra la base y apoya el conjunto</span>
+              </div>
+            </div>
+            <div className="capa">
+              <span className="muestra">
+                <svg viewBox="245 -5 70 90">
+                  <path d={D.destA} fill="#349dc8" />
+                  <path d={D.destC} fill="#7fcbd8" />
+                </svg>
+              </span>
+              <div>
+                <h4>Tres destellos · agua limpia</h4>
+                <span className="mono chico">Asimétricos a propósito: dan movimiento y evitan que el conjunto quede rígido</span>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* ═════════ F.01 ANATOMÍA DEL ISOTIPO ═════════ */}
-        <section className="lamina">
-          <div className="lamina-cab">
-            <span className="folio">F.01</span>
-            <h2>Isotipo</h2>
+        <h3 style={{ marginTop: 34, marginBottom: 14 }}>Variantes de uso</h3>
+        <div className="variantes">
+          <div className="variante">
+            <div className="lienzo claro">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${CAP}/logo-horizontal.svg`} alt="Isologo completo sobre fondo claro" style={{ maxHeight: 62, width: "auto", maxWidth: "100%" }} />
+            </div>
+            <div className="pie">
+              <b>Principal</b>Isologo completo sobre fondo claro
+            </div>
           </div>
-          <p className="prosa bajada">
-            Dos signos del rubro: la escalera que baja al agua y las olas de la superficie. La escalera
-            va en negativo —el vacío entre los trazos— para que no se empaste a tamaño de favicon.
-          </p>
 
-          <div className="tablero-logo">
-            <div className="construccion">
-              <svg viewBox="-70 -54 452 410" role="img" aria-label="Isotipo con anotaciones">
-                <defs>
-                  {/* wobble tipo excalidraw, solo para las anotaciones (no para el logo) */}
-                  <filter id="oa-rough" x="-20%" y="-20%" width="140%" height="140%">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n" />
-                    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" />
-                  </filter>
-                  <marker id="oa-arrow" markerWidth="13" markerHeight="13" refX="8" refY="6" orient="auto">
-                    <path d="M1.5,1.5 L9.5,6 L1.5,10.5" fill="none" stroke="var(--lapiz)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                  </marker>
-                </defs>
-
-                {/* área de seguridad, a mano alzada */}
-                <g filter="url(#oa-rough)">
-                  <rect x="-20" y="-20" width="350" height="318" fill="none" stroke="var(--tinta-3)" strokeWidth="1.4" strokeDasharray="8 7" />
-                </g>
-
-                <Iso />
-
-                {/* flecha → escalera */}
-                <g filter="url(#oa-rough)">
-                  <path d="M8,20 C60,22 116,44 147,70" fill="none" stroke="var(--lapiz)" strokeWidth="1.7" strokeLinecap="round" markerEnd="url(#oa-arrow)" />
-                </g>
-                <text className="d-mano" x="-52" y="12" style={{ fontSize: "15px" }}>escalera en negativo</text>
-
-                {/* flecha → olas */}
-                <g filter="url(#oa-rough)">
-                  <path d="M300,312 C258,300 232,250 210,216" fill="none" stroke="var(--lapiz)" strokeWidth="1.7" strokeLinecap="round" markerEnd="url(#oa-arrow)" />
-                </g>
-                <text className="d-mano" x="362" y="330" textAnchor="end" style={{ fontSize: "15px" }}>tres olas, tres azules</text>
+          <div className="variante">
+            <div className="lienzo oscuro">
+              <svg viewBox="0 0 310 277.98">
+                <Iso c={{ ...ISO_ORIGINAL, escalera: "#ffffff" }} />
               </svg>
             </div>
-
-            <div className="capas">
-              <div className="capa">
-                <span className="muestra">
-                  <svg viewBox="60 30 195 165">
-                    <path d={D.escalera} fill="#29235c" />
-                  </svg>
-                </span>
-                <div>
-                  <h4>Escalera · trazo estructural</h4>
-                  <span className="mono chico">#29235C — el único elemento que cambia de color en la variante monocroma</span>
-                </div>
-              </div>
-              <div className="capa">
-                <span className="muestra">
-                  <svg viewBox="30 160 250 70">
-                    <path d={D.olaSup} fill="#7fcbd8" />
-                  </svg>
-                </span>
-                <div>
-                  <h4>Ola superior · claro</h4>
-                  <span className="mono chico">#7FCBD8 — la lámina de agua vista desde arriba</span>
-                </div>
-              </div>
-              <div className="capa">
-                <span className="muestra">
-                  <svg viewBox="30 195 250 70">
-                    <path d={D.olaMed} fill="#319eca" />
-                  </svg>
-                </span>
-                <div>
-                  <h4>Ola media · profundidad</h4>
-                  <span className="mono chico">#319ECA — el azul que gobierna toda la interfaz</span>
-                </div>
-              </div>
-              <div className="capa">
-                <span className="muestra">
-                  <svg viewBox="60 230 180 45">
-                    <path d={D.olaInf} fill="#299cc8" />
-                  </svg>
-                </span>
-                <div>
-                  <h4>Ola inferior · fondo</h4>
-                  <span className="mono chico">#299CC8 — cierra la base y apoya el conjunto</span>
-                </div>
-              </div>
-              <div className="capa">
-                <span className="muestra">
-                  <svg viewBox="245 -5 70 90">
-                    <path d={D.destA} fill="#349dc8" />
-                    <path d={D.destC} fill="#7fcbd8" />
-                  </svg>
-                </span>
-                <div>
-                  <h4>Tres destellos · agua limpia</h4>
-                  <span className="mono chico">Asimétricos a propósito: dan movimiento y evitan que el conjunto quede rígido</span>
-                </div>
-              </div>
+            <div className="pie">
+              <b>Fondo oscuro</b>La escalera pasa a blanco; el agua no cambia
             </div>
           </div>
 
-          <h3 style={{ marginTop: 34, marginBottom: 14 }}>Variantes de uso</h3>
-          <div className="variantes">
-            <div className="variante">
-              <div className="lienzo claro">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/logo-horizontal.svg`} alt="Isologo completo sobre fondo claro" style={{ maxHeight: 62, width: "auto", maxWidth: "100%" }} />
-              </div>
-              <div className="pie">
-                <b>Principal</b>Isologo completo sobre fondo claro
-              </div>
-            </div>
-
-            <div className="variante">
-              <div className="lienzo oscuro">
-                <svg viewBox="0 0 310 277.98">
-                  <Iso c={{ ...ISO_ORIGINAL, escalera: "#ffffff" }} />
-                </svg>
-              </div>
-              <div className="pie">
-                <b>Fondo oscuro</b>La escalera pasa a blanco; el agua no cambia
-              </div>
-            </div>
-
-            <div className="variante">
-              <div className="lienzo agua">
-                <svg viewBox="0 0 310 277.98">
-                  <Iso
-                    c={{
-                      escalera: "#ffffff",
-                      olaSup: "#ffffff",
-                      olaMed: "#ffffff",
-                      olaInf: "#ffffff",
-                      destA: "#ffffff",
-                      destB: "#ffffff",
-                      destC: "#ffffff",
-                    }}
-                  />
-                </svg>
-              </div>
-              <div className="pie">
-                <b>Monocromo</b>Vinilo, bordado, sellos y una sola tinta
-              </div>
-            </div>
-
-            <div className="variante">
-              <div className="lienzo gris">
-                <svg viewBox="0 0 310 277.98">
-                  <Iso
-                    c={{
-                      olaSup: "#b9c0c7",
-                      olaMed: "#8a949e",
-                      escalera: "#3d4247",
-                      olaInf: "#767f88",
-                      destA: "#8a949e",
-                      destB: "#b9c0c7",
-                      destC: "#b9c0c7",
-                    }}
-                  />
-                </svg>
-              </div>
-              <div className="pie">
-                <b>Escala de grises</b>Verifica que el contraste sobreviva sin color
-              </div>
-            </div>
-          </div>
-
-          <div className="bloque" style={{ marginTop: 26 }}>
-            <h3>Lo que se entregó</h3>
-            <p>
-              Isologo y isotipo aislado en SVG, versiones positiva, negativa, monocroma y en escala de
-              grises, juego completo de favicons e íconos de aplicación (32, 192, 512 px y apple-touch)
-              e imagen de previsualización para redes.
-            </p>
-          </div>
-        </section>
-
-        {/* ═════════ F.02 SISTEMA VISUAL ═════════ */}
-        <section className="lamina">
-          <div className="lamina-cab">
-            <span className="folio">F.02</span>
-            <h2>Color</h2>
-          </div>
-          <p className="prosa bajada">
-            La paleta se extrajo del logo: los tres azules del agua son los mismos valores del isotipo.
-            Así el sitio se ve de la misma empresa sin repetir el logo en cada pantalla.
-          </p>
-
-          <div className="paleta">
-            {[
-              ["Navy estructural", "#29235C", "Trazo del logo, títulos, fondo de aplicación"],
-              ["Azul Obra", "#319ECA", "Acción principal, enlaces, estados activos"],
-              ["Cyan superficie", "#7FCBD8", "Acentos, fondos suaves, gráficos"],
-              ["Azul profundo", "#299CC8", "Bordes, hover, tercera ola"],
-              ["Papel", "#F8FAFC", "Fondo de trabajo de toda la interfaz"],
-              ["Tinta", "#0F172A", "Texto corrido y modo oscuro"],
-            ].map(([nombre, hex, uso]) => (
-              <div className="tono" key={hex}>
-                <div
-                  className="swatch"
-                  style={{
-                    background: hex,
-                    borderBottom: hex === "#F8FAFC" ? "1px solid var(--borde-suave)" : undefined,
+          <div className="variante">
+            <div className="lienzo agua">
+              <svg viewBox="0 0 310 277.98">
+                <Iso
+                  c={{
+                    escalera: "#ffffff",
+                    olaSup: "#ffffff",
+                    olaMed: "#ffffff",
+                    olaInf: "#ffffff",
+                    destA: "#ffffff",
+                    destB: "#ffffff",
+                    destC: "#ffffff",
                   }}
                 />
-                <div className="info">
-                  <b>{nombre}</b>
-                  <code>{hex}</code>
-                  <span>{uso}</span>
-                </div>
-              </div>
-            ))}
+              </svg>
+            </div>
+            <div className="pie">
+              <b>Monocromo</b>Vinilo, bordado, sellos y una sola tinta
+            </div>
           </div>
 
-        </section>
-
-        {/* ═════════ F.03 EL SITIO ═════════ */}
-        <section className="lamina">
-          <div className="lamina-cab">
-            <span className="folio">F.03</span>
-            <h2>El sitio</h2>
+          <div className="variante">
+            <div className="lienzo gris">
+              <svg viewBox="0 0 310 277.98">
+                <Iso
+                  c={{
+                    olaSup: "#b9c0c7",
+                    olaMed: "#8a949e",
+                    escalera: "#3d4247",
+                    olaInf: "#767f88",
+                    destA: "#8a949e",
+                    destB: "#b9c0c7",
+                    destC: "#b9c0c7",
+                  }}
+                />
+              </svg>
+            </div>
+            <div className="pie">
+              <b>Escala de grises</b>Verifica que el contraste sobreviva sin color
+            </div>
           </div>
-          <p className="prosa bajada">
-            Tres rutas. La empresa no vende por catálogo sino por visita técnica, así que todo el sitio
-            empuja a una acción: abrir la conversación por WhatsApp. Estas son las pantallas principales.
+        </div>
+
+        <div className="bloque" style={{ marginTop: 26 }}>
+          <h3>Lo que se entregó</h3>
+          <p>
+            Isologo y isotipo aislado en SVG, versiones positiva, negativa, monocroma y en escala de
+            grises, juego completo de favicons e íconos de aplicación (32, 192, 512 px y apple-touch)
+            e imagen de previsualización para redes.
           </p>
+        </div>
+      </section>
 
-          <p style={{ marginBottom: 26 }}>
-            <a className="enlace" href="https://www.obraazulpiscinas.com" target="_blank" rel="noopener noreferrer">
-              obraazulpiscinas.com →
-            </a>
-          </p>
+      {/* ═════════ F.02 SISTEMA VISUAL ═════════ */}
+      <section className="lamina">
+        <div className="lamina-cab">
+          <span className="folio">F.02</span>
+          <h2>Color</h2>
+        </div>
+        <p className="prosa bajada">
+          La paleta se extrajo del logo: los tres azules del agua son los mismos valores del isotipo.
+          Así el sitio se ve de la misma empresa sin repetir el logo en cada pantalla.
+        </p>
 
-          <div className="lado">
-            <figure>
-              <div className="captura">
-                <span className="pin" style={{ top: "14%", left: "47%" }}>1</span>
-                <span className="pin" style={{ top: "6%", right: "6%" }}>2</span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/web-hero.jpg`} alt="Portada: video aéreo de una piscina a pantalla completa" loading="lazy" />
-              </div>
-              <figcaption>
-                <b>P.01</b>
-                <span>Portada — video aéreo a pantalla completa</span>
-              </figcaption>
-            </figure>
-            <div className="notas">
-              <div className="nota-pin">
-                <span className="b">1</span>
-                <p>
-                  <strong>Barra flotante en pastilla.</strong> Se separa del borde y se contrae al
-                  bajar. En pantalla chica colapsa a una cápsula que sólo muestra el isotipo y se
-                  despliega al tocarla, para no comerle ancho a la portada.
-                </p>
-              </div>
-              <div className="nota-pin">
-                <span className="b">2</span>
-                <p>
-                  <strong>Contacto siempre presente.</strong> El botón de WhatsApp queda fijo en la
-                  esquina durante todo el recorrido: es el único canal de conversión del sitio.
-                </p>
-              </div>
-              <div className="nota-pin">
-                <span className="b">·</span>
-                <p>
-                  <strong>Pantalla de carga con garantía.</strong> La portada no se descubre hasta que
-                  la imagen de respaldo del video terminó de cargar, para que nadie vea una versión
-                  borrosa mientras baja el video.
-                </p>
+        <div className="paleta">
+          {[
+            ["Navy estructural", "#29235C", "Trazo del logo, títulos, fondo de aplicación"],
+            ["Azul Obra", "#319ECA", "Acción principal, enlaces, estados activos"],
+            ["Cyan superficie", "#7FCBD8", "Acentos, fondos suaves, gráficos"],
+            ["Azul profundo", "#299CC8", "Bordes, hover, tercera ola"],
+            ["Papel", "#F8FAFC", "Fondo de trabajo de toda la interfaz"],
+            ["Tinta", "#0F172A", "Texto corrido y modo oscuro"],
+          ].map(([nombre, hex, uso]) => (
+            <div className="tono" key={hex}>
+              <div
+                className="swatch"
+                style={{
+                  background: hex,
+                  borderBottom: hex === "#F8FAFC" ? "1px solid var(--borde-suave)" : undefined,
+                }}
+              />
+              <div className="info">
+                <b>{nombre}</b>
+                <code>{hex}</code>
+                <span>{uso}</span>
               </div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div className="cols c2" style={{ marginTop: 30 }}>
-            <figure>
-              <div className="captura">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/web-titular.jpg`} alt="Titular animado sobre el video" loading="lazy" />
-              </div>
-              <figcaption>
-                <b>P.02</b>
-                <span>
-                  El titular se completa con el scroll: la palabra “proyectos” entra en azul de marca y
-                  fija el posicionamiento — no limpieza de pileta, obra.
-                </span>
-              </figcaption>
-            </figure>
-            <figure>
-              <div className="captura">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/web-expertos.jpg`} alt="Sección de oficio con foto propia de obra" loading="lazy" />
-              </div>
-              <figcaption>
-                <b>P.03</b>
-                <span>Prueba de oficio con fotografía propia de obra, no de banco. El fondo pasa a navy y el bloque respira aparte del resto.</span>
-              </figcaption>
-            </figure>
-          </div>
+      </section>
 
-          <div className="cols c2" style={{ marginTop: 22 }}>
-            <figure>
-              <div className="captura">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/web-servicios.jpg`} alt="Grilla de seis servicios" loading="lazy" />
-              </div>
-              <figcaption>
-                <b>P.04</b>
-                <span>Los seis servicios, redactados en el vocabulario del cliente. En móvil la grilla se apila a una columna con el ícono al costado del texto.</span>
-              </figcaption>
-            </figure>
-            <figure>
-              <div className="captura">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`${CAP}/web-portfolio.jpg`} alt="Sección Nuestro trabajo con fotos de piscinas terminadas" loading="lazy" />
-              </div>
-              <figcaption>
-                <b>P.05</b>
-                <span>Portfolio de obras terminadas. Cada imagen se sirve en formato moderno y en varias resoluciones según el dispositivo.</span>
-              </figcaption>
-            </figure>
-          </div>
+      {/* ═════════ F.03 EL SITIO ═════════ */}
+      <section className="lamina">
+        <div className="lamina-cab">
+          <span className="folio">F.03</span>
+          <h2>El sitio</h2>
+        </div>
+        <p className="prosa bajada">
+          Tres rutas. La empresa no vende por catálogo sino por visita técnica, así que todo el sitio
+          empuja a una acción: abrir la conversación por WhatsApp. Estas son las pantallas principales.
+        </p>
 
-          <h3 style={{ marginTop: 36, marginBottom: 12 }}>Decisiones que definieron el sitio</h3>
-          <div className="decisiones">
-            <div className="decision">
-              <span className="n">01</span>
-              <div>
-                <h4>Un solo canal de contacto</h4>
-                <p>
-                  Se descartó el formulario de contacto y se centralizó todo en WhatsApp con el mensaje
-                  ya redactado. El endpoint de correo quedó en el código, desconectado, por si el
-                  criterio cambia.
-                </p>
-                <span className="porque">un formulario que nadie contesta es peor que no tenerlo</span>
-              </div>
-            </div>
-            <div className="decision">
-              <span className="n">02</span>
-              <div>
-                <h4>Móvil rediseñado, no encogido</h4>
-                <p>
-                  La sección de compromiso usa en escritorio una secuencia con video de fondo y
-                  tarjetas con inclinación. En el teléfono esa misma sección se resuelve con otro
-                  componente: apilada, sin desplazamiento forzado, con el video como banda decorativa.
-                </p>
-                <span className="porque">el gesto de scroll vertical competía con el carrusel horizontal</span>
-              </div>
-            </div>
-            <div className="decision">
-              <span className="n">03</span>
-              <div>
-                <h4>Se sacaron los números que no se podían probar</h4>
-                <p>
-                  Los contadores de “años de experiencia” y “obras completadas” salieron de todas las
-                  páginas por pedido de la revisión: una cifra que no se puede respaldar erosiona el
-                  resto del mensaje.
-                </p>
-              </div>
-            </div>
-            <div className="decision">
-              <span className="n">04</span>
-              <div>
-                <h4>Ficha de negocio local para buscadores</h4>
-                <p>
-                  Se declaró la empresa como negocio de construcción con dirección, teléfono, horarios
-                  y zona de cobertura en datos estructurados, más mapa embebido en el pie.
-                </p>
-                <span className="porque">acá el tráfico llega por búsqueda local, no por marca</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═════════ CIERRE — invitación a ver el sitio ═════════ */}
-        <section className="lamina cierre">
-          <p className="cierre-eyebrow">El sitio está publicado</p>
-          <h2>Míralo funcionando</h2>
-          <a className="cta-ver" href="https://www.obraazulpiscinas.com" target="_blank" rel="noopener noreferrer">
-            Entrar a obraazulpiscinas.com <span aria-hidden>→</span>
+        <p style={{ marginBottom: 26 }}>
+          <a className="enlace" href="https://www.obraazulpiscinas.com" target="_blank" rel="noopener noreferrer">
+            obraazulpiscinas.com →
           </a>
-        </section>
-      </div>
-    </section>
+        </p>
+
+        <div className="lado">
+          <Captura
+            src={`${CAP}/web-hero.jpg`}
+            alt="Portada: video aéreo de una piscina a pantalla completa"
+            n="P.01"
+            pins={[{ n: "1", style: { top: "14%", left: "47%" } }, { n: "2", style: { top: "6%", right: "6%" } }]}
+            caption="Portada — video aéreo a pantalla completa"
+          />
+          <div className="notas">
+            <div className="nota-pin">
+              <span className="b">1</span>
+              <p>
+                <strong>Barra flotante en pastilla.</strong> Se separa del borde y se contrae al
+                bajar. En pantalla chica colapsa a una cápsula que sólo muestra el isotipo y se
+                despliega al tocarla, para no comerle ancho a la portada.
+              </p>
+            </div>
+            <div className="nota-pin">
+              <span className="b">2</span>
+              <p>
+                <strong>Contacto siempre presente.</strong> El botón de WhatsApp queda fijo en la
+                esquina durante todo el recorrido: es el único canal de conversión del sitio.
+              </p>
+            </div>
+            <div className="nota-pin">
+              <span className="b">·</span>
+              <p>
+                <strong>Pantalla de carga con garantía.</strong> La portada no se descubre hasta que
+                la imagen de respaldo del video terminó de cargar, para que nadie vea una versión
+                borrosa mientras baja el video.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="cols c2" style={{ marginTop: 30 }}>
+          <Captura
+            src={`${CAP}/web-titular.jpg`}
+            alt="Titular animado sobre el video"
+            n="P.02"
+            caption="El titular se completa con el scroll: la palabra “proyectos” entra en azul de marca y fija el posicionamiento — no limpieza de pileta, obra."
+          />
+          <Captura
+            src={`${CAP}/web-expertos.jpg`}
+            alt="Sección de oficio con foto propia de obra"
+            n="P.03"
+            caption="Prueba de oficio con fotografía propia de obra, no de banco. El fondo pasa a navy y el bloque respira aparte del resto."
+          />
+        </div>
+
+        <div className="cols c2" style={{ marginTop: 22 }}>
+          <Captura
+            src={`${CAP}/web-servicios.jpg`}
+            alt="Grilla de seis servicios"
+            n="P.04"
+            caption="Los seis servicios, redactados en el vocabulario del cliente. En móvil la grilla se apila a una columna con el ícono al costado del texto."
+          />
+          <Captura
+            src={`${CAP}/web-portfolio.jpg`}
+            alt="Sección Nuestro trabajo con fotos de piscinas terminadas"
+            n="P.05"
+            caption="Portfolio de obras terminadas. Cada imagen se sirve en formato moderno y en varias resoluciones según el dispositivo."
+          />
+        </div>
+
+        <h3 style={{ marginTop: 36, marginBottom: 12 }}>Decisiones que definieron el sitio</h3>
+        <div className="decisiones">
+          <div className="decision">
+            <span className="n">01</span>
+            <div>
+              <h4>Un solo canal de contacto</h4>
+              <p>
+                Se descartó el formulario de contacto y se centralizó todo en WhatsApp con el mensaje
+                ya redactado. El endpoint de correo quedó en el código, desconectado, por si el
+                criterio cambia.
+              </p>
+              <span className="porque">un formulario que nadie contesta es peor que no tenerlo</span>
+            </div>
+          </div>
+          <div className="decision">
+            <span className="n">02</span>
+            <div>
+              <h4>Móvil rediseñado, no encogido</h4>
+              <p>
+                La sección de compromiso usa en escritorio una secuencia con video de fondo y
+                tarjetas con inclinación. En el teléfono esa misma sección se resuelve con otro
+                componente: apilada, sin desplazamiento forzado, con el video como banda decorativa.
+              </p>
+              <span className="porque">el gesto de scroll vertical competía con el carrusel horizontal</span>
+            </div>
+          </div>
+          <div className="decision">
+            <span className="n">03</span>
+            <div>
+              <h4>Se sacaron los números que no se podían probar</h4>
+              <p>
+                Los contadores de “años de experiencia” y “obras completadas” salieron de todas las
+                páginas por pedido de la revisión: una cifra que no se puede respaldar erosiona el
+                resto del mensaje.
+              </p>
+            </div>
+          </div>
+          <div className="decision">
+            <span className="n">04</span>
+            <div>
+              <h4>Ficha de negocio local para buscadores</h4>
+              <p>
+                Se declaró la empresa como negocio de construcción con dirección, teléfono, horarios
+                y zona de cobertura en datos estructurados, más mapa embebido en el pie.
+              </p>
+              <span className="porque">acá el tráfico llega por búsqueda local, no por marca</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═════════ CIERRE — invitación a ver el sitio ═════════ */}
+      <section className="lamina cierre">
+        <p className="cierre-eyebrow">El sitio está publicado</p>
+        <h2>Míralo funcionando</h2>
+        <a className="cta-ver" href="https://www.obraazulpiscinas.com" target="_blank" rel="noopener noreferrer">
+          Entrar a obraazulpiscinas.com <span aria-hidden>→</span>
+        </a>
+      </section>
+    </Expediente>
   );
 }

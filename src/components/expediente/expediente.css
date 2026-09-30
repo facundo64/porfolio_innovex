@@ -1,0 +1,156 @@
+/* Base compartida de los expedientes de /work.
+   Acá vive la ESTRUCTURA (hoja, láminas, grillas, capturas, pines, notas,
+   decisiones, diagramas, aparición) y TODAS las reglas de celular.
+   Cada tema (.oa-exp, .y-exp, .jm-exp, .ct-exp) define sus colores, tipografías,
+   bordes y sombras en su propio CSS, que se carga después y puede pisar esto.
+
+   Variables que un tema puede definir (todas tienen valor por defecto):
+   --exp-ancho     ancho máximo de lectura
+   --exp-margen    margen lateral de la hoja
+   --exp-acento    color de pines y anotaciones (por defecto, --lapiz del tema)
+   --exp-mono      familia monoespaciada para rótulos */
+
+.exp {
+  --exp-ancho: 1120px;
+  --exp-margen: 28px;
+  --exp-acento: var(--lapiz, #c4502e);
+  --exp-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+.exp * { box-sizing: border-box; }
+.exp p { margin: 0; }
+
+/* ---------- hoja y láminas ---------- */
+.exp .hoja { max-width: var(--exp-ancho); margin: 0 auto; padding: 0 var(--exp-margen) 80px; position: relative; z-index: 1; }
+.exp .caratula { padding: 40px 0 44px; display: grid; gap: 30px; }
+.exp .lamina { padding-top: 52px; margin-top: 44px; }
+.exp .lamina-cab { display: flex; gap: 18px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.exp .bajada { margin-top: 12px; margin-bottom: 30px; }
+
+/* ---------- grillas ----------
+   min(…, 100%) evita desbordes en teléfonos de 320 px */
+.exp .cols { display: grid; gap: 22px; }
+.exp .c2 { grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
+.exp .c3 { grid-template-columns: repeat(auto-fit, minmax(min(215px, 100%), 1fr)); }
+.exp .c4 { grid-template-columns: repeat(auto-fit, minmax(min(168px, 100%), 1fr)); }
+.exp .lado { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+.exp .lado.angosto { grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.8fr); }
+
+/* ---------- capturas ---------- */
+.exp figure { margin: 0; }
+.exp .captura { position: relative; }
+.exp .captura img { display: block; width: 100%; height: auto; }
+.exp .captura-zoom {
+  display: block; width: 100%; padding: 0; margin: 0; border: 0; background: none;
+  cursor: zoom-in; position: relative; font: inherit; color: inherit;
+}
+.exp .captura-lupa {
+  position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 15px; line-height: 1;
+  background: rgba(10, 10, 10, 0.72); color: #fff; opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
+}
+.exp .captura-zoom:hover .captura-lupa,
+.exp .captura-zoom:focus-visible .captura-lupa { opacity: 1; }
+.exp .captura-zoom:focus-visible { outline: 2px solid var(--exp-acento); outline-offset: 3px; }
+.exp figcaption { margin-top: 11px; font-size: 0.79rem; display: flex; gap: 9px; align-items: flex-start; }
+.exp figcaption b { font-family: var(--exp-mono); font-size: 0.68rem; letter-spacing: 0.08em; white-space: nowrap; padding-top: 1px; }
+
+/* pines numerados sobre la captura + notas al costado */
+.exp .pin {
+  position: absolute; width: 23px; height: 23px; border-radius: 50%;
+  background: var(--exp-acento); color: #fff; font-family: var(--exp-mono);
+  font-size: 0.7rem; display: grid; place-items: center; z-index: 2; pointer-events: none;
+}
+.exp .notas { display: grid; gap: 14px; align-content: start; padding-top: 4px; }
+.exp .nota-pin { display: grid; grid-template-columns: 23px minmax(0, 1fr); gap: 12px; align-items: start; }
+.exp .nota-pin .b {
+  width: 23px; height: 23px; border-radius: 50%; border: 1.5px solid var(--exp-acento);
+  color: var(--exp-acento); font-family: var(--exp-mono); font-size: 0.7rem; display: grid; place-items: center;
+}
+.exp .nota-pin p { font-size: 0.85rem; }
+
+/* ---------- decisiones ---------- */
+.exp .decisiones { display: grid; }
+.exp .decision { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 16px; padding: 16px 0; }
+.exp .decision .n { font-family: var(--exp-mono); font-size: 0.72rem; padding-top: 3px; }
+.exp .decision h4 { margin-bottom: 4px; }
+.exp .decision p { font-size: 0.87rem; }
+.exp .decision .porque { display: block; margin-top: 6px; font-size: 0.95rem; }
+
+/* ---------- diagramas ----------
+   En celular: .solo-escritorio se oculta (cuando el mismo contenido está en
+   tarjetas debajo); si no, el diagrama se desliza de costado con un aviso. */
+.exp .pizarra { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.exp .pizarra svg { display: block; min-width: 640px; width: 100%; height: auto; }
+
+/* ---------- visor de capturas (portal en <body>) ---------- */
+.exp-visor {
+  position: fixed; inset: 0; z-index: 400; background: rgba(8, 8, 10, 0.94);
+  display: flex; flex-direction: column; justify-content: center; padding: 56px 0 28px;
+  animation: exp-visor-in 0.2s ease-out;
+}
+.exp-visor-lienzo { overflow: auto; max-height: 100%; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 0 16px; }
+.exp-visor-lienzo img { display: block; width: 900px; max-width: none; height: auto; margin: 0 auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+.exp-visor-cerrar {
+  position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.08);
+  color: #fff; font-size: 16px; cursor: pointer;
+}
+.exp-visor-pie {
+  margin: 14px 0 0; padding: 0 16px; text-align: center; color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-geist-mono), monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+@media (min-width: 960px) {
+  .exp-visor-lienzo img { max-width: 100%; }
+  .exp-visor-pie { display: none; }
+}
+@keyframes exp-visor-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- aparición al hacer scroll ---------- */
+.exp .caratula,
+.exp .lamina {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.exp .caratula.in,
+.exp .lamina.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .exp *, .exp-visor { animation: none !important; transition: none !important; }
+  .exp .caratula, .exp .lamina { opacity: 1 !important; transform: none !important; }
+}
+
+/* ═════════ CELULAR ═════════ */
+@media (max-width: 820px) {
+  .exp .lado,
+  .exp .lado.angosto { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
+
+@media (max-width: 767px) {
+  .exp { --exp-margen: 18px; }
+  /* aire abajo para que el botón flotante del preview no tape el cierre */
+  .exp .hoja { padding-bottom: 120px; }
+  .exp .caratula { padding: 20px 0 28px; gap: 22px; }
+  .exp .lamina { padding-top: 36px; margin-top: 32px; }
+  .exp .lamina-cab { gap: 12px; }
+  .exp .bajada { margin-bottom: 22px; }
+  .exp .cols { gap: 16px; }
+
+  /* la lupa siempre visible: en táctil no hay hover */
+  .exp .captura-lupa { opacity: 1; width: 26px; height: 26px; font-size: 13px; right: 6px; bottom: 6px; }
+  .exp .pin { width: 20px; height: 20px; font-size: 0.62rem; }
+  .exp figcaption { font-size: 0.8rem; }
+
+  .exp .pizarra.solo-escritorio { display: none; }
+  .exp .pizarra:not(.solo-escritorio) {
+    -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent);
+    mask-image: linear-gradient(90deg, #000 82%, transparent);
+  }
+  .exp .pizarra:not(.solo-escritorio)::after {
+    content: "deslizá →"; display: block; position: sticky; left: 0;
+    font-family: var(--exp-mono); font-size: 0.62rem; letter-spacing: 0.12em; opacity: 0.6; margin-top: 8px;
+  }
+
+  .exp .decision { gap: 12px; }
+}
