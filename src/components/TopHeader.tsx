@@ -21,11 +21,13 @@ const FILTER_WHITE = "brightness(0) invert(1)";
 export default function TopHeader() {
   const pathname = usePathname();
   const [onDark, setOnDark] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     let ticking = false;
     const check = () => {
       ticking = false;
+      setScrolled(window.scrollY > 40);
       const el = document.elementFromPoint(window.innerWidth / 2, 40);
       if (!el) return;
       const section = el.closest("[data-theme]") as HTMLElement | null;
@@ -59,6 +61,18 @@ export default function TopHeader() {
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
       className="fixed top-0 left-0 right-0 z-40 pointer-events-none"
     >
+      {/* Celular: velo del color de la hoja detrás del logo al scrollear,
+          para que el logo no quede montado sobre el texto. */}
+      <div
+        aria-hidden
+        className="md:hidden absolute inset-x-0 top-0 h-[96px] transition-opacity duration-500"
+        style={{
+          opacity: scrolled ? 1 : 0,
+          background: onDark
+            ? "linear-gradient(rgba(10,10,10,.82) 55%, rgba(10,10,10,0))"
+            : "linear-gradient(rgba(250,250,247,.94) 55%, rgba(250,250,247,0))",
+        }}
+      />
       <div className="relative flex items-center justify-between px-6 md:px-14 py-5 md:py-6">
         <TransitionLink href="/" className="pointer-events-auto">
           <Image
