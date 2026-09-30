@@ -63,6 +63,16 @@ export default function WorkGallery() {
 
   const handleClose = () => setOpenIndex(null);
 
+  // /work?p=<id> abre ese caso directo (lo usan las paradas del mapa del Home).
+  // Espera a que termine la transición de página para medir la card.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("p");
+    const i = showcase.findIndex((p) => p.id === id);
+    if (i < 0) return;
+    const timer = window.setTimeout(() => handleOpen(i), 700);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     if (openIndex !== null) {
       document.body.style.overflow = "hidden";

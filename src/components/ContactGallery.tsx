@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useT } from "@/lib/i18n/LocaleProvider";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -18,6 +18,13 @@ export default function ContactGallery() {
   const t = useT();
   const [status, setStatus] = useState<FormStatus>("idle");
   const formRef = useRef<HTMLFormElement>(null);
+  // /contact?msg=... precarga el mensaje (lo arma "¿Qué necesitás?" del Home).
+  const [prefill, setPrefill] = useState("");
+  useEffect(() => {
+    const msg = new URLSearchParams(window.location.search).get("msg");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (msg) setPrefill(msg.slice(0, 500));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -181,10 +188,12 @@ export default function ContactGallery() {
           <Field name="email" label={t.contact.fields.email} type="email" required />
           <Field name="company" label={t.contact.fields.company} />
           <Field
+            key={prefill}
             name="message"
             label={t.contact.fields.message}
             multiline
             required
+            defaultValue={prefill}
           />
 
           {/* Botones: Submit + WhatsApp + nota */}
@@ -324,15 +333,17 @@ function Field({
   type = "text",
   required,
   multiline,
+  defaultValue,
 }: {
   name: string;
   label: string;
   type?: string;
   required?: boolean;
   multiline?: boolean;
+  defaultValue?: string;
 }) {
   const [focused, setFocused] = useState(false);
-  const [hasValue, setHasValue] = useState(false);
+  const [hasValue, setHasValue] = useState(!!defaultValue);
   const float = focused || hasValue;
 
   const commonClass =
@@ -357,6 +368,7 @@ function Field({
           name={name}
           required={required}
           rows={4}
+          defaultValue={defaultValue}
           onFocus={() => setFocused(true)}
           onBlur={(e) => {
             setFocused(false);

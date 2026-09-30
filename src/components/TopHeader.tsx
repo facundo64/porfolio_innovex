@@ -21,13 +21,11 @@ const FILTER_WHITE = "brightness(0) invert(1)";
 export default function TopHeader() {
   const pathname = usePathname();
   const [onDark, setOnDark] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     let ticking = false;
     const check = () => {
       ticking = false;
-      setScrolled(window.scrollY > 80);
       const el = document.elementFromPoint(window.innerWidth / 2, 40);
       if (!el) return;
       const section = el.closest("[data-theme]") as HTMLElement | null;
@@ -42,16 +40,20 @@ export default function TopHeader() {
     check();
     window.addEventListener("scroll", onScrollOrResize, { passive: true });
     window.addEventListener("resize", onScrollOrResize);
+    window.addEventListener("hl:tema", onScrollOrResize);
     return () => {
       window.removeEventListener("scroll", onScrollOrResize);
       window.removeEventListener("resize", onScrollOrResize);
+      window.removeEventListener("hl:tema", onScrollOrResize);
     };
   }, [pathname]);
 
   // En /work, /services, /process y /contact el fondo es oscuro (gradient atmosférico) — logo blanco siempre
   const darkRoutes = ["/work", "/services", "/process", "/contact", "/privacidad", "/consentimiento", "/terminos"];
   const isDarkRoute = darkRoutes.includes(pathname);
-  const useWhite = isDarkRoute || onDark || scrolled;
+  // En la home el color sigue a la sección de abajo (data-theme): el hero
+  // pasa a papel al final y las secciones a lápiz son claras.
+  const useWhite = isDarkRoute || onDark;
 
   return (
     <motion.header

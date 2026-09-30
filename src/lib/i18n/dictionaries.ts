@@ -9,6 +9,7 @@ export type Dictionary = {
     contact: string;
     menu: string;
     close: string;
+    talk: string;
   };
   common: {
     back: string;
@@ -122,17 +123,59 @@ export type Dictionary = {
     }[];
     closing: string;
   };
+  home: {
+    heroPostit: { line1: string; line2: string; strong: string };
+    viaje: {
+      mapLabel: string;
+      kicker: string;
+      titlePre: string;
+      titleMark: string;
+      titlePost: string;
+      lead: string;
+      seeHow: string;
+      stops: { where: string; title: string; body: string; hook: string; pin: string }[];
+      studioPin: string;
+      studioPinSub: string;
+      endKicker: string;
+      endTitle: string;
+      endBody: string;
+      endCta: string;
+    };
+    dentro: {
+      kicker: string;
+      title: string;
+      titleEm: string;
+      body: string;
+      postits: string[];
+      url: string;
+      example: string;
+      appsLabel: string;
+      hint: string;
+      manual: string;
+      realCase: string;
+      apps: { name: string; caso: string; lines: [string, string][] }[];
+    };
+    necesitas: {
+      kicker: string;
+      title: string;
+      titleEm: string;
+      options: { title: string; body: string; msg: string }[];
+      cta: string;
+      reply: string;
+    };
+  };
 };
 
 const es: Dictionary = {
   nav: {
-    home: "Home",
-    work: "Work",
+    home: "Inicio",
+    work: "Trabajos",
     services: "Servicios",
     process: "Proceso",
     contact: "Contacto",
     menu: "Menú",
     close: "Cerrar",
+    talk: "Hablemos",
   },
   common: {
     back: "Volver",
@@ -281,19 +324,102 @@ const es: Dictionary = {
     metaLeft: "Estudio digital · Est. 2024",
     metaRight: "Buenos Aires — Argentina",
     intro: [
-      "Estudio digital partnering con marcas",
-      "y negocios que crean experiencias",
-      "excepcionales donde las personas",
-      "viven, trabajan y se conectan.",
+      "Diseñamos webs, desarrollamos software",
+      "a medida y nos ocupamos de la parte",
+      "digital de tu empresa.",
     ],
     titleLine1: "Digital",
     titleLine2: "Studio",
     titleLine3: "Innhovex.",
     closingText:
-      "No solo hacemos páginas web. Construimos el activo digital más valioso de tu empresa mediante diseño de vanguardia y tecnología inmersiva.",
+      "Un estudio joven, de ideas frescas, que trabaja con empresas de todo el país.",
     ctaTitle: "Comienza un proyecto",
     scroll: "Scroll",
     reel: "Reel · 2026",
+  },
+  home: {
+    heroPostit: {
+      line1: "Acá estamos:",
+      line2: "Puerto Madero, Buenos Aires.",
+      strong: "De acá sale el viaje ↓",
+    },
+    viaje: {
+      mapLabel: "Mapa de Argentina con el recorrido de proyectos",
+      kicker: "✎ bajá despacio…",
+      titlePre: "Trabajamos con empresas de ",
+      titleMark: "todo el país",
+      titlePost: ".",
+      lead: "Desde Buenos Aires hasta el fin del mundo. Seguí el lápiz.",
+      seeHow: "Ver cómo terminó",
+      stops: [
+        {
+          where: "Parada 1 · Villa Martelli, Buenos Aires",
+          title: "Una empresa de piletas que arrancó sin marca.",
+          body: "Obra Azul necesitaba verse tan profesional como sus obras, y ordenar todo lo que pasaba adentro.",
+          hook: "¿Qué terminamos armando? →",
+          pin: "piletas",
+        },
+        {
+          where: "Parada 2 · Plottier, Neuquén",
+          title: "Un grupo industrial con tres negocios en uno.",
+          body: "Metalúrgica, redes contra incendio y racks. JEM-SI necesitaba mostrarlos juntos sin mezclarlos, y además resolver su gestión interna.",
+          hook: "De la web a los gastos de la empresa →",
+          pin: "industria",
+        },
+        {
+          where: "Parada 3 · Río Grande, Tierra del Fuego",
+          title: "Una yerbatería en el fin del mundo que necesitaba su propia letra.",
+          body: "Yerbas de mi Tierra quería una marca con identidad y un club para premiar a sus clientes.",
+          hook: "Spoiler: la tipografía la dibujamos nosotros →",
+          pin: "yerbatería",
+        },
+      ],
+      studioPin: "el estudio",
+      studioPinSub: "Buenos Aires",
+      endKicker: "✎ y el viaje sigue",
+      endTitle: "Cada parada es un caso completo.",
+      endBody: "Cómo empezó, qué dibujamos, qué construimos y cómo funciona hoy.",
+      endCta: "Ver todos los trabajos →",
+    },
+    dentro: {
+      kicker: "✎ y por dentro…",
+      title: "Nos ocupamos de ",
+      titleEm: "todo lo demás.",
+      body: "Correos, dominios, datos y sistemas internos. Vos atendés tu negocio; lo digital lo resolvemos nosotros, con un solo contacto.",
+      postits: [
+        "¿Se cayó el mail?\nNos escribís a nosotros.",
+        "Todo queda a nombre\nde tu empresa ✓",
+        "Chau planillas sueltas.",
+      ],
+      url: "tuempresa.com / panel",
+      example: "ejemplo",
+      appsLabel: "Servicios de gestión",
+      hint: "↑ tocá cualquier app",
+      manual: "Ahora manejás vos ✎",
+      realCase: "caso real:",
+      apps: [
+        { name: "Correo", caso: "JEM-SI", lines: [["nueva casilla", "ventas@tuempresa.com"], ["alias", "info@ → ventas@"], ["✓", "lista para usar"]] },
+        { name: "Dominios", caso: "JEM-SI · Yerbas", lines: [["tuempresa.com", "→ sitio web"], ["tienda.tuempresa.com", "→ tienda"], ["✓", "certificado de seguridad renovado"]] },
+        { name: "Sitio web", caso: "Obra Azul · CITEP", lines: [["editando", "sección \"Servicios\""], ["publicando…", ""], ["✓", "en línea en 40 s"]] },
+        { name: "Gastos", caso: "JEM-SI", lines: [["nuevo gasto", "combustible · obra Neuquén"], ["estado", "pendiente → aprobado"], ["✓", "sumado al reporte del mes"]] },
+        { name: "Stock", caso: "Yerbas de mi Tierra", lines: [["canje en el local", "yerba 1 kg"], ["stock en Odoo", "24 → 23"], ["✓", "sincronizado"]] },
+        { name: "Clientes", caso: "Club del Mate · CITEP", lines: [["cliente", "sumó puntos por su compra"], ["nivel", "sube a un nivel nuevo"], ["✓", "aviso enviado"]] },
+        { name: "Turnos", caso: "CITEP", lines: [["nuevo turno", "jueves · 10:30"], ["equipo", "agenda actualizada"], ["✓", "confirmación enviada"]] },
+        { name: "WhatsApp", caso: "Automata (hub propio)", lines: [["consulta", "\"¿qué horario tienen?\""], ["asistente", "responde con el horario"], ["✓", "conversación registrada"]] },
+      ],
+    },
+    necesitas: {
+      kicker: "✎ empecemos",
+      title: "¿Qué ",
+      titleEm: "necesitás?",
+      options: [
+        { title: "Una web", body: "Sitio nuevo o rediseño del que tenés.", msg: "Hola, quiero una web nueva para mi empresa." },
+        { title: "Un sistema", body: "Software para resolver algo puntual de tu negocio.", msg: "Hola, necesito un sistema a medida para mi negocio." },
+        { title: "Delegar la gestión", body: "Dominios, correos y sistemas internos.", msg: "Hola, quiero delegar la gestión de dominio, correos y sistemas de mi empresa." },
+      ],
+      cta: "Seguir al formulario →",
+      reply: "Respondemos en menos de 24 h",
+    },
   },
   process: {
     eyebrow: "Proceso / 2025—2026",
@@ -348,6 +474,7 @@ const en: Dictionary = {
     contact: "Contact",
     menu: "Menu",
     close: "Close",
+    talk: "Let's talk",
   },
   common: {
     back: "Back",
@@ -496,19 +623,102 @@ const en: Dictionary = {
     metaLeft: "Digital studio · Est. 2024",
     metaRight: "Buenos Aires — Argentina",
     intro: [
-      "Digital studio partnering with brands",
-      "and businesses that create exceptional",
-      "experiences where people live,",
-      "work and connect.",
+      "We design websites, build custom",
+      "software and take care of the digital",
+      "side of your company.",
     ],
     titleLine1: "Digital",
     titleLine2: "Studio",
     titleLine3: "Innhovex.",
     closingText:
-      "We don't just build websites. We craft your company's most valuable digital asset through cutting-edge design and immersive technology.",
+      "A young studio with fresh ideas, working with companies all across Argentina.",
     ctaTitle: "Start a project",
     scroll: "Scroll",
     reel: "Reel · 2026",
+  },
+  home: {
+    heroPostit: {
+      line1: "Here we are:",
+      line2: "Puerto Madero, Buenos Aires.",
+      strong: "The journey starts here ↓",
+    },
+    viaje: {
+      mapLabel: "Map of Argentina with the route of our projects",
+      kicker: "✎ scroll slowly…",
+      titlePre: "We work with companies from ",
+      titleMark: "all over Argentina",
+      titlePost: ".",
+      lead: "From Buenos Aires to the end of the world. Follow the pencil.",
+      seeHow: "See how it ended",
+      stops: [
+        {
+          where: "Stop 1 · Villa Martelli, Buenos Aires",
+          title: "A pool company that started without a brand.",
+          body: "Obra Azul needed to look as professional as its builds, and to organize everything happening inside.",
+          hook: "What did we end up building? →",
+          pin: "pools",
+        },
+        {
+          where: "Stop 2 · Plottier, Neuquén",
+          title: "An industrial group with three businesses in one.",
+          body: "Metalworks, fire networks and racks. JEM-SI needed to show them together without mixing them, and to sort out its internal management.",
+          hook: "From the website to company expenses →",
+          pin: "industry",
+        },
+        {
+          where: "Stop 3 · Río Grande, Tierra del Fuego",
+          title: "A yerba shop at the end of the world that needed its own lettering.",
+          body: "Yerbas de mi Tierra wanted a brand with identity and a club to reward its customers.",
+          hook: "Spoiler: we drew the typeface ourselves →",
+          pin: "yerba shop",
+        },
+      ],
+      studioPin: "the studio",
+      studioPinSub: "Buenos Aires",
+      endKicker: "✎ and the journey goes on",
+      endTitle: "Every stop is a complete case.",
+      endBody: "How it started, what we drew, what we built and how it works today.",
+      endCta: "See all work →",
+    },
+    dentro: {
+      kicker: "✎ and on the inside…",
+      title: "We take care of ",
+      titleEm: "everything else.",
+      body: "Email, domains, data and internal systems. You run your business; we handle the digital side, with a single point of contact.",
+      postits: [
+        "Email down?\nYou just write to us.",
+        "Everything stays in\nyour company's name ✓",
+        "Bye, loose spreadsheets.",
+      ],
+      url: "yourcompany.com / panel",
+      example: "example",
+      appsLabel: "Management services",
+      hint: "↑ tap any app",
+      manual: "You're in control now ✎",
+      realCase: "real case:",
+      apps: [
+        { name: "Email", caso: "JEM-SI", lines: [["new mailbox", "sales@yourcompany.com"], ["alias", "info@ → sales@"], ["✓", "ready to use"]] },
+        { name: "Domains", caso: "JEM-SI · Yerbas", lines: [["yourcompany.com", "→ website"], ["shop.yourcompany.com", "→ shop"], ["✓", "security certificate renewed"]] },
+        { name: "Website", caso: "Obra Azul · CITEP", lines: [["editing", "\"Services\" section"], ["publishing…", ""], ["✓", "live in 40 s"]] },
+        { name: "Expenses", caso: "JEM-SI", lines: [["new expense", "fuel · Neuquén site"], ["status", "pending → approved"], ["✓", "added to the monthly report"]] },
+        { name: "Stock", caso: "Yerbas de mi Tierra", lines: [["in-store redemption", "yerba 1 kg"], ["stock in Odoo", "24 → 23"], ["✓", "synced"]] },
+        { name: "Customers", caso: "Club del Mate · CITEP", lines: [["customer", "earned points with a purchase"], ["level", "moves up a level"], ["✓", "notice sent"]] },
+        { name: "Bookings", caso: "CITEP", lines: [["new booking", "Thursday · 10:30"], ["team", "schedule updated"], ["✓", "confirmation sent"]] },
+        { name: "WhatsApp", caso: "Automata (our own hub)", lines: [["question", "\"what are your hours?\""], ["assistant", "replies with the hours"], ["✓", "conversation logged"]] },
+      ],
+    },
+    necesitas: {
+      kicker: "✎ let's start",
+      title: "What do you ",
+      titleEm: "need?",
+      options: [
+        { title: "A website", body: "A new site or a redesign of the one you have.", msg: "Hi, I want a new website for my company." },
+        { title: "A system", body: "Software to solve something specific in your business.", msg: "Hi, I need custom software for my business." },
+        { title: "Hand off management", body: "Domains, email and internal systems.", msg: "Hi, I want to hand off the management of my company's domain, email and systems." },
+      ],
+      cta: "Go to the form →",
+      reply: "We reply within 24 h",
+    },
   },
   process: {
     eyebrow: "Process / 2025—2026",
