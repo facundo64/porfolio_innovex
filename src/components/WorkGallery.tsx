@@ -9,11 +9,15 @@ import { useT } from "@/lib/i18n/LocaleProvider";
 import { useLocalizedProject } from "@/lib/i18n/useLocalizedProject";
 import ObraAzulExpediente from "./ObraAzulExpediente";
 import YerbasExpediente from "./YerbasExpediente";
+import CitepExpediente from "./CitepExpediente";
+import JemsiExpediente from "./JemsiExpediente";
 
 /** Proyectos que muestran un expediente propio al desplazar el preview (en lugar de la galería genérica). */
 const EXPEDIENTES: Record<string, (id: string) => React.ReactNode> = {
   "obra-azul": (id) => <ObraAzulExpediente id={id} />,
   "yerbas-de-mi-tierra": (id) => <YerbasExpediente id={id} />,
+  citep: (id) => <CitepExpediente id={id} />,
+  "jem-si": (id) => <JemsiExpediente id={id} />,
 };
 
 // CRIPNAR queda pendiente (sigue en la data): para reactivarlo, volvé a poner "cripnar" acá.

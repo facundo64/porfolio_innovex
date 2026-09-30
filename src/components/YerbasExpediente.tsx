@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { zilla, oswald, lora, caveat } from "@/lib/fonts/expedientes";
 import "./YerbasExpediente.css";
 
 const A = "/projects/yerbas-de-mi-tierra";
@@ -28,7 +29,7 @@ export default function YerbasExpediente({ id }: { id?: string }) {
   }, []);
 
   return (
-    <section id={id} ref={rootRef} className="y-exp relative z-[110]">
+    <section id={id} ref={rootRef} className={`y-exp relative z-[110] ${zilla.variable} ${oswald.variable} ${lora.variable} ${caveat.variable}`}>
       <div className="hoja">
         {/* ═════════ CARÁTULA ═════════ */}
         <header className="caratula">

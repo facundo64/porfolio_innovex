@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { kalam } from "@/lib/fonts/expedientes";
 import "./ObraAzulExpediente.css";
 
 /* ── Paths del isotipo (7 trazos) — reutilizados en construcción y variantes ── */
@@ -81,7 +82,7 @@ export default function ObraAzulExpediente({ id }: { id?: string }) {
   }, []);
 
   return (
-    <section id={id} ref={rootRef} className="oa-exp relative z-[110]">
+    <section id={id} ref={rootRef} className={`oa-exp relative z-[110] ${kalam.variable}`}>
       <div className="hoja">
         {/* ═════════ CARÁTULA ═════════ */}
         <header className="caratula">
