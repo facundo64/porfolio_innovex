@@ -108,7 +108,9 @@
 .hl-subrayado svg { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .35em; overflow: visible; }
 
 /* ---------- VIAJE (mapa) ---------- */
-.hl-viaje { position: relative; height: 460vh; z-index: 2; margin-top: -30vh; -webkit-mask-image: linear-gradient(transparent, #000 30vh); mask-image: linear-gradient(transparent, #000 30vh); }
+/* Sin mask-image en la sección alta (Safari/iPad la deja en blanco): fondo
+   transparente arriba y fundido del contenido por JS (HomeViaje). */
+.hl-viaje.hl-lienzo { position: relative; height: 460vh; z-index: 2; margin-top: -30vh; background-color: transparent; background-image: radial-gradient(rgba(42,43,48,.16) 1px, transparent 1.3px), linear-gradient(transparent, var(--paper) 30vh); background-size: 22px 22px, 100% 100%; }
 .hl-viaje-sticky { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 90px var(--gutter) 40px; align-items: center; }
 .hl-viaje-textos { position: relative; height: min(520px, 70vh); }
 .hl-etapa { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 22px; opacity: 0; translate: 0 24px; transition: opacity .6s, translate .7s cubic-bezier(.22,1,.36,1); pointer-events: none; }
@@ -551,9 +553,17 @@
 .hl-vm { display: none; }
 @media (max-width: 767px) {
   .hl-viaje-desktop { display: none; }
+  /* Sin mask-image: en una sección tan alta (5 pantallas) Safari de iPhone
+     supera su límite de memoria para capas con máscara y la deja en blanco.
+     El fundido con el hero se hace con el fondo (transparente arriba) y con
+     la opacidad del mapa, que calcula HomeViajeMovil al bajar. */
   .hl-vm {
     display: block; position: relative; z-index: 2; height: 520svh; margin-top: -30svh;
-    -webkit-mask-image: linear-gradient(transparent, #000 30svh); mask-image: linear-gradient(transparent, #000 30svh);
+    background-color: transparent;
+    background-image:
+      radial-gradient(rgba(42,43,48,.16) 1px, transparent 1.3px),
+      linear-gradient(transparent, var(--paper) 30svh);
+    background-size: 22px 22px, 100% 100%;
   }
 }
 .hl-vm-escena { position: sticky; top: 0; height: 100svh; overflow: hidden; }

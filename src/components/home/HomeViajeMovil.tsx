@@ -94,6 +94,8 @@ export default function HomeViajeMovil() {
       const r = sec.getBoundingClientRect();
       const total = sec.offsetHeight - H;
       const p = reducir ? 1 : clamp(-r.top / total);
+      // Fundido de entrada desde el hero (reemplaza la máscara CSS).
+      escena.style.opacity = String(reducir ? 1 : clamp(1 - (r.top - H * 0.1) / (H * 0.45)));
 
       // Dibujo de los tramos y punta del lápiz
       let punta: { x: number; y: number } = { x: C.ba[0], y: C.ba[1] };
@@ -181,7 +183,7 @@ export default function HomeViajeMovil() {
   ];
 
   return (
-    <section ref={secRef} className="hl-vm hl-lienzo" data-theme="light" aria-label={v.mapLabel}>
+    <section ref={secRef} className="hl-vm" data-theme="light" aria-label={v.mapLabel}>
       <div ref={escenaRef} className="hl-vm-escena">
         <svg ref={svgRef} className="hl-vm-mapa" viewBox="0 0 400 834" preserveAspectRatio="xMidYMid slice" aria-hidden>
           <defs>

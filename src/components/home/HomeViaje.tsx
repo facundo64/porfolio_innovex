@@ -39,6 +39,7 @@ export default function HomeViaje() {
   const t = useT();
   const v = t.home.viaje;
   const secRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const maskRefs = useRef<(SVGPathElement | null)[]>([]);
   const rutaRefs = useRef<(SVGPathElement | null)[]>([]);
   const lapizRef = useRef<SVGGElement>(null);
@@ -71,6 +72,11 @@ export default function HomeViaje() {
       const r = sec.getBoundingClientRect();
       const total = sec.offsetHeight - window.innerHeight;
       const p = reducir ? 1 : clamp(-r.top / total);
+      // Fundido de entrada desde el hero (reemplaza la máscara CSS).
+      if (stickyRef.current) {
+        const vh = window.innerHeight;
+        stickyRef.current.style.opacity = String(reducir ? 1 : clamp(1 - (r.top - vh * 0.1) / (vh * 0.45)));
+      }
       let punta: { x: number; y: number } | null = null;
       RUTAS.forEach((_, i) => {
         const m = maskRefs.current[i], ruta = rutaRefs.current[i];
@@ -138,7 +144,7 @@ export default function HomeViaje() {
 
   return (
     <section ref={secRef} className="hl-viaje hl-viaje-desktop hl-lienzo" id="viaje" data-theme="light">
-      <div className="hl-viaje-sticky">
+      <div ref={stickyRef} className="hl-viaje-sticky">
         <div className="hl-viaje-textos">
           <div ref={(el) => { etapaRefs.current[0] = el; }} className="hl-etapa hl-activa">
             <span className="hl-kicker">{v.kicker}</span>
