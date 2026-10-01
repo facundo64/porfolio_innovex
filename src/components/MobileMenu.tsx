@@ -36,9 +36,14 @@ export default function MobileMenu() {
     };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+    // Con el menú abierto, el post-it del asistente se esconde (si no, queda
+    // flotando encima del panel: el panel vive dentro del header, que va en
+    // una capa más baja).
+    document.documentElement.dataset.menu = "abierto";
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      delete document.documentElement.dataset.menu;
     };
   }, [open]);
 

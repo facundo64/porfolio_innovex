@@ -552,7 +552,7 @@
 @media (max-width: 767px) {
   .hl-viaje-desktop { display: none; }
   .hl-vm {
-    display: block; position: relative; z-index: 2; height: 340svh; margin-top: -30svh;
+    display: block; position: relative; z-index: 2; height: 520svh; margin-top: -30svh;
     -webkit-mask-image: linear-gradient(transparent, #000 30svh); mask-image: linear-gradient(transparent, #000 30svh);
   }
 }
@@ -602,3 +602,7 @@
 @media (prefers-reduced-motion: reduce) {
   .hl-vm-hoja, .hl-vm-nota { transition: none; }
 }
+
+/* Menú mobile abierto: el asistente se esconde para no flotar sobre el panel */
+.hl-bot-launcher { transition: opacity .25s; }
+html[data-menu="abierto"] .hl-bot-launcher { opacity: 0 !important; pointer-events: none; }
