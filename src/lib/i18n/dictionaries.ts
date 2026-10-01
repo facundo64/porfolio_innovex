@@ -157,6 +157,8 @@ export type Dictionary = {
       stops: { where: string; title: string; body: string; hook: string; pin: string }[];
       studioPin: string;
       studioPinSub: string;
+      stopOf: string;
+      fullRoute: string;
       endKicker: string;
       endTitle: string;
       endBody: string;
@@ -411,6 +413,8 @@ const es: Dictionary = {
       ],
       studioPin: "Buenos Aires, nuestra base.",
       studioPinSub: "De acá sale el viaje ↓",
+      stopOf: "✎ parada {n} de 3",
+      fullRoute: "✎ el recorrido completo",
       endKicker: "✎ y el viaje sigue",
       endTitle: "Cada parada es un caso completo.",
       endBody: "Cómo empezó, qué dibujamos, qué construimos y cómo funciona hoy.",
@@ -727,6 +731,8 @@ const en: Dictionary = {
       ],
       studioPin: "Buenos Aires, our home base.",
       studioPinSub: "The journey starts here ↓",
+      stopOf: "✎ stop {n} of 3",
+      fullRoute: "✎ the full route",
       endKicker: "✎ and the journey goes on",
       endTitle: "Every stop is a complete case.",
       endBody: "How it started, what we drew, what we built and how it works today.",

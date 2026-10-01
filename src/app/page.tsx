@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import HomeViaje from "@/components/home/HomeViaje";
+import HomeViajeMovil from "@/components/home/HomeViajeMovil";
 import HomeDentro from "@/components/home/HomeDentro";
 import HomeNecesitas from "@/components/home/HomeNecesitas";
 
@@ -9,6 +10,7 @@ export default function Home() {
     <div className="hl hl-home">
       <Hero />
       <HomeViaje />
+      <HomeViajeMovil />
       <HomeDentro />
       <HomeNecesitas />
     </div>

@@ -542,3 +542,63 @@
   .hl-etapa .hl-intriga { font-size: 16px; }
   .hl-etapa .hl-donde { font-size: 9.5px; }
 }
+
+/* =====================================================================
+ * El viaje en celular (HomeViajeMovil): mapa a pantalla completa con
+ * cámara que sigue al lápiz y la historia en una hoja dibujada abajo.
+ * En desktop sigue el viaje de dos columnas (HomeViaje).
+ * ===================================================================== */
+.hl-vm { display: none; }
+@media (max-width: 767px) {
+  .hl-viaje-desktop { display: none; }
+  .hl-vm {
+    display: block; position: relative; z-index: 2; height: 340svh; margin-top: -30svh;
+    -webkit-mask-image: linear-gradient(transparent, #000 30svh); mask-image: linear-gradient(transparent, #000 30svh);
+  }
+}
+.hl-vm-escena { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.hl-vm-mapa { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hl-vm-estado { position: absolute; z-index: 6; top: 78px; left: var(--gutter); right: var(--gutter); display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+.hl-vm-estado > span:first-child { font-family: var(--mano); font-size: 17px; color: var(--navy-2); background: var(--paper); padding: 1px 8px; border-radius: 6px; }
+.hl-vm-barras { display: flex; gap: 6px; }
+.hl-vm-barras i { width: 22px; height: 4px; border-radius: 2px; background: rgba(42,43,48,.15); transition: background .35s; }
+.hl-vm-barras i.hl-on { background: var(--navy-2); }
+
+.hl-vm-nota {
+  position: absolute; z-index: 5; translate: -50% -100%; margin-top: -16px; pointer-events: none;
+  background: var(--postit); color: #2a2400; font-family: var(--mano); font-size: 17px; line-height: 1.1; padding: 9px 12px 8px;
+  box-shadow: 2px 6px 12px -4px rgba(60,50,0,.4); border-bottom-right-radius: 14px 5px; white-space: nowrap; rotate: -2deg;
+  opacity: 0; scale: .6; transition: opacity .35s, scale .45s cubic-bezier(.34,1.56,.64,1);
+}
+.hl-vm-nota small { display: block; font-size: 13px; opacity: .75; }
+.hl-vm-nota.hl-on { opacity: 1; scale: 1; }
+.hl-vm-nota::before { content: ""; position: absolute; top: -8px; left: 50%; translate: -50% 0; rotate: -4deg; width: 40px; height: 13px; background: rgba(255,255,255,.55); }
+.hl-vm-nota-base small { font-weight: 700; color: var(--navy); opacity: 1; }
+
+/* La hoja de cada parada: se cambia como pasar página */
+.hl-vm-hojas { position: absolute; z-index: 8; left: 14px; right: 14px; bottom: calc(62px + env(safe-area-inset-bottom, 0px)); height: 44%; pointer-events: none; }
+.hl-vm-hoja {
+  position: absolute; left: 0; right: 0; bottom: 0; max-height: 100%; overflow: hidden;
+  display: flex; flex-direction: column; gap: 9px; padding: 18px 18px 16px;
+  background: #fff; border: 2.5px solid var(--lapiz); border-radius: var(--trazo); box-shadow: 5px 7px 0 var(--lapiz);
+  opacity: 0; translate: 110% 0; rotate: 5deg; pointer-events: none;
+  transition: translate .55s cubic-bezier(.22,1,.36,1), rotate .55s cubic-bezier(.22,1,.36,1), opacity .4s;
+}
+.hl-vm-hoja.hl-activa { opacity: 1; translate: 0 0; rotate: 0deg; pointer-events: auto; }
+.hl-vm-hoja.hl-pasada { translate: -110% 0; rotate: -6deg; }
+.hl-vm-hoja h3 { font-family: var(--serif); font-size: 30px; line-height: 1; letter-spacing: -.02em; }
+.hl-vm-hoja p { font-size: 14.5px; line-height: 1.5; color: #3A3A3A; }
+.hl-vm-hoja .hl-btn-lapiz { font-size: 14px; padding: 10px 18px; }
+.hl-vm-fila { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.hl-vm-donde { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--lapiz-suave); }
+.hl-vm-num { font-family: var(--mano); font-weight: 700; font-size: 15px; color: var(--navy-2); white-space: nowrap; }
+.hl-vm-intriga { font-family: var(--mano); font-size: 17px; color: var(--navy-2); }
+@media (max-height: 720px) {
+  .hl-vm-hoja { gap: 7px; padding: 14px 15px 13px; }
+  .hl-vm-hoja h3 { font-size: 25px; }
+  .hl-vm-hoja p { font-size: 13.5px; line-height: 1.45; }
+  .hl-vm-intriga { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hl-vm-hoja, .hl-vm-nota { transition: none; }
+}
