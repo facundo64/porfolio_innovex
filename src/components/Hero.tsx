@@ -29,15 +29,25 @@ export default function Hero() {
     const vig = vigRef.current, fin = finRef.current, lapicito = lapicitoRef.current;
     if (!sec || !img || !lap || !vig || !fin || !lapicito) return;
     const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cuerpo = sec.querySelector<HTMLElement>(".hl-hero-cuerpo");
+    // En iPhone la barra del navegador se esconde al deslizar y cambia
+    // innerHeight: con la altura "viva" el dibujo y el lápiz pegaban un salto.
+    // Fijamos la altura y solo la recalculamos si cambia el ancho (al girar).
+    let vhFija = window.innerHeight;
+    let anchoFijo = window.innerWidth;
 
     const onScroll = () => {
-      const vh = window.innerHeight;
+      if (window.innerWidth !== anchoFijo) {
+        anchoFijo = window.innerWidth;
+        vhFija = window.innerHeight;
+      }
+      const movil = anchoFijo < 768;
+      const vh = movil ? vhFija : window.innerHeight;
       if (!reducir) img.style.transform = `translate3d(0,${window.scrollY * 0.15}px,0)`;
       const hr = sec.getBoundingClientRect();
-      // En celular el hero es más corto: el dibujo arranca apenas se baja,
-      // detrás del texto, en vez de esperar dos pantallas de foto vacía.
-      const movil = window.innerWidth < 768;
-      const [ini, largo] = movil ? [1.28, 0.7] : [1.45, 0.75];
+      // En celular el texto entra completo en la primera pantalla y el dibujo
+      // arranca apenas se empieza a bajar.
+      const [ini, largo] = movil ? [1.5, 0.7] : [1.45, 0.75];
       const tl = reducir ? (hr.bottom < vh * 1.3 ? 1 : 0) : clamp((vh * ini - hr.bottom) / (vh * largo));
       const pr = img.getBoundingClientRect();
       const bordeVp = vh * (1.05 - tl * 1.25);
@@ -45,7 +55,13 @@ export default function Hero() {
       lap.style.setProperty("--rev", rev.toFixed(2));
       vig.style.opacity = String(1 - tl);
       fin.style.opacity = String(clamp(tl * 2.5));
-      const enPapel = tl > 0.68;
+      // El texto pasa a tinta cuando el dibujo (papel claro) ya lo alcanzó.
+      // En celular se mide contra el texto mismo, que ocupa casi toda la pantalla.
+      let enPapel = tl > 0.68;
+      if (movil && cuerpo && !reducir) {
+        const cr = cuerpo.getBoundingClientRect();
+        enPapel = tl > 0.68 || (tl > 0 && bordeVp < cr.top + cr.height * 0.75);
+      }
       sec.classList.toggle("hl-en-papel", enPapel);
       // El TopHeader lee data-theme para elegir el color del logo: le avisamos
       // cuando cambia, porque puede haberlo leído antes en este mismo frame.

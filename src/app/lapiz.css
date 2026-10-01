@@ -489,16 +489,19 @@
   .hl-bot-garabato path { stroke-dashoffset: 0; }
 }
 
-/* Celular: hero más corto y título de borde a borde (la animación de dibujo
-   es el impacto; el scroll largo de desktop acá solo era foto vacía) */
+/* Celular: la primera pantalla ya muestra todo el texto (apoyado abajo, con
+   la foto arriba) y el dibujo a lápiz arranca apenas se baja. */
 @media (max-width: 767px) {
-  .hl-hero { min-height: 150svh; }
-  .hl-hero-in { padding-top: 92px; }
-  .hl-hero-cuerpo { margin-top: 24svh; gap: 26px; padding-left: 0; }
-  .hl-hero-intro { font-size: 1.45rem; line-height: 1.2; }
-  .hl-hero-titulo { font-size: 29vw; margin-left: -1.5vw; }
-  .hl-hero-pie { gap: 18px; padding-top: 18px; }
-  .hl-hero-pie p { font-size: 1.15rem; }
+  .hl-hero { min-height: 165svh; }
+  .hl-hero-in { min-height: 100svh; display: flex; flex-direction: column; padding: 88px var(--gutter) 30px; }
+  .hl-hero-cuerpo { margin-top: auto; gap: 18px; padding-left: 0; }
+  .hl-hero-intro { font-size: 1.4rem; line-height: 1.2; }
+  .hl-hero-titulo { font-size: 27vw; margin-left: -1.5vw; }
+  .hl-hero-pie { gap: 14px; padding-top: 14px; }
+  .hl-hero-pie p { font-size: 1.1rem; }
+  /* Los datos de contacto ya están en el menú, en "¿Qué necesitás?" y en el footer */
+  .hl-hero-contacto { display: none; }
+  .hl-hero-lapicito svg { scale: .7; }
 }
 /* Celular: el resto del Home más compacto, sin pantallas vacías */
 @media (max-width: 767px) {
@@ -527,9 +530,11 @@
 }
 /* Pantallas bajas (iPhone SE y similares) */
 @media (max-width: 767px) and (max-height: 720px) {
-  .hl-hero-cuerpo { margin-top: 12svh; gap: 20px; }
-  .hl-hero-titulo { font-size: 26vw; }
-  .hl-hero-intro { font-size: 1.3rem; }
+  .hl-hero-in { padding-top: 80px; padding-bottom: 22px; }
+  .hl-hero-cuerpo { gap: 14px; }
+  .hl-hero-titulo { font-size: 23vw; }
+  .hl-hero-intro { font-size: 1.2rem; }
+  .hl-hero-pie p { font-size: 1rem; }
   .hl-mapa-caja { height: 38svh; }
   .hl-etapa { gap: 8px; }
   .hl-etapa h3, .hl-etapa h3.hl-titulo { font-size: 1.7rem; }
