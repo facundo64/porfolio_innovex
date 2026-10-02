@@ -368,7 +368,7 @@ export const projects: Project[] = [
       "Sistema de color derivado del emblema con reglas de contraste",
     ],
     tags: ["Featured", "Identidad", "Tipografía propia"],
-    demo: "https://yerbasdemitierra.vercel.app",
+    demo: "https://yerbasdemitierra.com.ar",
     discipline: ["Identidad", "Tipografía", "Diseño web", "Desarrollo"],
     featured: true,
     order: 6,
