@@ -103,7 +103,6 @@ export type Dictionary = {
       hoursLabel: string;
       hoursValue: string;
     };
-    socialTitle: string;
     note: string;
     whatsappCta: string;
     whatsappPrefill: string;
@@ -356,7 +355,6 @@ const es: Dictionary = {
       hoursLabel: "Disponibilidad",
       hoursValue: "Lun–Vie · 09:00 a 19:00 (GMT-3)",
     },
-    socialTitle: "Seguinos",
     note: "Tu mensaje llega directo a nuestro estudio.",
     whatsappCta: "Hablemos por WhatsApp",
     whatsappPrefill:
@@ -683,7 +681,6 @@ const en: Dictionary = {
       hoursLabel: "Availability",
       hoursValue: "Mon–Fri · 09:00 to 19:00 (GMT-3)",
     },
-    socialTitle: "Follow us",
     note: "Your message goes straight to our studio.",
     whatsappCta: "Let's chat on WhatsApp",
     whatsappPrefill:

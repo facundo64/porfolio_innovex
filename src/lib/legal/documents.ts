@@ -2,11 +2,6 @@ import type { Locale } from "@/lib/i18n/dictionaries";
 
 /**
  * Contenido de las páginas legales (bilingüe ES/EN).
- *
- * ⚠️ BORRADOR: este texto es una base de trabajo generada como punto de
- * partida para INNHOVEX. Antes de considerarlo definitivo debe ser revisado
- * por un asesor legal, especialmente en lo referido a la Ley 25.326 de
- * Protección de Datos Personales (Argentina) y a la relación con clientes.
  */
 
 export type LegalSection = { heading: string; body: string[] };
@@ -21,7 +16,6 @@ export type LegalDoc = {
   updated: string;
   intro: string;
   sections: LegalSection[];
-  disclaimer: string;
   backLabel: string;
 };
 
@@ -85,8 +79,6 @@ const privacy: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "Este documento es un borrador de referencia y no constituye asesoramiento legal. Su contenido debe ser revisado y validado por un profesional antes de su publicación definitiva.",
   },
   en: {
     slug: "privacidad",
@@ -141,8 +133,6 @@ const privacy: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "This document is a reference draft and does not constitute legal advice. Its content should be reviewed and validated by a professional before final publication.",
   },
 };
 
@@ -192,8 +182,6 @@ const consent: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "Este documento es un borrador de referencia y no constituye asesoramiento legal. Su contenido debe ser revisado y validado por un profesional antes de su publicación definitiva.",
   },
   en: {
     slug: "consentimiento",
@@ -240,8 +228,6 @@ const consent: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "This document is a reference draft and does not constitute legal advice. Its content should be reviewed and validated by a professional before final publication.",
   },
 };
 
@@ -294,8 +280,6 @@ const terms: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "Este documento es un borrador de referencia y no constituye asesoramiento legal. Su contenido debe ser revisado y validado por un profesional antes de su publicación definitiva.",
   },
   en: {
     slug: "terminos",
@@ -345,8 +329,6 @@ const terms: Record<Locale, LegalDoc> = {
         ],
       },
     ],
-    disclaimer:
-      "This document is a reference draft and does not constitute legal advice. Its content should be reviewed and validated by a professional before final publication.",
   },
 };
 

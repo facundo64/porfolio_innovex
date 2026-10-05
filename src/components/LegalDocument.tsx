@@ -44,7 +44,6 @@ export default function LegalDocument({ slug }: { slug: LegalSlug }) {
               </div>
             </section>
           ))}
-          <p className="hl-legal-nota">{doc.disclaimer}</p>
         </div>
       </main>
     </div>

@@ -3,8 +3,11 @@ import { Resend } from "resend";
 import { origenPermitido } from "@/lib/sitio";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// Remitente: cuando innhovex.com esté verificado en Resend, cargar en Vercel
+// CONTACT_FROM_EMAIL="INNHOVEX <hola@innhovex.com>". Mientras tanto se usa el
+// remitente de prueba de Resend, que solo entrega al mail de la cuenta de Resend.
 const FROM_EMAIL =
-  process.env.CONTACT_FROM_EMAIL ?? "Innhovex Portfolio <noreply@mail.citep-forense.com>";
+  process.env.CONTACT_FROM_EMAIL ?? "INNHOVEX <onboarding@resend.dev>";
 const TO_EMAIL =
   process.env.CONTACT_TO_EMAIL ?? "innhovex@gmail.com";
 

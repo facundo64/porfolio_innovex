@@ -120,11 +120,6 @@ export default async function RootLayout({
               "logo": `${siteUrl}/logo-innhovex.svg`,
               "image": `${siteUrl}/opengraph-image`,
               "description": "Estudio digital de Buenos Aires: diseño y web, software a medida, gestión digital e integraciones con IA para empresas de todo el país.",
-              "sameAs": [
-                "https://instagram.com/innhovex",
-                "https://linkedin.com/company/innhovex",
-                "https://github.com/facundo64"
-              ],
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+54-9-11-7058-8887",

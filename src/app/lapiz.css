@@ -360,9 +360,6 @@
 .hl-cont-datos > div:not(.hl-pills) { display: grid; gap: 4px; }
 .hl-cont-datos small { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--lapiz-suave); }
 .hl-cont-datos span { font-family: var(--serif); font-size: 1.35rem; color: var(--ink); }
-.hl-pills { display: flex; flex-wrap: wrap; gap: 12px; }
-.hl-pill { font: 500 13px var(--sans); color: var(--lapiz); text-decoration: none; padding: 7px 14px; border: 2px solid var(--lapiz); border-radius: var(--trazo); background: #fff; transition: background .2s, translate .2s; }
-.hl-pill:hover { background: var(--postit); translate: 0 -2px; }
 
 /* ---------- Documentos legales ---------- */
 .hl-legal { max-width: 50rem; margin: 0 auto; }
@@ -372,7 +369,6 @@
 .hl-legal-sec > span { font-family: var(--mano); font-size: 22px; color: var(--navy-2); }
 .hl-legal-sec h2 { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.1rem); letter-spacing: -.02em; }
 .hl-legal-sec div div { display: grid; gap: 14px; margin-top: 14px; font-size: 16px; line-height: 1.65; color: #3A3A3A; }
-.hl-legal-nota { margin-top: 40px; border: 2px dashed rgba(42,43,48,.45); border-radius: 14px 8px 16px 10px; padding: 18px 20px; background: #FCFCFA; font-size: 14px; line-height: 1.6; color: var(--lapiz-suave); }
 .hl-volver { display: inline-flex; gap: 8px; color: var(--lapiz-suave); text-decoration: none; }
 .hl-volver:hover { color: var(--ink); }
 

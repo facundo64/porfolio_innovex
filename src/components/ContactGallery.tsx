@@ -7,11 +7,6 @@ import Cabecera, { Subrayado } from "./lapiz/Cabecera";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const SOCIALS = [
-  { label: "Instagram", href: "https://instagram.com/innhovex" },
-  { label: "LinkedIn", href: "https://linkedin.com/company/innhovex" },
-  { label: "GitHub", href: "https://github.com/facundo64" },
-];
 
 type FormStatus = "idle" | "submitting" | "success" | "error" | "rate_limited";
 
@@ -169,16 +164,6 @@ export default function ContactGallery() {
               <div>
                 <small>{c.info.hoursLabel}</small>
                 <span>{c.info.hoursValue}</span>
-              </div>
-            </div>
-            <div className="hl-cont-datos">
-              <small>{c.socialTitle}</small>
-              <div className="hl-pills">
-                {SOCIALS.map((s) => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="hl-pill">
-                    {s.label}
-                  </a>
-                ))}
               </div>
             </div>
           </motion.aside>
