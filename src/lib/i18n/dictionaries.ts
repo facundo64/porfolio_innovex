@@ -30,6 +30,16 @@ export type Dictionary = {
     statusInProgress: string;
     statusPrivate: string;
     imagePending: string;
+    caseLang: string;
+    casesCount: string;
+  };
+  notFound: {
+    kicker: string;
+    title: string;
+    titleEm: string;
+    body: string;
+    home: string;
+    work: string;
   };
   work: {
     eyebrow: string;
@@ -219,9 +229,19 @@ const es: Dictionary = {
     statusInProgress: "En desarrollo · Cliente activo",
     statusPrivate: "Proyecto privado · Bajo NDA",
     imagePending: "Captura pendiente",
+    caseLang: "",
+    casesCount: "{n} casos",
+  },
+  notFound: {
+    kicker: "✎ página no encontrada",
+    title: "Esta hoja ",
+    titleEm: "está en blanco.",
+    body: "La dirección no existe o cambió. Volvé al inicio o mirá los trabajos.",
+    home: "Ir al inicio",
+    work: "Ver trabajos →",
   },
   work: {
-    eyebrow: "Trabajos / 2025—2026",
+    eyebrow: "Trabajos",
     kicker: "✎ casos reales",
     titleLine1: "Cada proyecto,",
     titleEm: "una parada.",
@@ -233,7 +253,7 @@ const es: Dictionary = {
     bandText: "Contanos qué necesitás y armamos el recorrido juntos.",
   },
   services: {
-    eyebrow: "Servicios / 2025—2026",
+    eyebrow: "Servicios",
     kicker: "✎ lo que hacemos",
     detailLabel: "servicio",
     ctaMsg: "Hola, me interesa el servicio de {s}.",
@@ -247,69 +267,68 @@ const es: Dictionary = {
     cta: "Hablemos",
     items: [
       {
-        id: "web-development",
+        id: "diseno-web",
         number: "01",
-        title: "Desarrollo Web",
-        tagline: "Sitios premium con motion y performance.",
+        title: "Diseño y web",
+        tagline: "Marca y sitio pensados para que te escriban.",
         description:
-          "Landing pages y sitios corporativos con diseño cinemático, animaciones precisas y métricas Lighthouse 95+. Stack moderno con Next.js, framer-motion y Tailwind v4.",
+          "Identidad, sitios institucionales y tiendas. Rápidos, cuidados al detalle y con el contacto a un toque: formulario y WhatsApp.",
         deliverables: [
-          "Diseño UI/UX en Figma",
-          "Frontend en Next.js 16 + React 19",
-          "Animaciones cinematográficas",
-          "Lighthouse 95+ y SEO técnico",
-          "Hosting en Vercel con CI/CD",
+          "Marca nueva o puesta a punto de la que tenés",
+          "Sitio a medida, en español e inglés si hace falta",
+          "Contacto directo por WhatsApp y formulario",
+          "Dominio propio y correo configurados",
+          "Listo para aparecer en Google",
         ],
       },
       {
-        id: "saas-platforms",
+        id: "software",
         number: "02",
-        title: "Plataformas SaaS",
-        tagline: "Multi-tenant, auth robusta, dashboards en tiempo real.",
+        title: "Software a medida",
+        tagline: "Un sistema para lo que hoy hacés en planillas.",
         description:
-          "Construimos productos SaaS completos: arquitectura multi-tenant con aislamiento de datos, auth segura, integraciones con WhatsApp/email y dashboards con métricas operativas.",
+          "Sistemas que resuelven algo puntual del negocio: turnos, obras, presupuestos, clientes, canjes o portales privados. Hechos para el equipo que los usa todos los días.",
         deliverables: [
-          "Arquitectura multi-tenant",
-          "Auth con NextAuth v5 / Supabase",
-          "Postgres (Neon) + Prisma 7",
-          "Notificaciones WhatsApp + email",
-          "Panel admin + dashboards",
+          "Relevamiento de cómo trabajan hoy",
+          "Pantallas diseñadas antes de programar",
+          "Accesos por rol: administración, equipo, clientes",
+          "Presupuestos y documentos con tu marca",
+          "Capacitación y acompañamiento al arrancar",
         ],
       },
       {
-        id: "ai-integrations",
+        id: "gestion",
         number: "03",
-        title: "Integraciones IA",
-        tagline: "Bots WhatsApp, transcripción, agentes con Gemini/Claude.",
+        title: "Gestión digital",
+        tagline: "Un solo contacto para todo lo técnico.",
         description:
-          "Integramos IA donde aporta valor real: chatbots de WhatsApp con clasificación inteligente, transcripción de audios, agentes con herramientas y workflows con LLMs.",
+          "Nos ocupamos de la parte técnica de la empresa: dominios, correos corporativos, datos y sistemas internos como gastos, stock u Odoo. Todo queda a nombre de tu empresa.",
         deliverables: [
-          "Bots WhatsApp con Baileys",
-          "Gemini 2.0 Flash / Claude 4.7",
-          "Transcripción + clasificación",
-          "Hub multi-tenant Docker",
-          "Integración Notion / Gmail",
+          "Dominio y DNS",
+          "Correos con el dominio de la empresa",
+          "Gastos, stock y ventas (Odoo u otro sistema)",
+          "Datos ordenados y respaldados",
+          "Un contacto cuando algo falla",
         ],
       },
       {
-        id: "consulting",
+        id: "ia",
         number: "04",
-        title: "Consultoría Técnica",
-        tagline: "Auditoría, arquitectura y mentoring para tu equipo.",
+        title: "Integraciones con IA",
+        tagline: "Asistentes que atienden por vos.",
         description:
-          "Auditamos productos digitales existentes, diseñamos arquitecturas que escalan y hacemos mentoring técnico a tu equipo de desarrollo. Foco en performance, DX y mantenibilidad.",
+          "Asistentes para la web o WhatsApp que responden consultas, toman pedidos o turnos y le pasan a tu equipo un resumen de cada conversación.",
         deliverables: [
-          "Auditoría de código + performance",
-          "Diseño de arquitectura",
-          "Migración a stacks modernos",
-          "Mentoring técnico semanal",
-          "Documentación + ADRs",
+          "Asistente para la web o WhatsApp",
+          "Respuestas con la información de tu negocio",
+          "Derivación a una persona cuando hace falta",
+          "Resumen de cada consulta para tu equipo",
         ],
       },
     ],
   },
   contact: {
-    eyebrow: "Contacto / 2025—2026",
+    eyebrow: "Contacto",
     kicker: "✎ escribinos",
     formBar: "nuevo mensaje",
     rateLimited: "Demasiados intentos. Esperá un momento y probá de nuevo.",
@@ -442,9 +461,9 @@ const es: Dictionary = {
         { name: "Sitio web", caso: "Obra Azul · CITEP", lines: [["editando", "sección \"Servicios\""], ["publicando…", ""], ["✓", "en línea en 40 s"]] },
         { name: "Gastos", caso: "JEM-SI", lines: [["nuevo gasto", "combustible · obra Neuquén"], ["estado", "pendiente → aprobado"], ["✓", "sumado al reporte del mes"]] },
         { name: "Stock", caso: "Yerbas de mi Tierra", lines: [["canje en el local", "yerba 1 kg"], ["stock en Odoo", "24 → 23"], ["✓", "sincronizado"]] },
-        { name: "Clientes", caso: "Club del Mate · CITEP", lines: [["cliente", "sumó puntos por su compra"], ["nivel", "sube a un nivel nuevo"], ["✓", "aviso enviado"]] },
+        { name: "Clientes", caso: "Club del Mate", lines: [["cliente", "sumó puntos por su compra"], ["nivel", "sube a un nivel nuevo"], ["✓", "aviso enviado"]] },
         { name: "Turnos", caso: "CITEP", lines: [["nuevo turno", "jueves · 10:30"], ["equipo", "agenda actualizada"], ["✓", "confirmación enviada"]] },
-        { name: "WhatsApp", caso: "Automata (hub propio)", lines: [["consulta", "\"¿qué horario tienen?\""], ["asistente", "responde con el horario"], ["✓", "conversación registrada"]] },
+        { name: "WhatsApp", caso: "desarrollo propio (Automata)", lines: [["consulta", "\"¿qué horario tienen?\""], ["asistente", "responde con el horario"], ["✓", "conversación registrada"]] },
       ],
     },
     necesitas: {
@@ -461,7 +480,7 @@ const es: Dictionary = {
     },
   },
   process: {
-    eyebrow: "Proceso / 2025—2026",
+    eyebrow: "Proceso",
     kicker: "✎ paso a paso",
     stepsLabel: "4 pasos",
     bandKicker: "✎ ¿arrancamos?",
@@ -491,14 +510,14 @@ const es: Dictionary = {
         n: "03",
         title: "Desarrollo",
         description:
-          "Codeamos con buenas prácticas, tipado estricto y commits diarios. Vos seguís el progreso en tiempo real con un staging environment.",
+          "Construimos por etapas y te mostramos los avances en una versión de prueba que podés usar antes de publicar.",
         duration: "4 — 10 semanas",
       },
       {
         n: "04",
         title: "Entrega & soporte",
         description:
-          "Deploy a producción, capacitación y documentación técnica. Seguimos acompañándote después del launch con SLA mensual.",
+          "Publicamos, capacitamos a tu equipo y dejamos todo documentado. Después seguimos a mano para ajustes y soporte.",
         duration: "Continuo",
       },
     ],
@@ -537,9 +556,19 @@ const en: Dictionary = {
     statusInProgress: "In development · Active client",
     statusPrivate: "Private project · Under NDA",
     imagePending: "Capture pending",
+    caseLang: "case study in Spanish",
+    casesCount: "{n} cases",
+  },
+  notFound: {
+    kicker: "✎ page not found",
+    title: "This page ",
+    titleEm: "is blank.",
+    body: "The address doesn't exist or has changed. Go back home or see our work.",
+    home: "Go home",
+    work: "See our work →",
   },
   work: {
-    eyebrow: "Work / 2025—2026",
+    eyebrow: "Work",
     kicker: "✎ real cases",
     titleLine1: "Every project,",
     titleEm: "a stop.",
@@ -551,7 +580,7 @@ const en: Dictionary = {
     bandText: "Tell us what you need and we'll map out the journey together.",
   },
   services: {
-    eyebrow: "Services / 2025—2026",
+    eyebrow: "Services",
     kicker: "✎ what we do",
     detailLabel: "service",
     ctaMsg: "Hi, I'm interested in {s}.",
@@ -565,69 +594,68 @@ const en: Dictionary = {
     cta: "Let's talk",
     items: [
       {
-        id: "web-development",
+        id: "diseno-web",
         number: "01",
-        title: "Web Development",
-        tagline: "Premium sites with motion and performance.",
+        title: "Design & web",
+        tagline: "Brand and website built to make people reach out.",
         description:
-          "Landing pages and corporate websites with cinematic design, precise animations and Lighthouse 95+ metrics. Modern stack with Next.js, framer-motion and Tailwind v4.",
+          "Identity, company websites and online stores. Fast, carefully crafted, with contact one tap away: form and WhatsApp.",
         deliverables: [
-          "UI/UX design in Figma",
-          "Frontend in Next.js 16 + React 19",
-          "Cinematic animations",
-          "Lighthouse 95+ and technical SEO",
-          "Vercel hosting with CI/CD",
+          "A new brand or a refresh of the one you have",
+          "Custom website, in Spanish and English if needed",
+          "Direct contact via WhatsApp and form",
+          "Your own domain and email set up",
+          "Ready to show up on Google",
         ],
       },
       {
-        id: "saas-platforms",
+        id: "software",
         number: "02",
-        title: "SaaS Platforms",
-        tagline: "Multi-tenant, robust auth, real-time dashboards.",
+        title: "Custom software",
+        tagline: "A system for what you now do in spreadsheets.",
         description:
-          "We build complete SaaS products: multi-tenant architecture with data isolation, secure auth, WhatsApp/email integrations and operational dashboards.",
+          "Systems that solve something specific in your business: bookings, jobs, quotes, customers, rewards or private portals. Built for the team that uses them every day.",
         deliverables: [
-          "Multi-tenant architecture",
-          "Auth with NextAuth v5 / Supabase",
-          "Postgres (Neon) + Prisma 7",
-          "WhatsApp + email notifications",
-          "Admin panel + dashboards",
+          "A look at how you work today",
+          "Screens designed before any code",
+          "Role-based access: admin, team, customers",
+          "Quotes and documents with your brand",
+          "Training and support at launch",
         ],
       },
       {
-        id: "ai-integrations",
+        id: "gestion",
         number: "03",
-        title: "AI Integrations",
-        tagline: "WhatsApp bots, transcription, Gemini/Claude agents.",
+        title: "Digital operations",
+        tagline: "One contact for everything technical.",
         description:
-          "We integrate AI where it adds real value: WhatsApp chatbots with intelligent classification, audio transcription, agents with tools, and LLM-powered workflows.",
+          "We take care of the technical side of your company: domains, business email, data and internal systems such as expenses, stock or Odoo. Everything stays in your company's name.",
         deliverables: [
-          "WhatsApp bots with Baileys",
-          "Gemini 2.0 Flash / Claude 4.7",
-          "Transcription + classification",
-          "Multi-tenant Docker hub",
-          "Notion / Gmail integration",
+          "Domain and DNS",
+          "Email on your company domain",
+          "Expenses, stock and sales (Odoo or another system)",
+          "Data kept organized and backed up",
+          "One contact when something breaks",
         ],
       },
       {
-        id: "consulting",
+        id: "ia",
         number: "04",
-        title: "Technical Consulting",
-        tagline: "Audits, architecture and team mentoring.",
+        title: "AI integrations",
+        tagline: "Assistants that answer for you.",
         description:
-          "We audit existing digital products, design scalable architectures and provide technical mentoring to your dev team. Focus on performance, DX and maintainability.",
+          "Assistants for your website or WhatsApp that answer questions, take orders or bookings, and hand your team a summary of every conversation.",
         deliverables: [
-          "Code + performance audit",
-          "Architecture design",
-          "Migration to modern stacks",
-          "Weekly technical mentoring",
-          "Documentation + ADRs",
+          "Assistant for the web or WhatsApp",
+          "Answers based on your business information",
+          "Hand-off to a person when needed",
+          "A summary of every inquiry for your team",
         ],
       },
     ],
   },
   contact: {
-    eyebrow: "Contact / 2025—2026",
+    eyebrow: "Contact",
     kicker: "✎ write to us",
     formBar: "new message",
     rateLimited: "Too many attempts. Wait a moment and try again.",
@@ -760,9 +788,9 @@ const en: Dictionary = {
         { name: "Website", caso: "Obra Azul · CITEP", lines: [["editing", "\"Services\" section"], ["publishing…", ""], ["✓", "live in 40 s"]] },
         { name: "Expenses", caso: "JEM-SI", lines: [["new expense", "fuel · Neuquén site"], ["status", "pending → approved"], ["✓", "added to the monthly report"]] },
         { name: "Stock", caso: "Yerbas de mi Tierra", lines: [["in-store redemption", "yerba 1 kg"], ["stock in Odoo", "24 → 23"], ["✓", "synced"]] },
-        { name: "Customers", caso: "Club del Mate · CITEP", lines: [["customer", "earned points with a purchase"], ["level", "moves up a level"], ["✓", "notice sent"]] },
+        { name: "Customers", caso: "Club del Mate", lines: [["customer", "earned points with a purchase"], ["level", "moves up a level"], ["✓", "notice sent"]] },
         { name: "Bookings", caso: "CITEP", lines: [["new booking", "Thursday · 10:30"], ["team", "schedule updated"], ["✓", "confirmation sent"]] },
-        { name: "WhatsApp", caso: "Automata (our own hub)", lines: [["question", "\"what are your hours?\""], ["assistant", "replies with the hours"], ["✓", "conversation logged"]] },
+        { name: "WhatsApp", caso: "in-house build (Automata)", lines: [["question", "\"what are your hours?\""], ["assistant", "replies with the hours"], ["✓", "conversation logged"]] },
       ],
     },
     necesitas: {
@@ -779,7 +807,7 @@ const en: Dictionary = {
     },
   },
   process: {
-    eyebrow: "Process / 2025—2026",
+    eyebrow: "Process",
     kicker: "✎ step by step",
     stepsLabel: "4 steps",
     bandKicker: "✎ shall we start?",
@@ -809,14 +837,14 @@ const en: Dictionary = {
         n: "03",
         title: "Development",
         description:
-          "We code with best practices, strict typing and daily commits. You follow progress in real time on a staging environment.",
+          "We build in stages and show you progress on a test version you can use before going live.",
         duration: "4 — 10 weeks",
       },
       {
         n: "04",
         title: "Delivery & support",
         description:
-          "Production deploy, training and technical documentation. We keep supporting you after launch with monthly SLA.",
+          "We go live, train your team and leave everything documented. After that we stay close for tweaks and support.",
         duration: "Ongoing",
       },
     ],

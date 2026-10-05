@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { siteUrl } from '@/lib/sitio';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://innhovex.com";
+  const baseUrl = siteUrl;
 
   return [
     {

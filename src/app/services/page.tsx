@@ -2,20 +2,20 @@ import ServicesGallery from "@/components/ServicesGallery";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Servicios — INNHOVEX",
-  description: "Desarrollo web premium, software a medida, producto digital y escala. Servicios especializados de INNHOVEX para tu negocio.",
+  title: "Servicios",
+  description: "Diseño y web, software a medida, gestión digital e integraciones con IA para empresas de todo el país.",
   alternates: {
     canonical: "/services",
   },
   openGraph: {
-    title: "Servicios — INNHOVEX",
-    description: "Desarrollo web, software a medida y consultoría tecnológica para empresas ambiciosas.",
+    title: "Servicios | INNHOVEX",
+    description: "Diseño y web, software a medida, gestión digital e integraciones con IA para empresas de todo el país.",
     url: "/services",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Servicios — INNHOVEX",
-    description: "Desarrollo web, software a medida y consultoría tecnológica para empresas ambiciosas.",
+    title: "Servicios | INNHOVEX",
+    description: "Diseño y web, software a medida, gestión digital e integraciones con IA para empresas de todo el país.",
   },
 };
 

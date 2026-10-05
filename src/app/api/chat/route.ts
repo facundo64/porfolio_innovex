@@ -1,10 +1,10 @@
 import { streamText, convertToModelMessages, type UIMessage } from "ai";
 import { SYSTEM_PROMPT } from "@/lib/chatbot/systemPrompt";
+import { origenPermitido } from "@/lib/sitio";
 
 export const runtime = "edge";
 export const maxDuration = 30;
 
-const ALLOWED_ORIGIN_SUFFIXES = ["innhovex.com", "vercel.app", "localhost:3000", "localhost:3001"];
 
 const RATE_LIMIT = 20;
 const RATE_WINDOW_MS = 60 * 60 * 1000;
@@ -44,18 +44,9 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return true;
-  try {
-    const host = new URL(origin).host;
-    return ALLOWED_ORIGIN_SUFFIXES.some((s) => host === s || host.endsWith(`.${s}`) || host.endsWith(s));
-  } catch {
-    return false;
-  }
-}
 
 export async function POST(req: Request) {
-  if (!isAllowedOrigin(req.headers.get("origin"))) {
+  if (!origenPermitido(req.headers.get("origin"))) {
     return new Response(JSON.stringify({ error: "forbidden_origin" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },

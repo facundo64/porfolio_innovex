@@ -2,20 +2,20 @@ import ContactGallery from "@/components/ContactGallery";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contacto — INNHOVEX",
-  description: "Contactanos para empezar tu próximo proyecto digital. Estudio de desarrollo web y software en Buenos Aires, Argentina.",
+  title: "Contacto",
+  description: "Contanos qué necesitás. Respondemos en menos de 24 horas por mail o WhatsApp.",
   alternates: {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contacto — INNHOVEX",
-    description: "Hablemos sobre tu próximo proyecto. Estamos listos para crear algo increíble juntos.",
+    title: "Contacto | INNHOVEX",
+    description: "Contanos qué necesitás. Respondemos en menos de 24 horas por mail o WhatsApp.",
     url: "/contact",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contacto — INNHOVEX",
-    description: "Hablemos sobre tu próximo proyecto. Estamos listos para crear algo increíble juntos.",
+    title: "Contacto | INNHOVEX",
+    description: "Contanos qué necesitás. Respondemos en menos de 24 horas por mail o WhatsApp.",
   },
 };
 

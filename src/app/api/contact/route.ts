@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { origenPermitido } from "@/lib/sitio";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL =
@@ -12,7 +13,6 @@ const RATE_LIMIT = 3;
 const RATE_WINDOW_MS = 60 * 60 * 1000;
 const attempts = new Map<string, number[]>();
 
-const ALLOWED_ORIGIN_SUFFIXES = ["innhovex.com", "vercel.app", "localhost:3000", "localhost:3001"];
 
 function getClientIp(req: Request): string {
   return (
@@ -29,15 +29,6 @@ function hashIp(ip: string): string {
   return `ip_${(h >>> 0).toString(36)}`;
 }
 
-function isAllowedOrigin(origin: string | null): boolean {
-  if (!origin) return true;
-  try {
-    const host = new URL(origin).host;
-    return ALLOWED_ORIGIN_SUFFIXES.some((s) => host === s || host.endsWith(`.${s}`) || host.endsWith(s));
-  } catch {
-    return false;
-  }
-}
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -63,7 +54,7 @@ type Payload = {
 };
 
 export async function POST(req: Request) {
-  if (!isAllowedOrigin(req.headers.get("origin"))) {
+  if (!origenPermitido(req.headers.get("origin"))) {
     return NextResponse.json(
       { ok: false, error: "forbidden_origin" },
       { status: 403 }

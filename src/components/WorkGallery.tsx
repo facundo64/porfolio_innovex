@@ -96,7 +96,7 @@ export default function WorkGallery() {
   return (
     <div className="hl hl-pagina hl-lienzo" data-theme="light">
       <Cabecera
-        meta={[w.eyebrow, t.common.salonVisual]}
+        meta={[w.eyebrow, t.common.casesCount.replace("{n}", String(showcase.length))]}
         kicker={w.kicker}
         lineas={[
           w.titleLine1,
@@ -554,18 +554,6 @@ function Preview({
           <span className="text-[10px] md:text-[11px] font-mono tracking-[0.22em] uppercase text-[#FAFAF7]/70">
             {localized.role}
           </span>
-          {project.discipline && project.discipline.length > 0 && (
-            <ul className="flex flex-wrap gap-1.5 max-w-xs">
-              {project.discipline.map((d) => (
-                <li
-                  key={d}
-                  className="text-[9px] font-mono tracking-[0.18em] uppercase text-[#FAFAF7]/55 border border-white/15 rounded-full px-2 py-0.5"
-                >
-                  {d}
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
         <p className="font-serif text-base md:text-lg lg:text-xl tracking-[-0.01em] text-[#FAFAF7]/95 max-w-2xl md:text-center leading-snug">
           {localized.tagline}
@@ -589,6 +577,7 @@ function Preview({
                 ↓
               </motion.span>
               {t.common.gallery}
+              {hasExpediente && t.common.caseLang ? ` · ${t.common.caseLang}` : null}
             </button>
           )}
         </div>

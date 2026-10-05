@@ -12,16 +12,9 @@ import { LocaleProvider } from "@/lib/i18n/LocaleProvider";
 import { headers } from "next/headers";
 import { kalam } from "@/lib/fonts/expedientes";
 import Footer from "@/components/Footer";
+import { siteUrl } from "@/lib/sitio";
 
-// URL base para las metatags absolutas (og:image, canonical, etc.).
-// Prioridad: variable propia → dominio de producción de Vercel → fallback.
-// Así el preview al compartir apunta SIEMPRE al deploy vivo, y el día que
-// se conecte innhovex.com como dominio de producción se actualiza solo.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ? process.env.NEXT_PUBLIC_SITE_URL
-  : process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://innhovex.com";
+// URL base para las metatags absolutas (og:image, canonical, etc.): ver lib/sitio.
 
 const geistSans = Geist({
   variable: "--font-sans-geist",
@@ -47,9 +40,9 @@ export const metadata: Metadata = {
     template: "%s | INNHOVEX",
   },
   description:
-    "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse. Especialistas en Next.js, React y arquitecturas de alto rendimiento.",
-  keywords: ["desarrollo web", "software a medida", "INNHOVEX", "agencia digital", "TypeScript", "Next.js", "diseño UX/UI", "Argentina"],
-  authors: [{ name: "INNHOVEX", url: "https://innhovex.com" }],
+    "Diseñamos webs, desarrollamos software a medida y nos ocupamos de la parte digital de tu empresa. Estudio de Buenos Aires que trabaja con empresas de todo el país.",
+  keywords: ["diseño web", "software a medida", "gestión digital", "INNHOVEX", "estudio digital", "Buenos Aires", "Argentina"],
+  authors: [{ name: "INNHOVEX", url: siteUrl }],
   creator: "INNHOVEX",
   publisher: "INNHOVEX",
   robots: {
@@ -69,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     // La imagen la aporta src/app/opengraph-image.tsx (convención de archivo de Next).
     title: "INNHOVEX — Desarrollo Web & Software a medida",
-    description: "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
+    description: "Diseñamos webs, desarrollamos software a medida y nos ocupamos de la parte digital de tu empresa. Estudio de Buenos Aires que trabaja con empresas de todo el país.",
     url: "/",
     siteName: "INNHOVEX",
     locale: "es_AR",
@@ -82,7 +75,7 @@ export const metadata: Metadata = {
     // La imagen la aporta src/app/twitter-image.tsx.
     card: "summary_large_image",
     title: "INNHOVEX — Desarrollo Web & Software a medida",
-    description: "Creamos experiencias digitales premium para marcas que quieren destacarse.",
+    description: "Diseñamos webs, desarrollamos software a medida y nos ocupamos de la parte digital de tu empresa. Estudio de Buenos Aires que trabaja con empresas de todo el país.",
   },
   appleWebApp: {
     title: "INNHOVEX",
@@ -126,7 +119,7 @@ export default async function RootLayout({
               "url": siteUrl,
               "logo": `${siteUrl}/logo-innhovex.svg`,
               "image": `${siteUrl}/opengraph-image`,
-              "description": "Estudio de desarrollo web y software. Creamos experiencias digitales premium para marcas que quieren destacarse.",
+              "description": "Estudio digital de Buenos Aires: diseño y web, software a medida, gestión digital e integraciones con IA para empresas de todo el país.",
               "sameAs": [
                 "https://instagram.com/innhovex",
                 "https://linkedin.com/company/innhovex",
@@ -136,7 +129,7 @@ export default async function RootLayout({
                 "@type": "ContactPoint",
                 "telephone": "+54-9-11-7058-8887",
                 "contactType": "sales",
-                "areaServed": ["AR", "US", "ES", "MX", "CL"],
+                "areaServed": "AR",
                 "availableLanguage": ["Spanish", "English"],
                 "email": "innhovex@gmail.com"
               },
@@ -146,28 +139,8 @@ export default async function RootLayout({
                 "addressCountry": "AR"
               },
               "foundingDate": "2024",
-              "founders": [
-                {
-                  "@type": "Person",
-                  "name": "INNHOVEX Team"
-                }
-              ],
-              "knowsAbout": [
-                "Desarrollo Web",
-                "Software a Medida",
-                "Next.js",
-                "React",
-                "TypeScript",
-                "Diseño UX/UI",
-                "Aplicaciones Web",
-                "SaaS"
-              ],
-              "serviceType": [
-                "Desarrollo Web",
-                "Desarrollo de Software",
-                "Consultoría Tecnológica",
-                "Diseño UX/UI"
-              ]
+              "knowsAbout": ["Diseño web", "Identidad de marca", "Software a medida", "Gestión digital", "Integraciones con IA"],
+              "serviceType": ["Diseño y web", "Software a medida", "Gestión digital", "Integraciones con IA"]
             })
           }}
         />
