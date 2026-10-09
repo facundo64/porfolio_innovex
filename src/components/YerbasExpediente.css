@@ -1,8 +1,8 @@
-/* Expediente Yerbas de mi Tierra — estética "etiqueta de yerba": crema, marrón,
-   terracota, sombras duras y tipografía propia. Portado del documento original.
+/* Caso Yerbas de mi Tierra — estética "etiqueta de yerba": crema, marrón,
+   terracota, sombras duras y la tipografía propia de la marca.
+   Pensado como pieza de venta: vitrina del club arriba, cómo se armó y la oferta.
    Todo scopeado bajo .y-exp para no colisionar con el portfolio (dark). */
 
-/* La tipografía propia del proyecto, servida como asset estático */
 @font-face {
   font-family: "Yerbas Display";
   src: url("/projects/yerbas-de-mi-tierra/YerbasDisplay.woff2") format("woff2");
@@ -17,17 +17,17 @@
   --tarjeta: #f7efe0;
   --tinta: #2e2218;
   --tinta-2: #6b5a47;
-  --tinta-3: #93816b;
   --terracota: #d67b54;
   --terracota-dk: #a34a2c;
-  --oliva: #515a32;
   --amarillo: #f1b977;
   --borde: #2e2218;
   --borde-suave: rgba(46, 34, 24, 0.22);
   --dura: 5px 5px 0 var(--borde);
   --dura-sm: 3px 3px 0 var(--borde);
   --lapiz: #a34a2c;
-  --regla: rgba(46, 34, 24, 0.14);
+  --tel-fondo: var(--tinta);
+  --nota-color: var(--amarillo);
+  --banda-fondo: repeating-conic-gradient(from -90deg at 50% 118%, rgba(241, 185, 119, 0.07) 0deg 6deg, transparent 6deg 12deg), #2e2218;
 
   background-color: var(--papel);
   color: var(--tinta);
@@ -37,8 +37,6 @@
   -webkit-font-smoothing: antialiased;
   position: relative;
 }
-
-.y-exp * { box-sizing: border-box; }
 
 /* grano de papel */
 .y-exp::before {
@@ -52,166 +50,88 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.y-exp h1, .y-exp h2, .y-exp h3, .y-exp h4 { font-family: var(--font-zilla), Georgia, serif; margin: 0; text-wrap: balance; line-height: 1.08; }
-.y-exp h2 { font-weight: 700; font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -0.015em; }
-.y-exp h3 { font-weight: 700; font-size: 1.1rem; }
-.y-exp h4 { font-weight: 600; font-size: 0.95rem; }
-.y-exp p { margin: 0; }
-.y-exp .eyebrow { font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.22em; font-weight: 600; font-size: 0.72rem; color: var(--terracota-dk); }
-.y-exp .mano { font-family: var(--font-caveat), cursive; color: var(--lapiz); font-size: 1.15rem; line-height: 1.35; }
-.y-exp .prosa { color: var(--tinta-2); max-width: 65ch; }
-.y-exp .chico { font-size: 0.85rem; }
-.y-exp .osw { font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 500; }
+.y-exp h1, .y-exp h2, .y-exp h3 { font-family: var(--font-zilla), Georgia, serif; margin: 0; text-wrap: balance; line-height: 1.08; }
+.y-exp h2 { font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.7rem); letter-spacing: -0.015em; }
+.y-exp h3 { font-weight: 700; font-size: 1.3rem; }
+.y-exp .eyebrow { font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; font-size: 0.7rem; color: var(--terracota-dk); }
+.y-exp .mano-eyebrow { font-family: var(--font-caveat), cursive; font-size: 1.35rem; color: var(--lapiz); }
+.y-exp .prosa { color: var(--tinta-2); max-width: 60ch; }
 
 /* ---------- carátula ---------- */
-.y-exp .sello-cab { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.y-exp .sello-cab img { width: 64px; height: auto; display: block; }
+.y-exp .sello-cab { display: flex; align-items: center; gap: 14px; }
+.y-exp .sello-cab img { width: 58px; height: auto; display: block; }
 .y-exp .titular {
   font-family: "Yerbas Display", var(--font-zilla), serif;
-  font-size: clamp(2.7rem, 8.5vw, 6rem); line-height: 0.98;
+  font-size: clamp(2.9rem, 9vw, 6.2rem); line-height: 0.98;
   text-transform: uppercase; letter-spacing: 0.01em;
   color: var(--papel);
   -webkit-text-stroke: 0.05em var(--tinta);
   paint-order: stroke fill;
   text-shadow: 0.045em 0.055em 0 var(--terracota), 0.09em 0.105em 0 var(--tinta);
 }
-.y-exp .pie-titular { font-family: var(--font-caveat), cursive; color: var(--lapiz); font-size: 1.15rem; margin-top: 14px; }
-.y-exp .ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border: 2px solid var(--borde); box-shadow: var(--dura); background: var(--tarjeta); }
-.y-exp .ficha > div { padding: 13px 16px; border-right: 1px solid var(--borde-suave); }
-.y-exp .ficha > div:last-child { border-right: 0; }
-.y-exp .ficha dt { font-family: var(--font-oswald), sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--terracota-dk); margin: 0 0 4px; font-weight: 600; }
-.y-exp .ficha dd { margin: 0; font-weight: 500; font-size: 0.88rem; font-family: var(--font-zilla), serif; }
+.y-exp .pie-titular { font-family: var(--font-caveat), cursive; color: var(--lapiz); font-size: 1.3rem; margin-top: 14px; }
+.y-exp .entrada { color: var(--tinta); }
 
 /* ---------- láminas ---------- */
 .y-exp .lamina { border-top: 2px solid var(--borde); }
-.y-exp .lamina-cab { align-items: baseline; }
-.y-exp .folio { font-family: var(--font-oswald), sans-serif; font-size: 0.72rem; letter-spacing: 0.16em; font-weight: 600; color: var(--tinta); background: var(--amarillo); border: 2px solid var(--borde); padding: 2px 9px; white-space: nowrap; }
-
-.y-exp .bloque { background: var(--tarjeta); border: 2px solid var(--borde); padding: 18px 20px; box-shadow: var(--dura-sm); }
-.y-exp .bloque h3 { margin-bottom: 7px; }
-.y-exp .bloque p { color: var(--tinta-2); font-size: 0.88rem; }
-
-.y-exp .filete { border: 2px solid var(--borde); padding: 4px; background: var(--tarjeta); }
-.y-exp .filete > .dentro { border: 1px solid var(--borde-suave); padding: 20px 22px; }
+.y-exp .lamina > h2 { margin-bottom: 4px; }
 
 /* ---------- capturas ---------- */
-.y-exp .captura { border: 2px solid var(--borde); background: var(--tarjeta); padding: 7px; box-shadow: var(--dura); }
-.y-exp figcaption { margin-top: 11px; font-size: 0.82rem; color: var(--tinta-2); display: flex; gap: 9px; align-items: flex-start; }
-.y-exp figcaption b { font-family: var(--font-oswald), sans-serif; font-size: 0.66rem; letter-spacing: 0.12em; color: var(--terracota-dk); white-space: nowrap; padding-top: 3px; font-weight: 600; }
-.y-exp .pin { position: absolute; width: 23px; height: 23px; border-radius: 50%; background: var(--terracota-dk); color: #fff3e2; font-family: var(--font-oswald), sans-serif; font-size: 0.72rem; font-weight: 600; display: grid; place-items: center; border: 2px solid var(--borde); z-index: 2; }
-.y-exp .nota-pin .b { width: 23px; height: 23px; border-radius: 50%; border: 2px solid var(--terracota-dk); color: var(--terracota-dk); font-family: var(--font-oswald), sans-serif; font-size: 0.7rem; font-weight: 600; display: grid; place-items: center; }
-.y-exp .nota-pin p { font-size: 0.86rem; color: var(--tinta-2); }
-.y-exp .nota-pin strong { color: var(--tinta); font-weight: 600; font-family: var(--font-zilla), serif; }
+.y-exp .captura { border: 2px solid var(--borde); background: var(--tarjeta); padding: 6px; box-shadow: var(--dura); }
+.y-exp figcaption { margin-top: 10px; font-size: 0.84rem; color: var(--tinta-2); }
+
+/* teléfono (estructura en expediente.css) */
+.y-exp .tel { border: 2px solid var(--borde); box-shadow: var(--dura); }
 
 /* post-it */
-.y-exp .postit { background: var(--amarillo); border: 2px solid var(--borde); padding: 14px 16px; box-shadow: var(--dura-sm); }
-.y-exp .postit p { font-family: var(--font-caveat), cursive; font-size: 1.22rem; line-height: 1.35; color: #2e2218; }
-.y-exp .postit .quien { display: block; margin-top: 8px; font-family: var(--font-oswald), sans-serif; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(46, 34, 24, 0.65); font-weight: 600; }
+.y-exp .postit { background: var(--amarillo); border: 2px solid var(--borde); padding: 14px 16px; box-shadow: var(--dura-sm); transform: rotate(-1.2deg); }
+.y-exp .postit p { font-family: var(--font-caveat), cursive; font-size: 1.32rem; line-height: 1.3; color: #2e2218; }
+.y-exp .postit .quien { display: block; margin-top: 8px; font-family: var(--font-oswald), sans-serif; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(46, 34, 24, 0.7); font-weight: 600; }
 
-/* ---------- marca ---------- */
-.y-exp .tablero { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 26px; align-items: center; }
-@media (max-width: 760px) { .y-exp .tablero { grid-template-columns: 1fr; } }
-.y-exp .lienzo-logo { background: var(--papel-2); border: 2px solid var(--borde); box-shadow: var(--dura); padding: 26px; display: grid; place-items: center; }
-.y-exp .lienzo-logo img { width: 100%; max-width: 330px; height: auto; }
-.y-exp .capas { display: grid; }
-.y-exp .capa { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--regla); }
-.y-exp .capa:last-child { border-bottom: 0; }
-.y-exp .capa .n { font-family: var(--font-oswald), sans-serif; font-size: 0.72rem; color: var(--terracota-dk); font-weight: 600; padding-top: 3px; }
-.y-exp .capa h4 { margin-bottom: 2px; }
-.y-exp .capa span { font-size: 0.85rem; color: var(--tinta-2); display: block; }
+/* ═════════ VITRINA DEL CLUB ═════════ */
+.y-exp .banda { color: var(--papel); border-top: 2px solid var(--borde); border-bottom: 2px solid var(--borde); }
+.y-exp .banda .mano-eyebrow { color: var(--amarillo); }
+.y-exp .banda-tit {
+  font-family: "Yerbas Display", var(--font-zilla), serif; font-weight: 400;
+  font-size: clamp(2.4rem, 7vw, 4.6rem); text-transform: uppercase; letter-spacing: 0.01em;
+  color: var(--papel); text-shadow: 0.05em 0.06em 0 var(--terracota);
+}
+.y-exp .banda-bajada { color: rgba(239, 227, 205, 0.82); }
+.y-exp .vitrina .tel { border-color: #120c07; box-shadow: 8px 8px 0 var(--terracota); }
+.y-exp .nota-mano span { font-family: var(--font-caveat), cursive; font-size: 1.4rem; }
 
-/* diagnóstico */
-.y-exp .dx { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; }
-.y-exp .dx-col { border: 2px solid var(--borde); background: var(--tarjeta); box-shadow: var(--dura-sm); }
-.y-exp .dx-col header { padding: 9px 16px; border-bottom: 2px solid var(--borde); font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.68rem; font-weight: 600; }
-.y-exp .dx-col.bien header { background: var(--oliva); color: #f4efe0; }
-.y-exp .dx-col.ojo header { background: var(--terracota); color: #2e2218; }
-.y-exp .dx-col ul { list-style: none; margin: 0; padding: 16px 18px; display: grid; gap: 10px; }
-.y-exp .dx-col li { font-size: 0.87rem; color: var(--tinta-2); padding-left: 16px; position: relative; }
-.y-exp .dx-col li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 7px; height: 7px; background: var(--terracota-dk); }
-.y-exp .dx-col li b { color: var(--tinta); font-weight: 600; font-family: var(--font-zilla), serif; }
+/* ═════════ CÓMO SE ARMÓ ═════════ */
+.y-exp .paso-n { font-family: var(--font-zilla), serif; font-weight: 700; font-size: 1.5rem; color: var(--tinta); background: var(--amarillo); border: 2px solid var(--borde); box-shadow: var(--dura-sm); }
+.y-exp .paso h3 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); }
+.y-exp .lienzo-logo { background: var(--papel-2); border: 2px solid var(--borde); box-shadow: var(--dura); padding: 18px; display: grid; place-items: center; }
+.y-exp .lienzo-logo img { width: 100%; max-width: 280px; height: auto; }
+.y-exp .paleta span { border: 2px solid var(--borde); margin-left: -2px; }
+.y-exp .paleta span:first-child { margin-left: 0; }
+.y-exp .esp-frase {
+  font-family: "Yerbas Display", serif; text-transform: uppercase; line-height: 1.02;
+  font-size: clamp(1.6rem, 3vw, 2.3rem); color: var(--papel);
+  -webkit-text-stroke: 0.05em var(--tinta); paint-order: stroke fill; text-shadow: 0.045em 0.055em 0 var(--terracota);
+}
+.y-exp .stickers { display: flex; gap: 10px; align-items: flex-end; }
+.y-exp .stickers img { height: 74px; width: auto; min-width: 0; }
 
-/* ---------- tipografía propia ---------- */
-.y-exp .pipeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 2px solid var(--borde); background: var(--tarjeta); box-shadow: var(--dura); }
-.y-exp .paso { padding: 18px 18px 20px; border-right: 1px solid var(--borde-suave); position: relative; }
-.y-exp .paso:last-child { border-right: 0; }
-.y-exp .paso .num { font-family: var(--font-oswald), sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; font-weight: 600; color: var(--terracota-dk); display: block; margin-bottom: 6px; }
-.y-exp .paso h4 { margin-bottom: 5px; }
-.y-exp .paso p { font-size: 0.83rem; color: var(--tinta-2); }
-.y-exp .paso code { font-family: var(--font-oswald), monospace; font-size: 0.74rem; color: var(--oliva); letter-spacing: 0.04em; }
+/* ═════════ OFERTA ═════════ */
+.y-exp .oferta-item { background: var(--tarjeta); border: 2px solid var(--borde); box-shadow: var(--dura-sm); }
+.y-exp .oferta-item h3 { font-size: 1.15rem; }
+.y-exp .oferta-item p { color: var(--tinta-2); }
+.y-exp .btn {
+  font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600;
+  font-size: 0.9rem; padding: 0 1.6em; color: #2e2218; background: var(--terracota);
+  border: 2px solid #2e2218; box-shadow: 4px 4px 0 #2e2218; transition: transform 0.15s, box-shadow 0.15s;
+}
+.y-exp .btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #2e2218; }
 
-.y-exp .especimen { border: 2px solid var(--borde); background: var(--papel-2); box-shadow: var(--dura); padding: 26px 24px; display: grid; gap: 20px; overflow-x: auto; }
-.y-exp .esp-linea { font-family: "Yerbas Display", serif; color: var(--tinta); line-height: 1.02; }
-.y-exp .esp-abc { font-size: clamp(1.5rem, 4.4vw, 2.9rem); letter-spacing: 0.02em; word-break: break-word; }
-.y-exp .esp-frase { font-size: clamp(1.7rem, 5vw, 3.2rem); text-transform: uppercase; }
-.y-exp .esp-rot { font-family: var(--font-oswald), sans-serif; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tinta-3); font-weight: 600; margin-bottom: 7px; }
-.y-exp .metricas-tipo { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 0; border: 2px solid var(--borde); background: var(--tarjeta); }
-.y-exp .metricas-tipo > div { padding: 13px 15px; border-right: 1px solid var(--borde-suave); }
-.y-exp .metricas-tipo > div:last-child { border-right: 0; }
-.y-exp .metricas-tipo .cifra { font-family: var(--font-zilla), serif; font-weight: 700; font-size: 1.5rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.y-exp .metricas-tipo .que { display: block; font-size: 0.75rem; color: var(--tinta-2); margin-top: 5px; }
-
-/* ---------- paleta ---------- */
-.y-exp .paleta { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 14px; }
-.y-exp .tono { border: 2px solid var(--borde); background: var(--tarjeta); box-shadow: var(--dura-sm); }
-.y-exp .tono .sw { height: 70px; border-bottom: 2px solid var(--borde); }
-.y-exp .tono .info { padding: 10px 12px; }
-.y-exp .tono .info b { display: block; font-family: var(--font-zilla), serif; font-size: 0.85rem; }
-.y-exp .tono .info code { font-family: var(--font-oswald), sans-serif; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--tinta-2); }
-.y-exp .tono .info span { display: block; font-size: 0.75rem; color: var(--tinta-3); margin-top: 4px; line-height: 1.4; }
-
-.y-exp .reglas { display: grid; gap: 11px; list-style: none; margin: 0; padding: 0; }
-.y-exp .reglas li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 11px; font-size: 0.87rem; color: var(--tinta-2); }
-.y-exp .reglas .mk { color: var(--oliva); font-weight: 700; line-height: 1.4; }
-.y-exp .reglas .no { color: var(--terracota-dk); font-weight: 700; line-height: 1.4; }
-.y-exp .reglas b { color: var(--tinta); font-weight: 600; font-family: var(--font-zilla), serif; }
-
-/* demo de contraste */
-.y-exp .demo-btn { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
-.y-exp .btn-ok, .y-exp .btn-mal { font-family: var(--font-oswald), sans-serif; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; font-size: 0.82rem; padding: 0.75em 1.4em; border: 2px solid #2e2218; box-shadow: 3px 3px 0 #2e2218; background: #d67b54; }
-.y-exp .btn-ok { color: #2e2218; }
-.y-exp .btn-mal { color: #ffffff; }
-.y-exp .demo-pie { font-size: 0.78rem; color: var(--tinta-2); margin-top: 9px; }
-
-/* ---------- diagramas ---------- */
-.y-exp .pizarra { border: 2px solid var(--borde); background: var(--tarjeta); box-shadow: var(--dura); padding: 16px; }
-.y-exp .d-caja { fill: var(--papel-2); stroke: var(--borde); stroke-width: 2; }
-.y-exp .d-caja-alt { fill: none; stroke: var(--terracota-dk); stroke-width: 2; stroke-dasharray: 6 4; }
-.y-exp .d-tit { font-family: var(--font-zilla), serif; font-size: 13px; font-weight: 700; fill: var(--tinta); }
-.y-exp .d-sub { font-family: var(--font-lora), serif; font-size: 10.5px; fill: var(--tinta-2); }
-.y-exp .d-mono { font-family: var(--font-oswald), sans-serif; font-size: 9px; fill: var(--terracota-dk); letter-spacing: 0.14em; font-weight: 600; }
-.y-exp .d-flecha { fill: none; stroke: var(--tinta-2); stroke-width: 2; stroke-linecap: round; }
-.y-exp .d-mano { font-family: var(--font-caveat), cursive; font-size: 15px; fill: var(--lapiz); }
-
-/* ---------- líneas de trabajo ---------- */
-.y-exp .lineas { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
-.y-exp .lineas th { text-align: left; font-family: var(--font-oswald), sans-serif; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terracota-dk); font-weight: 600; padding: 0 14px 9px 0; border-bottom: 2px solid var(--borde); }
-.y-exp .lineas td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--regla); color: var(--tinta-2); vertical-align: top; }
-.y-exp .lineas td:first-child { color: var(--tinta); font-weight: 600; font-family: var(--font-zilla), serif; white-space: nowrap; }
-.y-exp .envoltorio { overflow-x: auto; }
-.y-exp .estado { font-family: var(--font-oswald), sans-serif; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 2px 8px; border: 1.5px solid var(--borde); white-space: nowrap; display: inline-block; }
-.y-exp .e-vivo { background: var(--oliva); color: #f4efe0; }
-.y-exp .e-curso { background: var(--amarillo); color: #2e2218; }
-.y-exp .e-pend { background: transparent; color: var(--tinta-2); }
-
-/* ---------- movimiento ---------- */
-.y-exp .coreo { display: grid; gap: 0; border-left: 3px solid var(--borde); }
-.y-exp .mom { position: relative; padding: 0 0 22px 22px; }
-.y-exp .mom::before { content: ""; position: absolute; left: -8px; top: 5px; width: 11px; height: 11px; background: var(--terracota); border: 2px solid var(--borde); }
-.y-exp .mom:last-child { padding-bottom: 0; }
-.y-exp .mom .cuando { font-family: var(--font-oswald), sans-serif; font-size: 0.63rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terracota-dk); font-weight: 600; }
-.y-exp .mom h4 { margin: 2px 0 3px; }
-.y-exp .mom p { font-size: 0.85rem; color: var(--tinta-2); }
-
-/* voz de marca */
-.y-exp .voz { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-.y-exp .lexico { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
-.y-exp .palabra { font-family: var(--font-oswald), sans-serif; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border: 1.5px solid var(--borde); font-weight: 500; }
-.y-exp .p-si { background: var(--papel-2); color: var(--tinta); }
-.y-exp .p-no { background: transparent; color: var(--tinta-3); text-decoration: line-through; }
-
-.y-exp .cita { font-family: var(--font-lora), serif; font-style: italic; font-size: 1.12rem; color: var(--tinta); border-left: 4px solid var(--terracota); padding-left: 18px; max-width: 52ch; }
-.y-exp .cita cite { display: block; font-style: normal; font-family: var(--font-oswald), sans-serif; font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tinta-3); margin-top: 9px; font-weight: 600; }
-
-.y-exp .stickers { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
-.y-exp .stickers img { height: 120px; width: auto; }
+/* ═════════ CELULAR: sólo tema (la estructura móvil está en expediente.css) ═════════ */
+@media (max-width: 767px) {
+  .y-exp .vitrina .tel { box-shadow: 5px 5px 0 var(--terracota); }
+  .y-exp .nota-mano span { font-size: 1.22rem; }
+  .y-exp .paso-n { font-size: 1.25rem; }
+  .y-exp .lienzo-logo { padding: 10px; }
+  .y-exp .stickers img { height: 52px; }
+  .y-exp .stickers img:nth-child(n + 4) { display: none; }
+}

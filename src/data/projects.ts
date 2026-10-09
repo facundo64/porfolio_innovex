@@ -322,7 +322,7 @@ export const projects: Project[] = [
     logoNegative: "/projects/yerbas-de-mi-tierra/isologo.png",
     cardLogo: "/projects/yerbas-de-mi-tierra/isologo.png",
     logoKeepColor: true,
-    image: "/projects/yerbas-de-mi-tierra/y-hero.jpg",
+    image: "/projects/yerbas-de-mi-tierra/web/hero-escritorio.jpg",
     displayMode: "logo",
     bgColor: "#EFE3CD",
     accentColor: "#A34A2C",

@@ -83,6 +83,84 @@
 .exp .pizarra { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .exp .pizarra svg { display: block; min-width: 640px; width: 100%; height: auto; }
 
+/* ---------- tira de pantallas de celular ----------
+   Grilla de 3 en escritorio; en celular pasa a fila deslizable con imán.
+   El marco del teléfono (.tel) lo pone cada tema. */
+.exp .tira { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 26px; }
+.exp .tira figcaption { max-width: 250px; margin-left: auto; margin-right: auto; }
+.exp .tira-aviso { display: none; }
+
+/* ═════════ CASOS COMO PIEZA DE VENTA (expediente/Venta.tsx) ═════════
+   Estructura compartida: vitrina (banda a todo el ancho con teléfonos), pasos de
+   "cómo se armó" y oferta final. El tema pone colores, tipografías y bordes.
+   Variables por tema: --tel-fondo, --banda-fondo, --nota-color. */
+.exp:has(.banda) { overflow-x: clip; } /* la banda sale a todo el ancho */
+.exp .mano-eyebrow { display: block; line-height: 1.15; margin-bottom: 6px; }
+.exp .entrada { max-width: 60ch; font-size: 1.1rem; }
+
+/* teléfono */
+.exp .tel { width: 100%; max-width: 250px; margin: 0 auto; padding: 8px; border-radius: 30px; background: var(--tel-fondo, #111); }
+.exp .tel img { display: block; width: 100%; height: auto; border-radius: 22px; }
+
+/* vitrina */
+.exp .vitrina-lamina { border-top: 0; }
+.exp .banda { margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 64px 0 72px; background: var(--banda-fondo, #111); }
+.exp .banda-in { max-width: var(--exp-ancho); margin: 0 auto; padding: 0 var(--exp-margen); }
+.exp .banda-tit { line-height: 1; }
+.exp .banda-bajada { max-width: 56ch; margin-top: 16px; font-size: 1.05rem; }
+.exp .vitrina { margin-top: 44px; gap: 30px; align-items: start; }
+.exp .vitrina figure {
+  --r: 0deg; --y: 0px; opacity: 0; transform: translateY(calc(var(--y) + 48px)) rotate(var(--r));
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exp .vitrina figure:nth-child(1) { --r: -3deg; transition-delay: 0.15s; }
+.exp .vitrina figure:nth-child(2) { --y: 34px; transition-delay: 0.3s; }
+.exp .vitrina figure:nth-child(3) { --r: 3deg; transition-delay: 0.45s; }
+.exp .vitrina-lamina.in .vitrina figure { opacity: 1; transform: translateY(var(--y)) rotate(var(--r)); }
+.exp .vitrina .tel { max-width: 270px; }
+.exp .nota-mano { display: flex; align-items: flex-end; justify-content: center; gap: 2px; margin: 0 auto 30px; min-height: 64px; position: relative; z-index: 1; color: var(--nota-color, currentColor); }
+.exp .nota-mano span { line-height: 1.15; max-width: 16ch; }
+.exp .flecha { width: 46px; height: 38px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; margin-bottom: -10px; }
+.exp .banda .tira-aviso { color: var(--nota-color, currentColor); }
+.exp .banda .postit { margin-top: 64px; max-width: 480px; }
+
+/* cómo se armó */
+.exp .pasos { display: grid; gap: 64px; margin-top: 36px; }
+.exp .paso { display: grid; grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); gap: 40px; align-items: center; }
+.exp .paso-n { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 14px; border-radius: 50%; }
+.exp .paso h3 { margin-bottom: 10px; }
+.exp .marca-vis { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 24px; align-items: center; }
+.exp .marca-lado { display: grid; gap: 16px; }
+.exp .paleta { display: flex; }
+.exp .paleta span { flex: 1; height: 36px; }
+.exp .sitio-vis { position: relative; padding: 0 0 40px; }
+.exp .sitio-vis figure { width: 87%; }
+.exp .sitio-tel { position: absolute; right: 0; bottom: 0; width: 30%; }
+.exp .sitio-tel .tel { border-radius: 20px; padding: 5px; }
+.exp .sitio-tel .tel img { border-radius: 15px; }
+.exp .dos-tel { display: grid; grid-template-columns: repeat(2, minmax(0, 220px)); gap: 22px; justify-content: center; }
+.exp .dos-tel .tel:last-child { transform: translateY(26px) rotate(2deg); }
+
+/* oferta */
+.exp .cierre { display: grid; gap: 18px; justify-items: start; }
+.exp .cierre > h2 { margin-bottom: 8px; }
+.exp .oferta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: 100%; }
+.exp .oferta-item { padding: 18px 20px; }
+.exp .oferta-item h3 { margin-bottom: 6px; }
+.exp .oferta-item p { font-size: 0.9rem; }
+.exp .cierre-acciones { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.exp .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; text-decoration: none; }
+.exp .btn:focus-visible, .exp .enlace:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.exp .enlace { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* lo que sólo se ve en una de las dos pantallas */
+.exp .solo-cel { display: none; }
+.exp .pie-cel { margin-top: 14px; text-align: center; font-size: 0.84rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .exp .vitrina figure { opacity: 1; transform: translateY(var(--y)) rotate(var(--r)); }
+}
+
 /* ---------- visor de capturas (portal en <body>) ---------- */
 .exp-visor {
   position: fixed; inset: 0; z-index: 400; background: rgba(8, 8, 10, 0.94);
@@ -153,4 +231,69 @@
   }
 
   .exp .decision { gap: 12px; }
+
+  .exp .tira {
+    display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+    margin: 0 calc(-1 * var(--exp-margen)); padding: 4px var(--exp-margen) 12px;
+    scroll-padding: 0 var(--exp-margen);
+  }
+  .exp .tira > figure { flex: 0 0 68%; scroll-snap-align: start; }
+  .exp .tira-aviso {
+    display: block; margin-top: 4px; font-family: var(--exp-mono); font-size: 0.62rem;
+    letter-spacing: 0.12em; opacity: 0.6;
+  }
+}
+
+@media (max-width: 820px) {
+  .exp .paso { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .exp .oferta { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
+@media (max-width: 767px) {
+  /* rótulos chicos: nunca por debajo de 12 px en el teléfono (más específico que el tema, que se carga después) */
+  .exp .hoja .eyebrow, .exp .hoja .tira-aviso, .exp .hoja .postit .quien { font-size: 0.75rem; }
+
+  .exp .entrada { font-size: 1.02rem; }
+  .exp .banda { padding: 44px 0 48px; }
+  .exp .banda-bajada { font-size: 0.98rem; }
+
+  /* la vitrina pasa a fila deslizable (.tira), sin inclinar */
+  .exp .vitrina { margin-top: 26px; }
+  .exp .vitrina figure,
+  .exp .vitrina-lamina.in .vitrina figure { --r: 0deg; --y: 0px; }
+  .exp .tira.vitrina > figure { flex-basis: 64%; }
+  .exp .nota-mano { min-height: 0; justify-content: flex-start; margin-bottom: 14px; }
+  .exp .flecha { width: 36px; height: 30px; }
+  .exp .banda .postit { margin-top: 28px; }
+
+  .exp .pasos { gap: 48px; margin-top: 26px; }
+  .exp .paso-n { width: 42px; height: 42px; margin-bottom: 10px; }
+  .exp .marca-vis { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 14px; }
+  .exp .marca-lado { gap: 12px; }
+  .exp .paleta span { height: 28px; }
+
+  /* la captura de escritorio no se lee en el teléfono: queda sólo el celular */
+  .exp .sitio-vis { padding: 0; }
+  .exp .sitio-vis figure { display: none; }
+  .exp .sitio-tel { position: static; margin: 0 auto; }
+
+  .exp .dos-tel { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .exp .hoja .dos-tel .tel:last-child { transform: translateY(16px); }
+
+  .exp .solo-esc { display: none; }
+  .exp .solo-cel { display: block; }
+
+  /* teléfono dentro del teléfono no: en celular se saca el marco y queda un recorte
+     grande de la pantalla, encuadrado en lo que vende (--foco por pantalla) */
+  .exp .hoja .tel { max-width: none; padding: 0; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 5; background: none; transform: none; }
+  .exp .hoja .tel img { height: 100%; object-fit: cover; object-position: var(--foco, 50% 0%); border-radius: 0; }
+  .exp .tira.vitrina > figure { flex-basis: 84%; }
+  .exp .sitio-tel { width: 100%; }
+  .exp .dos-tel .tel { aspect-ratio: 3 / 5; }
+  .exp .solo-cel > .tel { max-width: none; aspect-ratio: 4 / 5; }
+
+  .exp .cierre-acciones { flex-direction: column; align-items: stretch; gap: 12px; width: 100%; }
+  .exp .btn { width: 100%; }
+  .exp .enlace { align-self: center; }
 }
