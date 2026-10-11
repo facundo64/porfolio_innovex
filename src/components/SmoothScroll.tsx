@@ -9,15 +9,41 @@ export default function SmoothScroll() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    // Con "reducir movimiento" (Windows con efectos de animación apagados) el
+    // scroll suave sigue activo pero con inercia corta: sin él la rueda salta
+    // ~100px por click y las animaciones del Home avanzan a los tirones.
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // La rueda del mouse baja menos por click que el trackpad: así el Home no
+    // se recorre de un tirón y las animaciones tienen margen para verse.
+    // Rueda = saltos grandes y enteros, separados en el tiempo o iguales entre
+    // sí; el trackpad manda una ráfaga continua de valores chicos y variables.
+    const FACTOR_RUEDA = 0.7;
+    let ultimoT = 0;
+    let ultimoAbs = 0;
+    const esRueda = (e: WheelEvent) => {
+      const abs = Math.abs(e.deltaY);
+      const ahora = e.timeStamp;
+      const rueda =
+        e.deltaMode !== 0 ||
+        (abs >= 50 && Number.isInteger(e.deltaY) && e.deltaX === 0 && (ahora - ultimoT > 60 || abs === ultimoAbs));
+      ultimoT = ahora;
+      ultimoAbs = abs;
+      return rueda;
+    };
 
     const lenis = new Lenis({
-      lerp: 0.1,
+      lerp: reducido ? 0.18 : 0.1,
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
       syncTouch: false,
+      virtualScroll: (data) => {
+        if (data.event instanceof WheelEvent && esRueda(data.event)) {
+          data.deltaY *= FACTOR_RUEDA;
+        }
+        return true;
+      },
     });
     lenisRef.current = lenis;
 
