@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-// CSS obligatorio de Lenis: entre otras cosas fuerza height:auto en <html>/<body>
-// (el html lleva h-full). Sin esto la rueda del mouse puede trabarse o
-// sentirse antinatural en navegadores menos tolerantes que Chrome.
-import "lenis/dist/lenis.css";
 import "./lapiz.css";
 import BottomDock from "@/components/BottomDock";
 import PageTransition, { TransitionProvider } from "@/components/PageTransition";

@@ -31,6 +31,25 @@ html {
   scroll-behavior: auto;
 }
 
+/* Reglas obligatorias de Lenis (copiadas de lenis/dist/lenis.css v1.3).
+   El <html> lleva h-full y Lenis exige height:auto en html/body: sin esto la
+   rueda del mouse puede trabarse o sentirse antinatural fuera de Chrome. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 body {
   background: #FAFAF7;
   color: #0A0A0A;
