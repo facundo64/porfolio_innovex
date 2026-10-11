@@ -25,11 +25,10 @@ export default function ProcessGallery() {
   useEffect(() => {
     const el = pasosRef.current;
     if (!el) return;
-    const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const onScroll = () => {
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      const prog = reducir ? 1 : Math.min(1, Math.max(0, (vh * 0.7 - r.top) / r.height));
+      const prog = Math.min(1, Math.max(0, (vh * 0.7 - r.top) / r.height));
       el.style.setProperty("--prog", prog.toFixed(3));
     };
     window.addEventListener("scroll", onScroll, { passive: true });

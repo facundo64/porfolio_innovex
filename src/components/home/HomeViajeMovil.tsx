@@ -85,7 +85,6 @@ export default function HomeViajeMovil() {
   useEffect(() => {
     const sec = secRef.current, escena = escenaRef.current, svg = svgRef.current;
     if (!sec || !escena || !svg) return;
-    const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let etapaActual = -1;
 
     const onScroll = () => {
@@ -93,9 +92,11 @@ export default function HomeViajeMovil() {
       const W = escena.clientWidth, H = escena.clientHeight;
       const r = sec.getBoundingClientRect();
       const total = sec.offsetHeight - H;
-      const p = reducir ? 1 : clamp(-r.top / total);
+      // Con "reducir movimiento" (p. ej. Windows con efectos de animación apagados)
+      // igual avanza: lo maneja el scroll del visitante, no se mueve solo.
+      const p = clamp(-r.top / total);
       // Fundido de entrada desde el hero (reemplaza la máscara CSS).
-      escena.style.opacity = String(reducir ? 1 : clamp(1 - (r.top - H * 0.1) / (H * 0.45)));
+      escena.style.opacity = String(clamp(1 - (r.top - H * 0.1) / (H * 0.45)));
 
       // Dibujo de los tramos y punta del lápiz
       let punta: { x: number; y: number } = { x: C.ba[0], y: C.ba[1] };

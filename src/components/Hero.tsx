@@ -48,7 +48,9 @@ export default function Hero() {
       // En celular el texto entra completo en la primera pantalla y el dibujo
       // arranca apenas se empieza a bajar.
       const [ini, largo] = movil ? [1.5, 0.7] : [1.45, 0.75];
-      const tl = reducir ? (hr.bottom < vh * 1.3 ? 1 : 0) : clamp((vh * ini - hr.bottom) / (vh * largo));
+      // Con "reducir movimiento" (p. ej. Windows con efectos de animación apagados)
+      // igual avanza: lo maneja el scroll del visitante, no se mueve solo.
+      const tl = clamp((vh * ini - hr.bottom) / (vh * largo));
       const pr = img.getBoundingClientRect();
       const bordeVp = vh * (1.05 - tl * 1.25);
       const rev = clamp((pr.bottom - bordeVp) / pr.height, 0, 1.2) * 100;

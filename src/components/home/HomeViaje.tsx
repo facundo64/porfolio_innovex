@@ -64,18 +64,19 @@ export default function HomeViaje() {
   useEffect(() => {
     const sec = secRef.current;
     if (!sec) return;
-    const reducir = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let etapaActual = -1;
 
     const onScroll = () => {
       if (sec.offsetParent === null) return; // oculto en celular
       const r = sec.getBoundingClientRect();
       const total = sec.offsetHeight - window.innerHeight;
-      const p = reducir ? 1 : clamp(-r.top / total);
+      // Con "reducir movimiento" (p. ej. Windows con efectos de animación apagados)
+      // igual avanza: lo maneja el scroll del visitante, no se mueve solo.
+      const p = clamp(-r.top / total);
       // Fundido de entrada desde el hero (reemplaza la máscara CSS).
       if (stickyRef.current) {
         const vh = window.innerHeight;
-        stickyRef.current.style.opacity = String(reducir ? 1 : clamp(1 - (r.top - vh * 0.1) / (vh * 0.45)));
+        stickyRef.current.style.opacity = String(clamp(1 - (r.top - vh * 0.1) / (vh * 0.45)));
       }
       let punta: { x: number; y: number } | null = null;
       RUTAS.forEach((_, i) => {
