@@ -61,6 +61,7 @@ npm run lint     # eslint
 
 ## Trampas conocidas
 
+- **Lenis necesita su CSS (`lenis/dist/lenis.css`, importado en `layout.tsx`).** El `<html>` lleva `h-full` (altura fija = alto de la ventana) y Lenis exige `height:auto` en html/body. Sin ese CSS Chrome lo tolera, pero en otros navegadores/equipos la rueda del mouse puede trabarse o sentirse antinatural. Faltó desde el día uno; se agregó el 2026-10-10.
 - **El chatbot falla en silencio (2026-09-30).** `/api/chat` responde HTTP 200 pero el stream trae `{"type":"error","errorText":"Free tier users do not have access to this model..."}`: la cuenta de Vercel AI Gateway está en free tier y no tiene acceso a `anthropic/claude-haiku-4.5`. Para que ande hay que cargar créditos pagos en AI Gateway (o cambiar de proveedor). Probarlo con `curl -X POST https://porfolio-innovex.vercel.app/api/chat` mirando el cuerpo, no el status.
 - **Rate limit del chat es in-memory (`Map`) y por instancia.** En `api/chat/route.ts` el contador vive en memoria del runtime; con Fluid Compute / múltiples instancias o cold starts se reinicia, así que el límite de 20/h **no es global** y se puede saltear. Si hace falta límite real, mover a un store compartido (Upstash Redis). Ver `70-Errores/El rate limiting que se puede saltear`.
 - **Defaults de email hardcodeados** (`noreply@mail.citep-forense.com`, `innhovex@gmail.com`): el dominio `from` debe estar verificado en Resend o el envío falla en silencio.
